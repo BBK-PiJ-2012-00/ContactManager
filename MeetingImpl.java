@@ -9,7 +9,7 @@ import java.util.HashSet;
 * Meetings have unique IDs, scheduled date and a list of participating contacts 
 */ 
 public class MeetingImpl implements Meeting {
-	private int id;
+	private int meetingId;
 	private Calendar meetingDate;
 	private Set<Contact> attendees = null;
 	private static int idAssigner = 0;
@@ -22,12 +22,19 @@ public class MeetingImpl implements Meeting {
 			String contact = iterator.next();
 			attendees.add(contact);
 		}
+		meetingId = idAssigner + 1;
+		incrementIdAssigner();
+	}
+	
+	private static void incrementIdAssigner() {
+		idAssigner = idAssigner + 1;
+	}
 		
 	
 	
 	
 	
- //constructor? Attendees added upon construction? Add user to Set upon construction?
+
 
 
 /** 
@@ -46,12 +53,16 @@ public class MeetingImpl implements Meeting {
 	* @return the date of the meeting. 
 	*/
 	Calendar getDate() {
+		/**
+		PUT IN MANAGER CLASS
 		String dateString = "";
 		int day = meetingDate.get(Calendar.DAY_OF_WEEK);
 		int month = meetingDate.get(Calendar.MONTH);
 		int year = meetingDate.get(Calendar.YEAR);
 		dateString = dateString + day + "." + month + "." + year;
 		return dateString;
+		*/
+		return meetingDate;
 	}
 		
 			

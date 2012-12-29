@@ -2,6 +2,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar; 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /** 
 * A class to represent meetings 
@@ -11,16 +12,15 @@ import java.util.HashSet;
 public class MeetingImpl implements Meeting {
 	private int meetingId;
 	private Calendar meetingDate;
-	private Set<Contact> attendees = null;
+	private Set<Contact> attendees = new HashSet<Contact>();
 	private static int idAssigner = 0;
 	
 	public MeetingImpl(Set<Contact> contacts, Calendar date) {
 		//add contents of contacts to attendees - more robust than using pointer to manager class
 		meetingDate = date;
-		Iterator iterator = contacts.iterator();
+		Iterator<Contact> iterator = contacts.iterator();
 		while (iterator.hasNext()) {
-			String contact = iterator.next();
-			attendees.add(contact);
+			attendees.add(iterator.next());
 		}
 		meetingId = idAssigner + 1;
 		incrementIdAssigner();
@@ -29,30 +29,12 @@ public class MeetingImpl implements Meeting {
 	private static void incrementIdAssigner() {
 		idAssigner = idAssigner + 1;
 	}
-		
-	
-	
-	
-	
 
-
-
-/** 
-* Returns the id of the meeting.
-* 
-* @return the id of the meeting.
-*/
-	int getId() {
-		return id;
+	public int getId() {
+		return meetingId;
 	}
-
-
-	/** 
-	* Return the date of the meeting. 
-	* 
-	* @return the date of the meeting. 
-	*/
-	Calendar getDate() {
+	
+	public Calendar getDate() {
 		/**
 		PUT IN MANAGER CLASS
 		String dateString = "";
@@ -76,7 +58,7 @@ public class MeetingImpl implements Meeting {
 * 
 * @return the details of people that attended the meeting. 
 */
-	Set<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return attendees;
 	}
 		

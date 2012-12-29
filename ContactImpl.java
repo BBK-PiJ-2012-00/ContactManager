@@ -16,20 +16,16 @@ public class ContactImpl {
 	}	
 	
 
-/**
-* Returns the ID of the contact. 
-* 
-* @return the ID of the contact. 
-*/
+	/**
+	* Returns the ID of the contact. 
+	*/
 	int getId() {
 		return id;
 	}
 
-/** 
-* Returns the name of the contact. 
-* 
-* @return the name of the contact. 
-*/
+	/** 
+	* Returns the name of the contact.
+	*/
 	String getName() {
 		return name;
 	}
@@ -53,7 +49,7 @@ public class ContactImpl {
 * @param note the notes to be added 
 */
 	void addNotes(String note) {
-		notes = notes + note; //so that notes String is not overwritten if addNotes is called more than once
+		notes = notes + note + " "; //so that notes String is not overwritten if addNotes is called more than once
 	}
 
 }

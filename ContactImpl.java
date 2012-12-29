@@ -8,11 +8,12 @@ public class ContactImpl {
 	private int id;
 	private String name;
 	private String notes = "";
-	private static int counter = 99; //to facilitate assignment of an id
+	private static int idAssigner = 99; //to facilitate assignment of an id
+	private static int counter = 0; //gives true count of contacts created. May not be required.
 	
 	public ContactImpl(String name) {
 		this.name = name;
-		id = counter + 1; //first contact will have id 100, second 101 etc
+		id = idAssigner + 1; //first contact will have id 100, second 101 etc
 	}	
 	
 

@@ -13,19 +13,17 @@ public class ContactImpl implements Contact {
 	public ContactImpl(String name) {
 		this.name = name;
 		id = idAssigner + 1; //first contact will have id 1, second 2 etc
-	}	
+		incrementIdAssigner();
+	}
 	
-
-	/**
-	* Returns the ID of the contact. 
-	*/
+	private static void incrementIdAssigner() {
+		idAssigner++;
+	}
+	
 	int getId() {
 		return id;
 	}
 
-	/** 
-	* Returns the name of the contact.
-	*/
 	String getName() {
 		return name;
 	}
@@ -42,12 +40,6 @@ public class ContactImpl implements Contact {
 		return notes;
 	}
 
-
-/** 
-* Add notes about the contact. 
-* 
-* @param note the notes to be added 
-*/
 	void addNotes(String note) {
 		notes = notes + note + " "; //so that notes String is not overwritten if addNotes is called more than once
 	}

@@ -4,16 +4,15 @@
 * Contacts have an ID (unique), a name (probably unique, but maybe 
 * not), and notes that the user may want to save about them. 
 */
-public class ContactImpl { 
+public class ContactImpl implements Contact { 
 	private int id;
 	private String name;
 	private String notes = "";
-	private static int idAssigner = 99; //to facilitate assignment of an id
-	private static int counter = 0; //gives true count of contacts created. May not be required.
+	private static int idAssigner = 0; //to facilitate assignment of an id
 	
 	public ContactImpl(String name) {
 		this.name = name;
-		id = idAssigner + 1; //first contact will have id 100, second 101 etc
+		id = idAssigner + 1; //first contact will have id 1, second 2 etc
 	}	
 	
 

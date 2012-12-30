@@ -17,7 +17,8 @@ import java.io.*;
 * A class to manage your contacts and meetings. 
 */
 public class ContactManagerImpl implements ContactManager { 
-	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
+	private IllegalArgumentException illegalArgExEmpty = new IllegalArgumentException();
+	private IllegalArgumentException illegalArgExUnknown = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 
@@ -31,9 +32,8 @@ public class ContactManagerImpl implements ContactManager {
 	* or if any contact is unknown / non-existent.
 	*/
 	int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		//Check that contacts exist
 		//Checks that the date is not in the past
-		boolean isEmpty = false; //these booleans facilitate display of correct error message
+		boolean isEmpty = false; //these booleans facilitate display of correct error message// can do with multiple IAEs?
 		boolean falseContact = false;
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		try {
@@ -47,11 +47,19 @@ public class ContactManagerImpl implements ContactManager {
 				if (!contactList.contains(element)) { //what if there's more than one unknown? Should flag ALL unknowns at once
 					falseContact = true;
 					unknownContacts = unknownContacts + element.getName() + "/n" //check /n gives newline				
-					throw illegalArgEx;
 				}
-			}		
+			}
+			if (falseContact == true) {
+					throw illegalArgEx; //put separately so that multiple unknowns are listed before exception is thrown
+			}
+			//if date < current date/time, throw exception
+			Calendar now = Calendar.getInstance();
+			if (date.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
+				if (date.get(Calendar.MONTH) < now.get(Calendar.MONTH)) {
+					
+			
 		}
-		catch (IllegalArgumentException illegalArgEx) {
+		catch (illegalArgExEmpty) {
 			if (isEmpty == true) {
 				System.out.println("Error: no contacts have been specified.");
 			}
@@ -60,6 +68,11 @@ public class ContactManagerImpl implements ContactManager {
 				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
 			}  
 		}
+		catch (illegalArgExUnknown) {
+			System.out.println("Error: " + unknownContact.getName() + " does not exist.");
+				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
+		}
+			
 		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getID();
 	}

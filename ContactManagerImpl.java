@@ -44,7 +44,7 @@ public class ContactManagerImpl implements ContactManager {
 			Iterator<Contact> iterator = contacts.iterator();//check that contacts are known/existent against central contact list
 			while (iterator.hasNext()) {
 				Contact element = iterator.next();
-				if (!contactList.contains(element)) {
+				if (!contactList.contains(element)) { //what if there's more than one unknown? Should flag ALL unknowns at once
 					falseContact = true;
 					unknownContact = element;
 					throw illegalArgEx;
@@ -56,8 +56,9 @@ public class ContactManagerImpl implements ContactManager {
 				System.out.println("Error: no contacts have been specified.");
 			}
 			if (falseContact == true) {
-				System.out.println("Error: " + unknownContact.getName() + ", ID " + unknownContact.getId() + " does not exist.");
-				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts  
+				System.out.println("Error: " + unknownContact.getName() + " does not exist.");
+				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
+			}  
 		}
 		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getID();

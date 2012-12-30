@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.List; 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.io.*;
 
 /** 
@@ -18,6 +19,7 @@ import java.io.*;
 public class ContactManagerImpl implements ContactManager { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
+	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 
 	/**
 	* Add a new meeting to be held in the future. 
@@ -31,18 +33,31 @@ public class ContactManagerImpl implements ContactManager {
 	int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		//Check that contacts exist
 		//Checks that the date is not in the past
-		boolean isEmpty = false; //facilitates correct error message
+		boolean isEmpty = false; //these booleans facilitate correct error message
+		boolean falseContact = false;
+		Contact unknownContact;//so that unknown contact can be specified in error message
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
 				throw illegalArgEx;
 			}
-		
+			Iterator<Contact> iterator = contacts.iterator();//check that contacts are known/existent against central contact list
+			while (iterator.hasNext()) {
+				Contact element = iterator.next();
+				if (!contactList.contains(element)) {
+					falseContact = true;
+					unknownContact = element;
+					throw illegalArgEx;
+				}
+			}		
 		}
 		catch (IllegalArgumentException illegalArgEx) {
-			if (isEmpty = true) {
+			if (isEmpty == true) {
 				System.out.println("Error: no contacts have been specified.");
 			}
+			if (falseContact == true) {
+				System.out.println("Error: " + unknownContact.getName() + ", ID " + unknownContact.getId() + " does not exist.");
+				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts  
 		}
 		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getID();

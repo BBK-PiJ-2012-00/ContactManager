@@ -21,17 +21,9 @@ public class ContactManagerImpl {
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 
-	/**
-	* Add a new meeting to be held in the future. 
-	* 
-	* @param contacts a list of contacts that will participate in the meeting 
-	* @param date the date on which the meeting will take place 
-	* @return the ID for the meeting 
-	* @throws IllegalArgumentException if the meeting is set for a time in the past,
-	* or if any contact is unknown / non-existent.
-	*/
+	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		boolean isEmpty = false; //these booleans facilitate display of correct error message// can do with multiple IAEs?
+		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
 		boolean falseDate = false;
 		Contact element = null;//to keep track of contacts being iterated
@@ -75,6 +67,7 @@ public class ContactManagerImpl {
 				falseDate = true;
 				throw illegalArgEx;
 			}
+			Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
@@ -88,8 +81,21 @@ public class ContactManagerImpl {
 				System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
 			}			 
 		}
-		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getId();
+	}
+	
+	
+	public static void main(String[] args) {
+	
+		ContactManager cm = new ContactManagerImpl();
+		cm.launch();
+		
+	}
+	
+	private void launch() {
+	
+	
+	
 	}
 	
 
@@ -98,6 +104,10 @@ public class ContactManagerImpl {
 }
 
 // Meeting meeting = new FutureMeeting(params);
+//ask user for dates in specific format, which can then be converted to create a new Calendar
+//make sure that if wrong format is entered, you throw an exception.
+
+//Don't forget to ensure class implements ContactManager when finished
 
 
 

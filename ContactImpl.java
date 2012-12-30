@@ -20,11 +20,11 @@ public class ContactImpl implements Contact {
 		idAssigner++;
 	}
 	
-	int getId() {
+	public int getId() {
 		return id;
 	}
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -36,11 +36,11 @@ public class ContactImpl implements Contact {
 * 
 * @return a string with notes about the contact, maybe empty. 
 */
-	String getNotes() {
+	public String getNotes() {
 		return notes;
 	}
 
-	void addNotes(String note) {
+	public void addNotes(String note) {
 		notes = notes + note + " "; //so that notes String is not overwritten if addNotes is called more than once
 	}
 

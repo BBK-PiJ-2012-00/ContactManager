@@ -33,9 +33,9 @@ public class ContactManagerImpl implements ContactManager {
 	int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		//Check that contacts exist
 		//Checks that the date is not in the past
-		boolean isEmpty = false; //these booleans facilitate correct error message
+		boolean isEmpty = false; //these booleans facilitate display of correct error message
 		boolean falseContact = false;
-		Contact unknownContact;//so that unknown contact can be specified in error message
+		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
@@ -46,7 +46,7 @@ public class ContactManagerImpl implements ContactManager {
 				Contact element = iterator.next();
 				if (!contactList.contains(element)) { //what if there's more than one unknown? Should flag ALL unknowns at once
 					falseContact = true;
-					unknownContact = element;
+					unknownContacts = unknownContacts + element.getName() + "/n" //check /n gives newline				
 					throw illegalArgEx;
 				}
 			}		

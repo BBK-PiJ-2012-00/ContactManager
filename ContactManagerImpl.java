@@ -19,6 +19,7 @@ import java.io.*;
 public class ContactManagerImpl implements ContactManager { 
 	private IllegalArgumentException illegalArgExEmpty = new IllegalArgumentException();
 	private IllegalArgumentException illegalArgExUnknown = new IllegalArgumentException();
+	private IllegalArgumentException illegalArgExDate = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 
@@ -55,24 +56,42 @@ public class ContactManagerImpl implements ContactManager {
 			//if date < current date/time, throw exception
 			Calendar now = Calendar.getInstance();
 			if (date.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
-				if (date.get(Calendar.MONTH) < now.get(Calendar.MONTH)) {
-					
-			
-		}
+				if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)) {
+					if (date.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)) {
+						if (date.get(Calendar.MINUTE) <= (now.get(Calendar.MINUTE)) {
+							throw illegalArgExDate;
+						}
+					}
+					else if (date.get(Calendar.HOUR_OF_DAY) < now.get(Calendar.HOUR_OF_DAY)) {
+						throw illegalArgExDate;
+					}
+				}
+				else if (date.get(Calendar.DAY_OF_YEAR)) < now.get(Calendar.DAY_OF_YEAR)) {
+					throw illegalArgExDate;
+				}
+			}
+			else if (date.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
+				throw illegalArgExDate;
+			}
+		}		
 		catch (illegalArgExEmpty) {
 			if (isEmpty == true) {
 				System.out.println("Error: no contacts have been specified.");
 			}
+			/**
 			if (falseContact == true) {
 				System.out.println("Error: " + unknownContact.getName() + " does not exist.");
 				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
-			}  
+			} 
+			*/ 
 		}
 		catch (illegalArgExUnknown) {
 			System.out.println("Error: " + unknownContact.getName() + " does not exist.");
 				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
 		}
-			
+		catch (illegalArgExDate) {
+			System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
+		}			
 		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getID();
 	}

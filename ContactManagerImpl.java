@@ -9,11 +9,15 @@
 import java.util.Calendar;
 import java.util.List; 
 import java.util.Set;
+import java.util.HashSet;
+import java.io.*;
 
 /** 
 * A class to manage your contacts and meetings. 
 */
 public class ContactManagerImpl implements ContactManager { 
+	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
+	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 
 	/**
 	* Add a new meeting to be held in the future. 
@@ -25,9 +29,21 @@ public class ContactManagerImpl implements ContactManager {
 	* or if any contact is unknown / non-existent.
 	*/
 	int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		//Return meeting ID
 		//Check that contacts exist
 		//Checks that the date is not in the past
+		boolean isEmpty = false; //facilitates correct error message
+		try {
+			if (contacts.isEmpty()) {
+				isEmpty = true;
+				throw illegalArgEx;
+			}
+		
+		}
+		catch (IllegalArgumentException illegalArgEx) {
+			if (isEmpty = true) {
+				System.out.println("Error: no contacts have been specified.");
+			}
+		}
 		Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
 		return futureMeeting.getID();
 	}

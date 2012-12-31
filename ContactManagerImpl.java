@@ -205,23 +205,12 @@ public class ContactManagerImpl {
 	private List<Meeting> sort(List<Meeting> list) {
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
-		Meeting tempSlot = null;
 		boolean sorted = true;
-		/**
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getDate().after(list.get(i + 1).getDate())) {
-				sorted = false;
-			}
-			else {
-				sorted = true;
-			}
-			while (!sorted) {
-		*/		
 		for (int j = 0; j < list.size() - 1; j++) {
 			tempMeeting1 = list.get(j);
 			tempMeeting2 = list.get(j + 1);
 			if (tempMeeting1.getDate().after(tempMeeting2.getDate())) {
-				tempSlot = tempMeeting1; //swaps elements over if first element has later date than second
+				//swaps elements over if first element has later date than second
 				list.set(j, tempMeeting2); //replaced add with set to avoid list growing when rearranging elements
 				list.set(j + 1, tempMeeting1);
 			}
@@ -272,24 +261,25 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2015, 0, 1);
-		Calendar cal2 = new GregorianCalendar(2014, 1, 23);
-		Calendar cal3 = new GregorianCalendar(2013, 2, 3);
-		Calendar cal4 = new GregorianCalendar(2017, 0, 12);
+		Calendar cal = new GregorianCalendar(2013, 6, 7);
+		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
+		Calendar cal3 = new GregorianCalendar(2013, 5, 3);		
+		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
 		
 		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
 		this.addFutureMeeting(attendeeList, cal);
 		this.addFutureMeeting(attendeeList, cal2);
 		this.addFutureMeeting(attendeeList, cal3);
+		attendeeList.remove(tseng);
 		this.addFutureMeeting(attendeeList, cal4);
 		
 		
 		Calendar calPrint = new GregorianCalendar();
 		List<Meeting> testList = getFutureMeetingList(tseng);
 		for (int i = 0; i < testList.size(); i++) {
-			System.out.print(testList.get(i).getId());
+			System.out.println("Meeting ID: " + testList.get(i).getId());
 			calPrint = testList.get(i).getDate();
-			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + " " + calPrint.get(Calendar.MONTH) + " " + calPrint.get(Calendar.YEAR));
+			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
 	
 		

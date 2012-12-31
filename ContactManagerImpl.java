@@ -15,6 +15,7 @@ public class ContactManagerImpl {
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 	private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();//list of past meetings
+	private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
 
 	//also add to a list/set?
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -86,19 +87,26 @@ public class ContactManagerImpl {
 	*/
 	PastMeeting getPastMeeting(int id) {
 		try {
-			Iterator<PastMeeting> iterator = pastMeetings.iterator();
-			PastMeeting item = null;
-			while (iterator.hasNext()) {
-				item = iterator.next();
-				if (item.getId() == id) {
-					return item;
+			Iterator<FutureMeeting> iteratorFM = futureMeetings.iterator();
+			FutureMeeting futureMeeting = null;
+			while (iteratorFM.hasNext()) {
+				futureMeeting = iteratorFM.next();
+				if (futureMeeting.getId() == id) {
+					throw illegalArgEx;
 				}
 			}
-			throw illegalArgEx;
-			}
-		catch (IllegalArgumentException ex) {
-			System.out.print("Error: ID not found!");
 		}
+		catch (IllegalArgumentException ex) {
+			System.out.print("Error: The meeting with this ID has not taken place yet!");
+		}
+		Iterator<PastMeeting> iteratorPM = pastMeetings.iterator();
+			PastMeeting pastMeeting = null;
+			while (iteratorPM.hasNext()) {
+				pastMeeting = iteratorPM.next();
+				if (pastMeeting.getId() == id) {
+					return pastMeeting;
+				}
+			}			
 		return null;
 	}
 		

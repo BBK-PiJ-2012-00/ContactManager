@@ -38,7 +38,7 @@ public class ContactManagerImpl {
 					unknownContacts = unknownContacts + "\n" + element.getName();				
 				}
 			}
-			Calendar now = Calendar.getInstance();			
+			Calendar now = Calendar.getInstance(); //what about scheduling a meeting for today?			
 			if (date.before(now)) {
 				falseDate = true;
 			}
@@ -221,10 +221,29 @@ public class ContactManagerImpl {
 	* @return the list of meetings 
 	*/
 	List<Meeting> getFutureMeetingList(Calendar date) {
-	
-	
+		List<Meeting> meetingList = new ArrayList<Meeting>();
+		//go through future meetings and past meetings, unless all meetings are also added to allMeetings?
+		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
+		Meeting pastMeeting = null;
+		while (iteratorPM.hasNext()) {
+			pastMeeting = iteratorPM.next();
+			if (pastMeeting.getDate().equals(date)) {
+			//or futureMeeting.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) etc
+				meetingList.add(pastMeeting);
+			}
+		}
+		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
+		Meeting futureMeeting = null;
+		while (iteratorFM.hasNext()) {
+			futureMeeting = iteratorFM.next();
+			if (futureMeeting.getDate().equals(date)) {
+				meetingList.add(futureMeeting);
+			}
+		}
+		meetingList = sort(meetingList);
+		return meetingList;	
 	}
-			
+		
 				
 				
 			
@@ -253,7 +272,7 @@ public class ContactManagerImpl {
 		contactList.add(reno);
 		contactList.add(rude);
 		contactList.add(elena);
-		//contactList.add(r2d2);
+		contactList.add(r2d2);
 				
 		attendeeList.add(tseng);
 		attendeeList.add(rude);
@@ -263,10 +282,10 @@ public class ContactManagerImpl {
 		Calendar cal = new GregorianCalendar(2013, 6, 7);
 		addFutureMeeting(attendeeList, cal);
 		
-		/**
 		
+		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
-		Calendar cal3 = new GregorianCalendar(2013, 5, 3);		
+		Calendar cal3 = new GregorianCalendar(2013, 6, 5);		
 		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
 		
 		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
@@ -324,7 +343,7 @@ public class ContactManagerImpl {
 	
 	//when users specify a date, should they also include a time?
 			
-
+//how does before/after affect dates which are the same?
 
 
 

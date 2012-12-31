@@ -188,6 +188,8 @@ public class ContactManagerImpl {
 					}
 				}
 			}
+			list = sort(list);//need to sort list and eliminate duplicates!! Separate method for this?
+			
 			return list;
 		}
 		catch (IllegalArgumentException ex) {
@@ -196,6 +198,34 @@ public class ContactManagerImpl {
 	return list; //may be empty
 	}
 	
+	private List<Meeting> sort(List<Meeting> list) {
+		List<Meeting> sortedList = new ArrayList<Meeting>();
+		int min = 0;
+		Meeting tempMeeting1 = null;
+		Meeting tempMeeting2 = null;
+		Meeting tempSlot = null;
+		boolean sorted = false;
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getDate().after(list.get(i + 1).getDate().)) {
+				sorted = false
+			
+		
+		for (int i = 0; i < list.size(); i++) {
+			tempMeeting1 = list.get(i);
+			tempMeeting2 = list.get(i + 1);
+			if (tempMeeting1.getDate().after(tempMeeting2.getDate().getTime())) {
+				tempSlot = tempMeeting1; //swaps elements over if first element has later date than second
+				list.add(i, tempMeeting2);
+				list.add(i + 1, tempMeeting1);
+			}
+		}
+		return list;
+	}
+				
+				
+				
+			
+			
 				
 			
 		

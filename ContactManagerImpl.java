@@ -88,10 +88,10 @@ public class ContactManagerImpl {
 	PastMeeting getPastMeeting(int id) {
 		try {
 			Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-			Meeting futureMeeting = null;
+			Meeting meeting = null;
 			while (iteratorFM.hasNext()) {
-				futureMeeting = iteratorFM.next();
-				if (futureMeeting.getId() == id) {
+				meeting = iteratorFM.next();
+				if (meeting.getId() == id) {
 					throw illegalArgEx;
 				}
 			}
@@ -100,12 +100,12 @@ public class ContactManagerImpl {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");
 		}
 		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
-			Meeting pastMeeting = null;
+			Meeting meeting = null;
 			while (iteratorPM.hasNext()) {
-				pastMeeting = iteratorPM.next();
-				if (pastMeeting.getId() == id) {
-					PastMeeting pm = (PastMeeting) pastMeeting;
-					return pm;
+				meeting = iteratorPM.next();
+				if (meeting.getId() == id) {
+					PastMeeting pastMeeting = (PastMeeting) meeting;
+					return pastMeeting;
 				}
 			}			
 		return null;

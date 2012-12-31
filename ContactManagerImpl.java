@@ -14,8 +14,9 @@ public class ContactManagerImpl {
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
+	private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();//list of past meetings
 
-	
+	//also add to a list/set?
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
@@ -61,20 +62,46 @@ public class ContactManagerImpl {
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
-				System.out.println("Error: no contacts have been specified.");
+				System.out.println("Error: No contacts have been specified.");
 			}
 			if (falseContact == true) {
 				System.out.println("Error: " + unknownContacts);
 				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
 			} 
 			if (falseDate == true) {
-				System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
+				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
 			}			 
 		}
 		futureMeeting = new FutureMeetingImpl(contacts, date);
 		int meetingID = futureMeeting.getId();
 		return meetingID;
 	}
+	
+	/**
+	* Returns the PAST meeting with the requested ID, or null if it there is none. 
+	* 
+	* @param id the ID for the meeting 
+	* @return the meeting with the requested ID, or null if it there is none.
+	* @throws IllegalArgumentException if there is a meeting with that ID happening in the future
+	*/
+	PastMeeting getPastMeeting(int id) {
+		try {
+			Iterator<PastMeeting> iterator = pastMeetings.iterator();
+			PastMeeting item = null;
+			while (iterator.hasNext()) {
+				item = iterator.next();
+				if (item.getId() == id) {
+					return item;
+				}
+			}
+			throw illegalArgEx;
+			}
+		catch (IllegalArgumentException ex) {
+			System.out.print("Error: ID not found!");
+		}
+		return null;
+	}
+		
 	
 	
 	public static void main(String[] args) {

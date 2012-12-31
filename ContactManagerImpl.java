@@ -22,7 +22,7 @@ public class ContactManagerImpl {
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 
-	
+	//Changed so that user sees all error messages at once, rather than having to correct 1 at a time
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
@@ -33,7 +33,7 @@ public class ContactManagerImpl {
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
-				throw illegalArgEx;
+				//throw illegalArgEx;
 			}
 			Iterator<Contact> iterator = contacts.iterator();//check that contacts are known/existent against central contact list
 			while (iterator.hasNext()) {
@@ -43,33 +43,45 @@ public class ContactManagerImpl {
 					unknownContacts = unknownContacts + element.getName() + "/n"; //check /n gives newline				
 				}
 			}
-			if (falseContact == true) {
-				throw illegalArgEx; //put separately so that multiple unknowns are listed before exception is thrown
-			}
+			//if (falseContact == true) {
+			//	throw illegalArgEx; //put separately so that multiple unknowns are listed before exception is thrown
+			//}
 			Calendar now = Calendar.getInstance();
 			if (date.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
 				if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)) {
 					if (date.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)) {
 						if (date.get(Calendar.MINUTE) <= now.get(Calendar.MINUTE)) {
 							falseDate = true;
-							throw illegalArgEx;
+							//throw illegalArgEx;
 						}
 					}
 					else if (date.get(Calendar.HOUR_OF_DAY) < now.get(Calendar.HOUR_OF_DAY)) {
 						falseDate = true;
-						throw illegalArgEx;
+						//throw illegalArgEx;
 					}
 				}
 				else if (date.get(Calendar.DAY_OF_YEAR) < now.get(Calendar.DAY_OF_YEAR)) {
 					falseDate = true;
-					throw illegalArgEx;
+					//throw illegalArgEx;
 				}
 			}
 			else if (date.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
 				falseDate = true;
-				throw illegalArgEx;
+				//throw illegalArgEx;
 			}
-			futureMeeting = new FutureMeetingImpl(contacts, date);
+			if (isEmpty == true) {
+				System.out.println("Error: no contacts have been specified.");
+			}
+			if (falseContact == true) {
+				System.out.println("Error: " + unknownContacts);
+			}
+			if (falseDate == true) {
+				System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
+			}
+			if (isEmpty || falseContact || falseDate) {
+				throw illegalArgEx;
+			}				
+			futureMeeting = new FutureMeetingImpl(contacts, date);//must come after exceptions are thrown; only created if no exceptions are thrown
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {

@@ -7,6 +7,7 @@
 */
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List; 
 import java.util.Set;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class ContactManagerImpl {
 		boolean falseDate = false;
 		Contact element = null;//to keep track of contacts being iterated
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
+		Meeting futureMeeting = null;
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
@@ -67,7 +69,7 @@ public class ContactManagerImpl {
 				falseDate = true;
 				throw illegalArgEx;
 			}
-			Meeting futureMeeting = new FutureMeetingImpl(contacts, date);
+			futureMeeting = new FutureMeetingImpl(contacts, date);
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
@@ -81,18 +83,41 @@ public class ContactManagerImpl {
 				System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
 			}			 
 		}
-		return futureMeeting.getId();
+		futureMeeting = new FutureMeetingImpl(contacts, date);
+		int meetingID = futureMeeting.getId();
+		return meetingID;
 	}
 	
 	
 	public static void main(String[] args) {
 	
-		ContactManager cm = new ContactManagerImpl();
+		ContactManagerImpl cm = new ContactManagerImpl();
 		cm.launch();
 		
 	}
 	
 	private void launch() {
+		Contact tseng = new ContactImpl("Tseng");
+		Contact reno = new ContactImpl("Reno");
+		Contact rude = new ContactImpl("Rude");
+		Contact elena = new ContactImpl("Elena");
+		
+		contactList.add(tseng);
+		contactList.add(reno);
+		contactList.add(rude);
+		//contactList.add(elena);
+		
+		//attendeeList.add(tseng);
+		//attendeeList.add(rude);
+		
+		Calendar cal = new GregorianCalendar(2013, 5, 2);
+		
+		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
+		this.addFutureMeeting(attendeeList, cal);
+		
+		System.out.println(tseng.getId());
+		System.out.println(elena.getId());
+		System.out.println(reno.getId());
 	
 	
 	

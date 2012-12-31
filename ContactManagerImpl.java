@@ -283,7 +283,7 @@ public class ContactManagerImpl {
 		addFutureMeeting(attendeeList, cal);
 		
 		
-		/**
+		
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
 		Calendar cal3 = new GregorianCalendar(2013, 6, 5);		
 		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
@@ -292,7 +292,7 @@ public class ContactManagerImpl {
 		this.addFutureMeeting(attendeeList, cal);
 		this.addFutureMeeting(attendeeList, cal2);
 		this.addFutureMeeting(attendeeList, cal3);
-		attendeeList.remove(tseng);
+		//attendeeList.remove(tseng);
 		this.addFutureMeeting(attendeeList, cal4);
 		
 		
@@ -303,7 +303,17 @@ public class ContactManagerImpl {
 			calPrint = testList.get(i).getDate();
 			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
-		*/
+		
+		testList = getFutureMeetingList(cal2);
+		for (int i = 0; i < testList.size(); i++) {
+			System.out.println("Meeting ID: " + testList.get(i).getId() + " taking place on: ");
+			calPrint = testList.get(i).getDate();
+			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
+		}
+		
+		
+		
+		
 		
 	
 		

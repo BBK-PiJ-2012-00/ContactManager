@@ -13,10 +13,10 @@ import java.io.*;
 public class ContactManagerImpl { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
-	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
-	private List<Meeting> pastMeetings = new ArrayList<Meeting>();//list of past meetings
-	private List<Meeting> futureMeetings = new ArrayList<Meeting>();
-	private List<Meeting> allMeetings = new ArrayList<Meeting>();
+	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
+	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
+	private Set<Meeting> futureMeetings = new HashSet<Meeting>();
+	private Set<Meeting> allMeetings = new HashSet<Meeting>();
 
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -38,27 +38,7 @@ public class ContactManagerImpl {
 					unknownContacts = unknownContacts + "\n" + element.getName();				
 				}
 			}
-			Calendar now = Calendar.getInstance();
-			/**
-			if (date.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
-				if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)) {
-					if (date.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)) {
-						if (date.get(Calendar.MINUTE) <= now.get(Calendar.MINUTE)) {
-							falseDate = true;
-						}
-					}
-					else if (date.get(Calendar.HOUR_OF_DAY) < now.get(Calendar.HOUR_OF_DAY)) {
-						falseDate = true;
-					}
-				}
-				else if (date.get(Calendar.DAY_OF_YEAR) < now.get(Calendar.DAY_OF_YEAR)) {
-					falseDate = true;
-				}
-			}
-			else if (date.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
-				falseDate = true;
-			}
-			*/
+			Calendar now = Calendar.getInstance();			
 			if (date.before(now)) {
 				falseDate = true;
 			}
@@ -193,7 +173,7 @@ public class ContactManagerImpl {
 					}
 				}
 			}
-			list = sort(list);//need to sort list and eliminate duplicates!! Separate method for this?
+			list = sort(list);//elimination of duplicates? With sets, there shouldn't be any...
 			return list;
 		}
 		catch (IllegalArgumentException ex) {
@@ -202,6 +182,9 @@ public class ContactManagerImpl {
 	return list; //may be empty
 	}
 	
+	/**
+	* Sorts a list into chronological order
+	*/
 	private List<Meeting> sort(List<Meeting> list) {
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
@@ -221,11 +204,27 @@ public class ContactManagerImpl {
 			}			
 		}
 		if (!sorted) {
-			list = sort(list);
+			list = sort(list);//recursively calls this method until the list is sorted
 		}
 		return list;
 	}
-				
+		
+	/** 
+	* Returns the list of meetings that are scheduled for, or that took 
+	* place on, the specified date 
+	* 
+	* If there are none, the returned list will be empty. Otherwise, 
+	* the list will be chronologically sorted and will not contain any 
+	* duplicates. 
+	* 	
+	* @param date the date 
+	* @return the list of meetings 
+	*/
+	List<Meeting> getFutureMeetingList(Calendar date) {
+	
+	
+	}
+			
 				
 				
 			
@@ -254,7 +253,7 @@ public class ContactManagerImpl {
 		contactList.add(reno);
 		contactList.add(rude);
 		contactList.add(elena);
-		contactList.add(r2d2);
+		//contactList.add(r2d2);
 				
 		attendeeList.add(tseng);
 		attendeeList.add(rude);
@@ -262,6 +261,10 @@ public class ContactManagerImpl {
 		attendeeList.add(r2d2);
 		
 		Calendar cal = new GregorianCalendar(2013, 6, 7);
+		addFutureMeeting(attendeeList, cal);
+		
+		/**
+		
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
 		Calendar cal3 = new GregorianCalendar(2013, 5, 3);		
 		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
@@ -281,6 +284,8 @@ public class ContactManagerImpl {
 			calPrint = testList.get(i).getDate();
 			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
+		*/
+		
 	
 		
 	
@@ -298,6 +303,27 @@ public class ContactManagerImpl {
 //make sure that if wrong format is entered, you throw an exception.
 
 //Don't forget to ensure class implements ContactManager when finished
+
+
+/** 
+	* Returns the list of meetings that are scheduled for, or that took 
+	* place on, the specified date 
+	* 
+	* If there are none, the returned list will be empty. Otherwise, 
+	* the list will be chronologically sorted and will not contain any 
+	* duplicates. 
+	* 	
+	* @param date the date 
+	* @return the list of meetings 
+	*/
+	//List<Meeting> getFutureMeetingList(Calendar date);
+	//should this be renamed, as it fetches any meeting, not just future ones?
+	
+	//if returned list is empty, write empty? in main: if list.isEmpty(), print <empty> for
+	//user clarity
+	
+	//when users specify a date, should they also include a time?
+			
 
 
 

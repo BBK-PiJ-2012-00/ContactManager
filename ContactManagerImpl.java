@@ -16,6 +16,7 @@ public class ContactManagerImpl {
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
 	private List<Meeting> pastMeetings = new ArrayList<Meeting>();//list of past meetings
 	private List<Meeting> futureMeetings = new ArrayList<Meeting>();
+	private List<Meeting> allMeetings = new ArrayList<Meeting>();
 
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -137,12 +138,33 @@ public class ContactManagerImpl {
 		while (iteratorFM.hasNext()) {
 			meeting = iteratorFM.next();
 			if (meeting.getId() == id) {
-			FutureMeeting futureMeeting = (FutureMeeting) meeting;
-			return futureMeeting;
+				FutureMeeting futureMeeting = (FutureMeeting) meeting;
+				return futureMeeting;
 			}
 		}
 		return null;
 	}
+	
+	/**
+	* Returns the meeting with the requested ID, or null if there is none.
+	*
+	* @param id the ID for the meeting
+	* @return the meeting with the requested ID, or null if there is none.
+	*/
+	public Meeting getMeeting(int id) {
+		Iterator<Meeting> iterator = allMeetings.iterator();
+		Meeting meeting = null;
+		while (iterator.hasNext()) {
+			meeting = iterator.next();
+			if (meeting.getId() == id) {
+				return meeting;
+			}
+		}
+		return null;
+	}
+				
+			
+		
 		
 	
 	

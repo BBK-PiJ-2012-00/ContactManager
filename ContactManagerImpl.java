@@ -14,10 +14,10 @@ public class ContactManagerImpl {
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting
-	private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();//list of past meetings
-	private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
+	private List<Meeting> pastMeetings = new ArrayList<Meeting>();//list of past meetings
+	private List<Meeting> futureMeetings = new ArrayList<Meeting>();
 
-	//also add to a list/set?
+	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
@@ -60,6 +60,7 @@ public class ContactManagerImpl {
 				throw illegalArgEx;
 			}				
 			futureMeeting = new FutureMeetingImpl(contacts, date);
+			futureMeetings.add(futureMeeting);
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
@@ -73,7 +74,6 @@ public class ContactManagerImpl {
 				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
 			}			 
 		}
-		futureMeeting = new FutureMeetingImpl(contacts, date);
 		int meetingID = futureMeeting.getId();
 		return meetingID;
 	}
@@ -87,8 +87,8 @@ public class ContactManagerImpl {
 	*/
 	PastMeeting getPastMeeting(int id) {
 		try {
-			Iterator<FutureMeeting> iteratorFM = futureMeetings.iterator();
-			FutureMeeting futureMeeting = null;
+			Iterator<Meeting> iteratorFM = futureMeetings.iterator();
+			Meeting futureMeeting = null;
 			while (iteratorFM.hasNext()) {
 				futureMeeting = iteratorFM.next();
 				if (futureMeeting.getId() == id) {
@@ -99,12 +99,13 @@ public class ContactManagerImpl {
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");
 		}
-		Iterator<PastMeeting> iteratorPM = pastMeetings.iterator();
-			PastMeeting pastMeeting = null;
+		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
+			Meeting pastMeeting = null;
 			while (iteratorPM.hasNext()) {
 				pastMeeting = iteratorPM.next();
 				if (pastMeeting.getId() == id) {
-					return pastMeeting;
+					PastMeeting pm = (PastMeeting) pastMeeting;
+					return pm;
 				}
 			}			
 		return null;

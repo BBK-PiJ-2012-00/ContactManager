@@ -145,12 +145,7 @@ public class ContactManagerImpl {
 		return null;
 	}
 	
-	/**
-	* Returns the meeting with the requested ID, or null if there is none.
-	*
-	* @param id the ID for the meeting
-	* @return the meeting with the requested ID, or null if there is none.
-	*/
+	
 	public Meeting getMeeting(int id) {
 		Iterator<Meeting> iterator = allMeetings.iterator();
 		Meeting meeting = null;
@@ -162,6 +157,45 @@ public class ContactManagerImpl {
 		}
 		return null;
 	}
+	
+	/** 
+	* Returns the list of future meetings scheduled with this contact. 
+	* 
+	* If there are none, the returned list will be empty. Otherwise, 
+	* the list will be chronologically sorted and will not contain any 
+	* duplicates. 
+	* 
+	* @param contact one of the user’s contacts 
+	* @return the list of future meeting(s) scheduled with this contact (may be empty)
+	* @throws IllegalArgumentException if the contact does not exist
+	*/
+	public List<Meeting> getFutureMeetingList(Contact contact) {
+		List<Meeting> list = new ArrayList<Meeting>();//list to contain meetings attended by specified contact
+		try {
+			if (!contactList.contains(contact)) {
+				throw illegalArgEx;
+			}
+			Iterator<Meeting> iterator = futureMeetings.iterator();
+			Meeting meeting = null;
+			while (iterator.hasNext()) { //goes through all future meetings
+				meeting = iterator.next();
+				Iterator<Contact> conIterator = meeting.getContacts().iterator();
+				Contact item = null;
+				while (conIterator.hasNext()) { //goes through contacts associated with a meeting
+					item = conIterator.next();
+					if (item.getId() == contact.getId()) {
+						list.add(meeting);
+					}
+				}
+			}
+			return list;
+		}
+		catch (IllegalArgumentException ex) {
+			System.out.println("Error: The specified contact doesn't exist!");
+		}
+	return list; //may be empty
+	}
+	
 				
 			
 		

@@ -39,6 +39,7 @@ public class ContactManagerImpl {
 				}
 			}
 			Calendar now = Calendar.getInstance();
+			/**
 			if (date.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
 				if (date.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)) {
 					if (date.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)) {
@@ -57,11 +58,13 @@ public class ContactManagerImpl {
 			else if (date.get(Calendar.YEAR) < now.get(Calendar.YEAR)) {
 				falseDate = true;
 			}
+			*/
+			if (date.before(now)) {
+				falseDate = true;
+			}
 			if (isEmpty || falseContact || falseDate) {
 				throw illegalArgEx;
 			}				
-			futureMeeting = new FutureMeetingImpl(contacts, date);
-			futureMeetings.add(futureMeeting);
 		}		
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
@@ -74,8 +77,11 @@ public class ContactManagerImpl {
 			if (falseDate == true) {
 				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
 			}			 
-		}
+		}	
+		futureMeeting = new FutureMeetingImpl(contacts, date);
+		futureMeetings.add(futureMeeting);
 		int meetingID = futureMeeting.getId();
+		System.out.println("Future ID : " + meetingID);
 		return meetingID;
 	}
 	
@@ -204,19 +210,21 @@ public class ContactManagerImpl {
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
 		Meeting tempSlot = null;
-		boolean sorted = false;
+		boolean sorted = true;
 		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getDate().after(list.get(i + 1).getDate().)) {
-				sorted = false
-			
-		
-		for (int i = 0; i < list.size(); i++) {
-			tempMeeting1 = list.get(i);
-			tempMeeting2 = list.get(i + 1);
-			if (tempMeeting1.getDate().after(tempMeeting2.getDate().getTime())) {
-				tempSlot = tempMeeting1; //swaps elements over if first element has later date than second
-				list.add(i, tempMeeting2);
-				list.add(i + 1, tempMeeting1);
+			if (list.get(i).getDate().after(list.get(i + 1).getDate())) {
+				sorted = false;
+			}
+			while (!sorted) {		
+				for (int j = 0; j < list.size(); j++) {
+					tempMeeting1 = list.get(j);
+					tempMeeting2 = list.get(j + 1);
+					if (tempMeeting1.getDate().after(tempMeeting2.getDate().getTime())) {
+						tempSlot = tempMeeting1; //swaps elements over if first element has later date than second
+						list.add(j, tempMeeting2);
+						list.add(j + 1, tempMeeting1);
+					}
+				}
 			}
 		}
 		return list;
@@ -256,14 +264,12 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2012, 11, 30);
+		Calendar cal = new GregorianCalendar(2013, 0, 1);
 		
 		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
 		this.addFutureMeeting(attendeeList, cal);
 		
-		System.out.println(tseng.getId());
-		System.out.println(elena.getId());
-		System.out.println(reno.getId());
+		
 	
 	
 	

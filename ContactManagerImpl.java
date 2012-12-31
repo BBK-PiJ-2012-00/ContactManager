@@ -38,9 +38,9 @@ public class ContactManagerImpl {
 			Iterator<Contact> iterator = contacts.iterator();//check that contacts are known/existent against central contact list
 			while (iterator.hasNext()) {
 				element = iterator.next();
-				if (!contactList.contains(element)) { //what if there's more than one unknown? Should flag ALL unknowns at once
+				if (!contactList.contains(element)) {
 					falseContact = true;
-					unknownContacts = unknownContacts + element.getName() + "/n"; //check /n gives newline				
+					unknownContacts = unknownContacts + element.getName() + "\n";				
 				}
 			}
 			//if (falseContact == true) {
@@ -69,15 +69,15 @@ public class ContactManagerImpl {
 				falseDate = true;
 				//throw illegalArgEx;
 			}
-			if (isEmpty == true) {
-				System.out.println("Error: no contacts have been specified.");
-			}
-			if (falseContact == true) {
-				System.out.println("Error: " + unknownContacts);
-			}
-			if (falseDate == true) {
-				System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
-			}
+			//if (isEmpty == true) {
+				//System.out.println("Error: no contacts have been specified.");
+			//}
+			//if (falseContact == true) {
+				//System.out.println("Error: " + unknownContacts);
+			//}
+			//if (falseDate == true) {
+			//	System.out.println("Error: invalid date. Please ensure the date and time are in the future.");
+			//}
 			if (isEmpty || falseContact || falseDate) {
 				throw illegalArgEx;
 			}				
@@ -88,7 +88,7 @@ public class ContactManagerImpl {
 				System.out.println("Error: no contacts have been specified.");
 			}
 			if (falseContact == true) {
-				System.out.println("Error: " + element.getName() + " does not exist.");
+				System.out.println("Error: " + unknownContacts);
 				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
 			} 
 			if (falseDate == true) {
@@ -119,10 +119,11 @@ public class ContactManagerImpl {
 		contactList.add(rude);
 		//contactList.add(elena);
 		
-		//attendeeList.add(tseng);
-		//attendeeList.add(rude);
+		attendeeList.add(tseng);
+		attendeeList.add(rude);
+		attendeeList.add(elena);
 		
-		Calendar cal = new GregorianCalendar(2013, 5, 2);
+		Calendar cal = new GregorianCalendar(2012, 11, 30);
 		
 		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
 		this.addFutureMeeting(attendeeList, cal);

@@ -85,7 +85,7 @@ public class ContactManagerImpl {
 	* @return the meeting with the requested ID, or null if it there is none.
 	* @throws IllegalArgumentException if there is a meeting with that ID happening in the future
 	*/
-	PastMeeting getPastMeeting(int id) {
+	public PastMeeting getPastMeeting(int id) {
 		try {
 			Iterator<Meeting> iteratorFM = futureMeetings.iterator();
 			Meeting meeting = null;
@@ -108,6 +108,39 @@ public class ContactManagerImpl {
 					return pastMeeting;
 				}
 			}			
+		return null;
+	}
+	
+	/** 
+	* Returns the FUTURE meeting with the requested ID, or null if there is none. 
+	* 
+	* @param id the ID for the meeting 
+	* @return the meeting with the requested ID, or null if it there is none. 
+	* @throws IllegalArgumentException if there is a meeting with that ID happening in the past 
+	*/
+	public FutureMeeting getFutureMeeting(int id) {
+		try {
+			Iterator<Meeting> iteratorPM = pastMeetings.iterator();
+			Meeting meeting = null;
+			while (iteratorPM.hasNext()) {
+				meeting = iteratorPM.next();
+				if (meeting.getId() == id) {
+					throw illegalArgEx;
+				}
+			}
+		}
+		catch (IllegalArgumentException ex) {
+			System.out.print("Error: The meeting with this ID has already taken place!");
+		}
+		Iterator<Meeting> iteratorFM = pastMeetings.iterator();
+		Meeting meeting = null;
+		while (iteratorFM.hasNext()) {
+			meeting = iteratorFM.next();
+			if (meeting.getId() == id) {
+			FutureMeeting futureMeeting = (FutureMeeting) meeting;
+			return futureMeeting;
+			}
+		}
 		return null;
 	}
 		

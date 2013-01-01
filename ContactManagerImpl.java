@@ -268,11 +268,16 @@ public class ContactManagerImpl {
 				meeting = iterator.next();
 				if (meeting.getContacts().contains(contact)) { 
 					//PastMeeting pastMeeting = (PastMeeting) meeting;
-					meetingList.add(pastMeeting);
+					meetingList.add(meeting);
 				}
 			}
 			meetingList = sort(meetingList);
-			return meetingList;				
+			for (int i = 0; i < meetingList.size(); i++) {//convert List<Meeting> to List<PastMeeting>
+				Meeting m = meetingList.get(i);
+				PastMeeting pm = (PastMeeting) m;
+				pastMeetingList.add(pm);
+			}	
+			return pastMeetingList;				
 		}
 		catch (IllegalArgumentException ex) {
 			System.out.println("The specified contact doesn't exist.");

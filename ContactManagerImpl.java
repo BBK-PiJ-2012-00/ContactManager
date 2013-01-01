@@ -12,7 +12,7 @@ import java.io.*;
 
 public class ContactManagerImpl { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
-	private NullPointerException nullPointEx = new NullPointerException();
+	private NullPointerException nullPointerEx = new NullPointerException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
@@ -299,18 +299,21 @@ public class ContactManagerImpl {
 	void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		boolean emptyContacts = false;//to allow simultaneous error correction for user
 		boolean nullArg = false;
-		boolean falseContact = false;		
+		boolean falseContact = false;	
+		String unknownContacts = "The following contacts are not on your contact list: ";	
 		try {
 			if (contacts.isEmpty()) {
 				//throw illegalArgEx;
 				emptyContacts = true;
 			}
-			Iterator iterator = contacts.iterator();
-			Contact contact = iterator.next();
-			String unknownContacts = "The following contacts are not on your contact list: ";
-			if (!contactList.contains(contact)) {				
-				falseContact = true;
-				unknownContacts = unknownContacts + "\n" + contact.getName();
+			Iterator<Contact> iterator = contacts.iterator();
+			Contact contact = null;
+			while (iterator.hasNext()) {
+				contact = iterator.next();				
+				if (!contactList.contains(contact)) {				
+					falseContact = true;
+					unknownContacts = unknownContacts + "\n" + contact.getName();
+				}
 			}
 			if (contacts == null || date == null || text == null) {
 				//throw nullPointerEx;

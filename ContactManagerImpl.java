@@ -298,12 +298,13 @@ public class ContactManagerImpl {
 	//what about an exception for a date that's in the future?
 	void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		boolean emptyContacts = false;//to allow simultaneous error correction for user
-		boolean nullArg = false;
+		boolean nullContacts = false;
+		boolean nullDate = false;
+		boolean nullText = false;
 		boolean falseContact = false;	
 		String unknownContacts = "The following contacts are not on your contact list: ";	
 		try {
 			if (contacts.isEmpty()) {
-				//throw illegalArgEx;
 				emptyContacts = true;
 			}
 			Iterator<Contact> iterator = contacts.iterator();
@@ -315,14 +316,19 @@ public class ContactManagerImpl {
 					unknownContacts = unknownContacts + "\n" + contact.getName();
 				}
 			}
-			if (contacts == null || date == null || text == null) {
-				//throw nullPointerEx;
-				nullArg = true;
+			if (contacts == null) {
+				nullContacts = true;
 			}
+			if (date == null) {
+				nullDate = true;
+			}
+			if (text == null) {
+				nullText = true;
+			} 
 			if (emptyContacts || falseContact) {
 				throw illegalArgEx;
 			}
-			if (nullArg) {
+			if (nullContacts || nullDate || nullText) {
 				throw nullPointerEx;
 			}
 			Meeting pastMeeting = new PastMeetingImpl(contacts, date, text);
@@ -337,7 +343,15 @@ public class ContactManagerImpl {
 			}
 		}
 		catch (NullPointerException nex) {
-			System.out.println("Error: No meeting notes specified!");
+			if (nullText) {
+				System.out.println("Error: No meeting notes specified!");
+			}
+			if (nullContacts) {
+				System.out.println("Error: No contacts specified!");
+			}
+			if (nullDate) {
+				System.out.println("Error: No date specified!");
+			}
 		}
 	}
 		
@@ -377,7 +391,7 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2013, 6, 7);
+		Calendar cal = new GregorianCalendar(2012, 6, 7);
 		addFutureMeeting(attendeeList, cal);
 		
 		
@@ -395,6 +409,7 @@ public class ContactManagerImpl {
 		
 		
 		Calendar calPrint = new GregorianCalendar();
+		/**
 		List<Meeting> testList = getFutureMeetingList(tseng);
 		for (int i = 0; i < testList.size(); i++) {
 			System.out.println("Meeting ID: " + testList.get(i).getId());
@@ -408,6 +423,16 @@ public class ContactManagerImpl {
 			calPrint = testList.get(i).getDate();
 			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
+		*/
+		
+		addNewPastMeeting(attendeeList, null, "Test");
+		List<PastMeeting> testList = getPastMeetingList(r2d2);
+		for (int i = 0; i < testList.size(); i++) {
+			System.out.println("Meeting ID: " + testList.get(i).getId());
+			calPrint = testList.get(i).getDate();
+			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
+		}
+		
 		
 		
 		

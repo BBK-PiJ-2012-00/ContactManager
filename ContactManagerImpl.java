@@ -243,6 +243,42 @@ public class ContactManagerImpl {
 		meetingList = sort(meetingList);
 		return meetingList;	
 	}
+	
+	/** 
+	* Returns the list of past meetings in which this contact has participated. 
+	* 
+	* If there are none, the returned list will be empty. Otherwise, 
+	* the list will be chronologically sorted and will not contain any 
+	* duplicates. 
+	* 
+	* @param contact one of the user’s contacts 
+	* @return the list of future meeting(s) scheduled with this contact (maybe empty). 
+	* @throws IllegalArgumentException if the contact does not exist
+	*/ 
+	List<PastMeeting> getPastMeetingList(Contact contact) {
+		List<PastMeeting> meetingList = new ArrayList<PastMeeting>();
+		try {
+			if (!contactList.contains(contact)) {
+				throw illegalArgEx;
+			}
+			Iterator<Meeting> iterator = pastMeetings.iterator();
+			Meeting meeting = null;
+			while (iterator.hasNext()) {
+				meeting = iterator.next();
+				if (pastMeetings.getContacts().contains(contact)) { //need to iterate through meetings STORED in pastMeetings, getting the contacts for each
+					PastMeeting pastMeeting = (PastMeeting) meeting;
+					meetingList.add(pastMeeting);
+				}
+			}
+			meetingList = sort(meetingList);
+			return meetingList;				
+		}
+		catch (IllegalArgumentException ex) {
+			System.out.println("The specified contact doesn't exist.");
+		}
+		return null;
+	}
+		
 		
 				
 				

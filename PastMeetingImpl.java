@@ -1,9 +1,11 @@
+import java.util.Calendar;
+import java.util.Set;
 /** 
 * A meeting that was held in the past. 
 * 
 * It includes your notes about what happened and what was agreed. 
 */
-public class PastMeetingImpl extends Meeting implements PastMeeting { 
+public class PastMeetingImpl extends MeetingImpl implements PastMeeting { 
 	private String notes = "";
 	
 	public PastMeetingImpl(Set<Contact> contacts, Calendar date, String notes) {

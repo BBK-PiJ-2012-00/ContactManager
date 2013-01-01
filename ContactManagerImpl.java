@@ -12,11 +12,12 @@ import java.io.*;
 
 public class ContactManagerImpl { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
+	private NullPointerException nullPointEx = new NullPointerException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
 	private Set<Meeting> futureMeetings = new HashSet<Meeting>();
-	private Set<Meeting> allMeetings = new HashSet<Meeting>();
+	private Set<Meeting> allMeetings = new HashSet<Meeting>();//may not be required
 
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -267,7 +268,6 @@ public class ContactManagerImpl {
 			while (iterator.hasNext()) {
 				meeting = iterator.next();
 				if (meeting.getContacts().contains(contact)) { 
-					//PastMeeting pastMeeting = (PastMeeting) meeting;
 					meetingList.add(meeting);
 				}
 			}
@@ -283,6 +283,59 @@ public class ContactManagerImpl {
 			System.out.println("The specified contact doesn't exist.");
 		}
 		return null;
+	}
+	
+	/** 
+	* Create a new record for a meeting that took place in the past. 
+	* 
+	* @param contacts a list of participants 
+	* @param date the date on which the meeting took place 
+	* @param text messages to be added about the meeting. 
+	* @throws IllegalArgumentException if the list of contacts is 
+	* empty, or any of the contacts does not exist 
+	* @throws NullPointerException if any of the arguments is null 
+	*/
+	//what about an exception for a date that's in the future?
+	void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+		boolean emptyContacts = false;//to allow simultaneous error correction for user
+		boolean nullArg = false;
+		boolean falseContact = false;		
+		try {
+			if (contacts.isEmpty()) {
+				//throw illegalArgEx;
+				emptyContacts = true;
+			}
+			Iterator iterator = contacts.iterator();
+			Contact contact = iterator.next();
+			String unknownContacts = "The following contacts are not on your contact list: ";
+			if (!contactList.contains(contact)) {				
+				falseContact = true;
+				unknownContacts = unknownContacts + "\n" + contact.getName();
+			}
+			if (contacts == null || date == null || text == null) {
+				//throw nullPointerEx;
+				nullArg = true;
+			}
+			if (emptyContacts || falseContact) {
+				throw illegalArgEx;
+			}
+			if (nullArg) {
+				throw nullPointerEx;
+			}
+			Meeting pastMeeting = new PastMeetingImpl(contacts, date, text);
+			pastMeetings.add(pastMeeting);
+		}
+		catch (IllegalArgumentException ex) {
+			if (emptyContacts) {
+				System.out.println("Error: No contacts specified!");
+			}
+			if (falseContact) {
+				System.out.println("Error: " + unknownContacts);
+			}
+		}
+		catch (NullPointerException nex) {
+			System.out.println("Error: No meeting notes specified!");
+		}
 	}
 		
 		

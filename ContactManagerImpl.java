@@ -13,6 +13,7 @@ import java.io.*;
 public class ContactManagerImpl { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private NullPointerException nullPointerEx = new NullPointerException();
+	private IllegalStateException illegalStateEx = new IllegalStateException();
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
@@ -280,7 +281,7 @@ public class ContactManagerImpl {
 			return pastMeetingList;				
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("The specified contact doesn't exist.");
+			System.out.println("Error: The specified contact doesn't exist.");
 		}
 		return null;
 	}
@@ -355,6 +356,58 @@ public class ContactManagerImpl {
 		}
 	}
 		
+	
+	/** 
+	* Add notes to a meeting. 
+	* 
+	* This method is used when a future meeting takes place, and is 
+	* then converted to a past meeting (with notes). 
+	* 
+	* It can be also used to add notes to a past meeting at a later date. 
+	* 
+	* @param id the ID of the meeting 
+	* @param text messages to be added about the meeting. 
+	* @throws IllegalArgumentException if the meeting does not exist 
+	* @throws IllegalStateException if the meeting is set for a date in the future 
+	* @throws NullPointerException if the notes are null 
+	*/
+	void addMeetingNotes(int id, String text) {
+		boolean containsMeeting = false;
+		boolean futureDate = false;
+		Calendar now = Calendar.getInstance();
+		try {
+			Iterator<Meeting> iterator = futureMeetings.iterator();
+			while (iterator.hasNext()) {
+				Meeting m = iterator.next();
+				if (m.getId() == id) {
+					containsMeeting = true;
+					if (m.getDate().after(now)) {
+						futureDate = true;
+					}					
+				}				
+			}
+			if (text == null) {
+				throw nullPointerEx;
+			}
+			if (!containsMeeting) {
+				throw illegalArgEx;
+			}
+			if (futureDate) {
+				throw illegalStateEx;
+			}
+			
+			
+		}
+		catch (IllegalArgumentException aEx) {
+			System.out.println("Error: No meeting with that ID exists!");
+		}
+		catch (IllegalStateException sEx) {
+			System.out.println("Error: The meeting with this ID has not taken place yet!");
+		}
+		catch (NullPointerException pEx) {
+			System.out.println("Error: No notes have been specified!");
+		}
+					
 		
 				
 				
@@ -383,7 +436,7 @@ public class ContactManagerImpl {
 		contactList.add(tseng);
 		contactList.add(reno);
 		contactList.add(rude);
-		contactList.add(elena);
+		//contactList.add(elena);
 		contactList.add(r2d2);
 				
 		attendeeList.add(tseng);
@@ -392,7 +445,7 @@ public class ContactManagerImpl {
 		attendeeList.add(r2d2);
 		
 		Calendar cal = new GregorianCalendar(2012, 6, 7);
-		addFutureMeeting(attendeeList, cal);
+		//addFutureMeeting(attendeeList, cal);
 		
 		
 		
@@ -401,11 +454,11 @@ public class ContactManagerImpl {
 		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
 		
 		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
-		this.addFutureMeeting(attendeeList, cal);
-		this.addFutureMeeting(attendeeList, cal2);
-		this.addFutureMeeting(attendeeList, cal3);
+		//this.addFutureMeeting(attendeeList, cal);
+		//this.addFutureMeeting(attendeeList, cal2);
+		//this.addFutureMeeting(attendeeList, cal3);
 		//attendeeList.remove(tseng);
-		this.addFutureMeeting(attendeeList, cal4);
+		//this.addFutureMeeting(attendeeList, cal4);
 		
 		
 		Calendar calPrint = new GregorianCalendar();
@@ -425,7 +478,7 @@ public class ContactManagerImpl {
 		}
 		*/
 		
-		addNewPastMeeting(attendeeList, null, "Test");
+		addNewPastMeeting(attendeeList, cal, "Test");
 		List<PastMeeting> testList = getPastMeetingList(r2d2);
 		for (int i = 0; i < testList.size(); i++) {
 			System.out.println("Meeting ID: " + testList.get(i).getId());

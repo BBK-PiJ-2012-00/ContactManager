@@ -256,7 +256,8 @@ public class ContactManagerImpl {
 	* @throws IllegalArgumentException if the contact does not exist
 	*/ 
 	List<PastMeeting> getPastMeetingList(Contact contact) {
-		List<PastMeeting> meetingList = new ArrayList<PastMeeting>();
+		List<Meeting> meetingList = new ArrayList<Meeting>();
+		List<PastMeeting> pastMeetingList = new ArrayList<PastMeeting>();
 		try {
 			if (!contactList.contains(contact)) {
 				throw illegalArgEx;
@@ -265,8 +266,8 @@ public class ContactManagerImpl {
 			Meeting meeting = null;
 			while (iterator.hasNext()) {
 				meeting = iterator.next();
-				if (pastMeetings.getContacts().contains(contact)) { //need to iterate through meetings STORED in pastMeetings, getting the contacts for each
-					PastMeeting pastMeeting = (PastMeeting) meeting;
+				if (meeting.getContacts().contains(contact)) { 
+					//PastMeeting pastMeeting = (PastMeeting) meeting;
 					meetingList.add(pastMeeting);
 				}
 			}

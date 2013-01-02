@@ -464,9 +464,11 @@ public class ContactManagerImpl {
 	Set<Contact> getContacts(int... ids) {
 		Set<Contact> idMatches = new HashSet<Contact>();
 		int id = 0;
-		boolean found = false;
+		boolean found;
 		try { 
-			for (int i = 0; i < ids.length; i++) {
+			for (int i = 0; i < ids.length; i++) {//boolean needs to be reset to false here for each iteration 
+			//otherwise it will stay true after one id is matched!
+				found = false;
 				id = ids[i];
 				Contact contact = null;
 				Iterator<Contact> iterator = contactList.iterator();

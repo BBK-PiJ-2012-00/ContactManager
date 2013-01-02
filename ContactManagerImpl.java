@@ -371,45 +371,66 @@ public class ContactManagerImpl {
 	* @throws IllegalStateException if the meeting is set for a date in the future 
 	* @throws NullPointerException if the notes are null 
 	*/
-	void addMeetingNotes(int id, String text) {
-		boolean containsMeeting = false;
-		boolean futureDate = false;
-		Calendar now = Calendar.getInstance();
-		Meeting meeting = null;//to allow the meeting matching the id to be used throughout the method
-		try {
-			Iterator<Meeting> iterator = futureMeetings.iterator();
-			while (iterator.hasNext()) {
-				meeting = iterator.next();
-				if (m.getId() == id) {
-					containsMeeting = true;
+	void addMeetingNotes(int id, String text) {//as this is also used to add notes to an existing past meeting, must check if
+	//meeting is in pastMeetings set first - if it is, then take the route of adding notes to existing meeting, otherwise check
+	//future meetings: if ID not found at this point, it doesn't exist. No exceptions should be thrown if meeting is not found
+	//in pastMeetings - only if it's not found in futureMeetings.
+		Iterator<Meeting> pmIterator = pastMeetings.iterator();
+		Meeting pMeeting = null;
+		boolean pastMeetingFound = false;//to determine whether program should proceed to look through futureMeetings if no matching meeting
+		//is found in pastMeetings.
+		while (pmIterator.hasNext()) {
+			pMeeting = pmIterator.next();
+			if (pMeeting.getId() == id) {
+				pMeeting.addNotes(text);
+				pastMeetingFound = true;
+				System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
+			}
+			break;
+		}
+		if (!pastMeetingFound) {			
+			boolean containsMeeting = false;
+			boolean futureDate = false;
+			Calendar now = Calendar.getInstance();
+			Meeting meeting = null;//to allow the meeting matching the id to be used throughout the method
+			try {
+				Iterator<Meeting> iterator = futureMeetings.iterator();
+				while (iterator.hasNext()) {
+					meeting = iterator.next();
+					if (m.getId() == id) {
+						containsMeeting = true;
+					}
 					break;
 				}
+				System.out.println("Meeting ID: " + meeting.getId());//for testing purposes; check that meeting with matching id
+				//is being updated.
+				if (meeting.getDate().after(now)) {
+					futureDate = true;
+				}			
+				if (text == null) {
+					throw nullPointerEx;
+				}
+				if (!containsMeeting) {
+					throw illegalArgEx;
+				}
+				if (futureDate) {
+					throw illegalStateEx;
+				}
+				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text);
+				pastMeetings.add(pastMeeting);
+				futureMeetings.remove(meeting);			
 			}
-			if (meeting.getDate().after(now)) {
-				futureDate = true;
-			}			
-			if (text == null) {
-				throw nullPointerEx;
+			catch (IllegalArgumentException aEx) {
+				System.out.println("Error: No meeting with that ID exists!");
 			}
-			if (!containsMeeting) {
-				throw illegalArgEx;
+			catch (IllegalStateException sEx) {
+				System.out.println("Error: The meeting with this ID has not taken place yet!");
 			}
-			if (futureDate) {
-				throw illegalStateEx;
+			catch (NullPointerException pEx) {
+				System.out.println("Error: No notes have been specified!");
 			}
-			Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text);
-			
-			
 		}
-		catch (IllegalArgumentException aEx) {
-			System.out.println("Error: No meeting with that ID exists!");
-		}
-		catch (IllegalStateException sEx) {
-			System.out.println("Error: The meeting with this ID has not taken place yet!");
-		}
-		catch (NullPointerException pEx) {
-			System.out.println("Error: No notes have been specified!");
-		}
+	}
 					
 		
 				

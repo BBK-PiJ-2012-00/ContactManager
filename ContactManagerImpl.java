@@ -493,7 +493,7 @@ public class ContactManagerImpl {
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error: The following IDs were not found: " + "\n" + idString);
 		}
-		return null;
+		return idMatches;
 	}
 		 
 	
@@ -552,6 +552,11 @@ public class ContactManagerImpl {
 		*/
 		
 		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11);
+		Iterator<Contact> iterator = contactsTestSet.iterator();
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+			System.out.println(contact.getName() + " " + contact.getId());
+		}
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);

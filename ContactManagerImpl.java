@@ -382,7 +382,8 @@ public class ContactManagerImpl {
 		while (pmIterator.hasNext()) {
 			pMeeting = pmIterator.next();
 			if (pMeeting.getId() == id) {
-				pMeeting.addNotes(text);
+				PastMeetingImpl pmi = (PastMeetingImpl) pMeeting;
+				pmi.addNotes(text);
 				pastMeetingFound = true;
 				System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
 			}
@@ -397,7 +398,7 @@ public class ContactManagerImpl {
 				Iterator<Meeting> iterator = futureMeetings.iterator();
 				while (iterator.hasNext()) {
 					meeting = iterator.next();
-					if (m.getId() == id) {
+					if (meeting.getId() == id) {
 						containsMeeting = true;
 					}
 					break;
@@ -467,12 +468,13 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2013, 6, 7);
+		Calendar cal = new GregorianCalendar(2013, 0, 2);
 		addFutureMeeting(attendeeList, cal);
+		addMeetingNotes(1, "Test notes");
 		
 		
 		
-		
+		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
 		Calendar cal3 = new GregorianCalendar(2013, 6, 5);		
 		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
@@ -500,7 +502,7 @@ public class ContactManagerImpl {
 			calPrint = testList.get(i).getDate();
 			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
-		*/
+		
 		
 		addNewPastMeeting(attendeeList, cal, "Test");
 		List<PastMeeting> testList = getPastMeetingList(r2d2);
@@ -509,7 +511,7 @@ public class ContactManagerImpl {
 			calPrint = testList.get(i).getDate();
 			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
 		}
-		
+		*/
 		
 		
 		

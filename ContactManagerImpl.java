@@ -432,6 +432,26 @@ public class ContactManagerImpl {
 			}
 		}
 	}
+	
+	/** 
+	* Create a new contact with the specified name and notes. 
+	*
+	* @param name the name of the contact. 
+	* @param notes notes to be added about the contact.
+	* @throws NullPointerException if the name or the notes are null
+	*/ 
+	void addNewContact(String name, String notes) {
+		try {
+			if (name == null || notes == null) {
+				throw nullPointerEx;
+			}
+			Contact contact = new ContactImpl(name);
+			contact.addNotes(notes);
+		}
+		catch (NullPointerException nex) {
+			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");
+		}
+	}
 					
 		
 				

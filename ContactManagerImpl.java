@@ -134,7 +134,7 @@ public class ContactManagerImpl {
 	
 	
 	public Meeting getMeeting(int id) {
-		Iterator<Meeting> iterator = allMeetings.iterator();
+		Iterator<Meeting> iterator = allMeetings.iterator();//rather than allMeetings, check through past/future sets
 		Meeting meeting = null;
 		while (iterator.hasNext()) {
 			meeting = iterator.next();
@@ -469,12 +469,23 @@ public class ContactManagerImpl {
 		attendeeList.add(r2d2);
 		
 		Calendar cal = new GregorianCalendar(2013, 0, 2);
+		/**
 		addNewPastMeeting(attendeeList, cal, "First Test Notes");
 		addMeetingNotes(1, "Test notes");
 		PastMeeting pm = getPastMeeting(1);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
+		*/
 		
+		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
+		futureMeetings.add(testMeeting);
+		addMeetingNotes(1, "Notes for the meeting that took place today.");
+		PastMeeting pm = getPastMeeting(2);
+		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
+		//as it stands, a meeting's ID number is incremented by one when it's converted...
+		//but no two meetings will ever have the same ID. Is this a problem?
 		
+		//solution: if id is there (i.e. not null), keep it the same - only use idAssigner if id value is 
+		//null...
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);

@@ -417,8 +417,11 @@ public class ContactManagerImpl {
 				if (futureDate) {
 					throw illegalStateEx;
 				}
-				addNewPastMeeting(meeting.getContacts(), meeting.getDate(), text);
-				futureMeetings.remove(meeting);			
+				//addNewPastMeeting(meeting.getContacts(), meeting.getDate(), text);//unnecessary as date is checked in this method
+				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text, meeting.getId());
+				pastMeetings.add(pastMeeting);
+				futureMeetings.remove(meeting);	
+				System.out.println("From within method: ID: " + pastMeeting.getId());		
 			}
 			catch (IllegalArgumentException aEx) {
 				System.out.println("Error: No meeting with that ID exists!");
@@ -479,7 +482,8 @@ public class ContactManagerImpl {
 		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
 		futureMeetings.add(testMeeting);
 		addMeetingNotes(1, "Notes for the meeting that took place today.");
-		PastMeeting pm = getPastMeeting(2);
+		PastMeeting pm = getPastMeeting(1);
+		System.out.println(pm);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		//as it stands, a meeting's ID number is incremented by one when it's converted...
 		//but no two meetings will ever have the same ID. Is this a problem?

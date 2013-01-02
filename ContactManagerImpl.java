@@ -159,7 +159,7 @@ public class ContactManagerImpl {
 	public List<Meeting> getFutureMeetingList(Contact contact) {
 		List<Meeting> list = new ArrayList<Meeting>();//list to contain meetings attended by specified contact
 		try {
-			if (!contactList.contains(contact)) {
+			if (!contactList.contains(contact)) {//may need to use id to identify -> iterator required
 				throw illegalArgEx;
 			}
 			Iterator<Meeting> iterator = futureMeetings.iterator();
@@ -375,17 +375,19 @@ public class ContactManagerImpl {
 		boolean containsMeeting = false;
 		boolean futureDate = false;
 		Calendar now = Calendar.getInstance();
+		Meeting meeting = null;//to allow the meeting matching the id to be used throughout the method
 		try {
 			Iterator<Meeting> iterator = futureMeetings.iterator();
 			while (iterator.hasNext()) {
-				Meeting m = iterator.next();
+				meeting = iterator.next();
 				if (m.getId() == id) {
 					containsMeeting = true;
-					if (m.getDate().after(now)) {
-						futureDate = true;
-					}					
-				}				
+					break;
+				}
 			}
+			if (meeting.getDate().after(now)) {
+				futureDate = true;
+			}			
 			if (text == null) {
 				throw nullPointerEx;
 			}
@@ -395,6 +397,7 @@ public class ContactManagerImpl {
 			if (futureDate) {
 				throw illegalStateEx;
 			}
+			Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text);
 			
 			
 		}
@@ -530,6 +533,10 @@ public class ContactManagerImpl {
 	//when users specify a date, should they also include a time?
 			
 //how does before/after affect dates which are the same?
+//contains -- may have to do this in more detail with an iterator, as the naming of 
+//Contact variables may not allow for contactList.contains(contact); new contacts will probably
+//be just called contact each time they are created, with their name and id the only things to 
+//identify them by.
 
 
 

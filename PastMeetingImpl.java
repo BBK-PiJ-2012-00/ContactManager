@@ -13,6 +13,15 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting {
 		this.notes = this.notes + " " + notes;
 	}
 	
+	/**
+	* For use when a FutureMeeting is converted to a
+	* PastMeeting, in order to retain the same ID.
+	*/
+	public PastMeetingImpl(Set<Contact> contacts, Calendar date, String notes, int id) {
+		super(contacts, date, id);
+		this.notes = this.notes + " " + notes;
+	}
+	
 	public void addNotes(String text) {
 		this.notes = this.notes + " " + text;
 	}

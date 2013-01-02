@@ -464,6 +464,7 @@ public class ContactManagerImpl {
 	Set<Contact> getContacts(int... ids) {
 		Set<Contact> idMatches = new HashSet<Contact>();
 		int id = 0;
+		String idString = "";//to facilitate an error message that lists all invalid IDs
 		boolean found;
 		try { 
 			for (int i = 0; i < ids.length; i++) {//boolean needs to be reset to false here for each iteration 
@@ -480,13 +481,17 @@ public class ContactManagerImpl {
 					}				
 				}
 				if (found == false) {
-					throw illegalArgEx;
-				}								
+					idString = idString + id + "\n";
+					//throw illegalArgEx;
+				}		
 			}
+			if (idString.length() > 0) {
+					throw illegalArgEx;	
+			}						
 			return idMatches;
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("Error: ID " + id + " not found!");
+			System.out.println("Error: The following IDs were not found: " + "\n" + idString);
 		}
 		return null;
 	}
@@ -546,7 +551,7 @@ public class ContactManagerImpl {
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		*/
 		
-		Set<Contact> contactsTestSet = getContacts(1, 2, 10);
+		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11);
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);

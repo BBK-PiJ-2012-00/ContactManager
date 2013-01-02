@@ -546,7 +546,7 @@ public class ContactManagerImpl {
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		*/
 		
-		Set<Contact> contactsTestSet = getContacts(1, 10);
+		Set<Contact> contactsTestSet = getContacts(1, 2, 10);
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);

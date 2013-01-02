@@ -283,7 +283,7 @@ public class ContactManagerImpl {
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error: The specified contact doesn't exist.");
 		}
-		return null;
+		return null;//or return an empty list?
 	}
 	
 	/** 
@@ -495,7 +495,35 @@ public class ContactManagerImpl {
 		}
 		return idMatches;
 	}
-		 
+	
+	/** 
+	* Returns a list with the contacts whose name contains that string. 
+	* 
+	* @param name the string to search for 
+	* @return a list with the contacts whose name contains that string. 
+	* @throws NullPointerException if the parameter is null 
+	*/
+	Set<Contact> getContacts(String name) {
+		Set<Contact> contactSet =  new HashSet<Contact>();
+		Contact contact = null;
+		try {
+			if (name == null) {
+				throw nullPointerEx;
+			}
+			Iterator<Contact> iterator = contactList.iterator();
+			while (iterator.hasNext()) {
+				contact = iterator.next();
+				if (contact.getName() == name) {
+					contactSet.add(contact);
+				}
+			}	
+		}
+		catch (NullPointerException nex) {
+			System.out.println("Error: Please ensure that you enter a name.");
+		}
+		return contactSet;
+	}
+	//if nothing is found, say so -> do this in launch
 	
 	
 					
@@ -551,7 +579,7 @@ public class ContactManagerImpl {
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		*/
 		
-		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11);
+		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11, 5);
 		Iterator<Contact> iterator = contactsTestSet.iterator();
 		while (iterator.hasNext()) {
 			Contact contact = iterator.next();

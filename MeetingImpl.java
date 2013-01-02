@@ -15,15 +15,18 @@ public class MeetingImpl implements Meeting {
 	private Set<Contact> attendees = new HashSet<Contact>();
 	private static int idAssigner = 0;
 	
-	public MeetingImpl(Set<Contact> contacts, Calendar date) {
+	public MeetingImpl(Set<Contact> contacts, Calendar date) {//id parameter? Two constructors, one with, one without
 		//add contents of contacts to attendees - more robust than using pointer to manager class
 		meetingDate = date;
-		Iterator<Contact> iterator = contacts.iterator();
-		while (iterator.hasNext()) {
-			attendees.add(iterator.next());
-		}
+		attendees.addAll(contacts);
 		meetingId = idAssigner + 1;
 		incrementIdAssigner();
+	}
+	
+	public MeetingImpl(Set<Contact> contacts, Calendar date, int id) {
+		meetingDate = date;
+		attendees.addAll(contacts);
+		meetingId = id;
 	}
 	
 	private static void incrementIdAssigner() {

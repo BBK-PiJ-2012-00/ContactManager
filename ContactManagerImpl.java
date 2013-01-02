@@ -460,7 +460,7 @@ public class ContactManagerImpl {
 		contactList.add(tseng);
 		contactList.add(reno);
 		contactList.add(rude);
-		//contactList.add(elena);
+		contactList.add(elena);
 		contactList.add(r2d2);
 				
 		attendeeList.add(tseng);
@@ -469,8 +469,10 @@ public class ContactManagerImpl {
 		attendeeList.add(r2d2);
 		
 		Calendar cal = new GregorianCalendar(2013, 0, 2);
-		addFutureMeeting(attendeeList, cal);
+		addNewPastMeeting(attendeeList, cal, "First Test Notes");
 		addMeetingNotes(1, "Test notes");
+		PastMeeting pm = getPastMeeting(1);
+		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		
 		
 		
@@ -561,7 +563,8 @@ public class ContactManagerImpl {
 //be just called contact each time they are created, with their name and id the only things to 
 //identify them by.
 
-
+//initialise notes variable as null in launch so that if user enters nothing, relevant
+//method is still found
 
 
 

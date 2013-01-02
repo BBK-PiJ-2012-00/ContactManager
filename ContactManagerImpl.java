@@ -453,6 +453,44 @@ public class ContactManagerImpl {
 			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");
 		}
 	}
+	
+	/** 
+	* Returns a list containing the contacts that correspond to the IDs
+	* 
+	* @param ids an arbitrary number of contact IDs 
+	* @return a list containing the contacts that correspond to the IDs. 
+	* @throws IllegalArgumentException if any of the IDs does not correspond to a real contact 
+	*/
+	Set<Contact> getContacts(int... ids) {
+		Set<Contact> idMatches = new HashSet<Contact>();
+		int id = 0;
+		boolean found = false;
+		try { 
+			for (int i = 0; i < ids.length; i++) {
+				id = ids[i];
+				Contact contact = null;
+				Iterator<Contact> iterator = contactList.iterator();
+				while (iterator.hasNext()) {
+					contact = iterator.next();
+					if (contact.getId() == id) {
+						idMatches.add(contact);
+						found = true;
+					}				
+				}
+				if (found == false) {
+					throw illegalArgEx;
+				}								
+			}
+			return idMatches;
+		}
+		catch (IllegalArgumentException ex) {
+			System.out.println("Error: ID " + id + " not found!");
+		}
+		return null;
+	}
+		 
+	
+	
 					
 		
 				
@@ -496,7 +534,7 @@ public class ContactManagerImpl {
 		addMeetingNotes(1, "Test notes");
 		PastMeeting pm = getPastMeeting(1);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
-		*/
+		
 		
 		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
 		futureMeetings.add(testMeeting);
@@ -504,7 +542,9 @@ public class ContactManagerImpl {
 		PastMeeting pm = getPastMeeting(1);
 		System.out.println(pm);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
+		*/
 		
+		Set<Contact> contactsTestSet = getContacts(1, 10);
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
@@ -596,6 +636,7 @@ public class ContactManagerImpl {
 //initialise notes variable as null in launch so that if user enters nothing, relevant
 //method is still found
 
+//for-each loops for clarity
 
 
 

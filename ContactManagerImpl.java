@@ -447,6 +447,7 @@ public class ContactManagerImpl {
 			}
 			Contact contact = new ContactImpl(name);
 			contact.addNotes(notes);
+			contactList.add(contact);
 		}
 		catch (NullPointerException nex) {
 			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");

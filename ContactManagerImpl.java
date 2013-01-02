@@ -403,7 +403,7 @@ public class ContactManagerImpl {
 					}
 					break;
 				}
-				System.out.println("Meeting ID: " + meeting.getId());//for testing purposes; check that meeting with matching id
+				System.out.println("Meeting ID: " + meeting.getId());
 				//is being updated.
 				if (meeting.getDate().after(now)) {
 					futureDate = true;
@@ -417,11 +417,9 @@ public class ContactManagerImpl {
 				if (futureDate) {
 					throw illegalStateEx;
 				}
-				//addNewPastMeeting(meeting.getContacts(), meeting.getDate(), text);//unnecessary as date is checked in this method
 				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text, meeting.getId());
 				pastMeetings.add(pastMeeting);
-				futureMeetings.remove(meeting);	
-				System.out.println("From within method: ID: " + pastMeeting.getId());		
+				futureMeetings.remove(meeting);			
 			}
 			catch (IllegalArgumentException aEx) {
 				System.out.println("Error: No meeting with that ID exists!");
@@ -485,11 +483,7 @@ public class ContactManagerImpl {
 		PastMeeting pm = getPastMeeting(1);
 		System.out.println(pm);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
-		//as it stands, a meeting's ID number is incremented by one when it's converted...
-		//but no two meetings will ever have the same ID. Is this a problem?
 		
-		//solution: if id is there (i.e. not null), keep it the same - only use idAssigner if id value is 
-		//null...
 		
 		/**
 		Calendar cal2 = new GregorianCalendar(2013, 6, 5);

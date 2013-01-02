@@ -416,8 +416,7 @@ public class ContactManagerImpl {
 				if (futureDate) {
 					throw illegalStateEx;
 				}
-				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text);
-				pastMeetings.add(pastMeeting);
+				addNewPastMeeting(meeting.getContacts(), meeting.getDate(), text);
 				futureMeetings.remove(meeting);			
 			}
 			catch (IllegalArgumentException aEx) {
@@ -468,8 +467,9 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2012, 6, 7);
-		//addFutureMeeting(attendeeList, cal);
+		Calendar cal = new GregorianCalendar(2013, 6, 7);
+		addFutureMeeting(attendeeList, cal);
+		
 		
 		
 		

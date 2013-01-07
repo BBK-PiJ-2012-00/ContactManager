@@ -18,7 +18,7 @@ public class ContactManagerImpl implements ContactManager {
 	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
 	private Set<Meeting> futureMeetings = new HashSet<Meeting>();
-	private Set<Meeting> allMeetings = new HashSet<Meeting>();//may not be required
+	
 
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
@@ -379,10 +379,7 @@ public class ContactManagerImpl implements ContactManager {
 	* @throws IllegalStateException if the meeting is set for a date in the future 
 	* @throws NullPointerException if the notes are null 
 	*/
-	public void addMeetingNotes(int id, String text) {//as this is also used to add notes to an existing past meeting, must check if
-	//meeting is in pastMeetings set first - if it is, then take the route of adding notes to existing meeting, otherwise check
-	//future meetings: if ID not found at this point, it doesn't exist. No exceptions should be thrown if meeting is not found
-	//in pastMeetings - only if it's not found in futureMeetings.
+	public void addMeetingNotes(int id, String text) {
 		Iterator<Meeting> pmIterator = pastMeetings.iterator();
 		Meeting pMeeting = null;
 		boolean pastMeetingFound = false;//to determine whether program should proceed to look through futureMeetings if no matching meeting
@@ -553,7 +550,6 @@ public class ContactManagerImpl implements ContactManager {
       			Contact c = contactIterator.next();
       			oos.writeObject(c);
       		}
-      		//would allMeetings make more sense here? Shorter code.
       		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
       		while (iteratorPM.hasNext()) {//writes contents of pastMeetings to file
       			Meeting m = iteratorPM.next();
@@ -647,107 +643,13 @@ public class ContactManagerImpl implements ContactManager {
 	
 	private void launch() {
 	
+		ContactManagerUtilities.displayWelcome();
 		loadData();
 		
-		Set<Contact> contactsTestSet = getContacts(1, 2, 3, 4, 5);
-		Iterator<Contact> iterator = contactsTestSet.iterator();
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-			System.out.println(contact.getName() + " " + contact.getId());
-		}
+		int userSelection = ContactManagerUtilities.chooseMainMenuOption();
 		
 		
-		
-		Contact tseng = new ContactImpl("Tseng");
-		Contact reno = new ContactImpl("Reno");
-		Contact rude = new ContactImpl("Rude");
-		Contact elena = new ContactImpl("Elena");
-		Contact r2d2 = new ContactImpl("R2D2");
-		
-		
-		
-		contactList.add(tseng);
-		contactList.add(reno);
-		contactList.add(rude);
-		contactList.add(elena);
-		contactList.add(r2d2);
-		
-		flush();
-				
-		/**
-		attendeeList.add(tseng);
-		attendeeList.add(rude);
-		attendeeList.add(elena);
-		attendeeList.add(r2d2);
-		
-		Calendar cal = new GregorianCalendar(2013, 1, 2);
-		
-		/**
-		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
-		if (testMeeting instanceof FutureMeeting) {
-			System.out.println("Yes, this is a Future Meeting.");
-		}
-		
-		/**
-		addNewPastMeeting(attendeeList, cal, "First Test Notes");
-		addMeetingNotes(1, "Test notes");
-		PastMeeting pm = getPastMeeting(1);
-		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
-		
-		
-		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
-		futureMeetings.add(testMeeting);
-		addMeetingNotes(1, "Notes for the meeting that took place today.");
-		PastMeeting pm = getPastMeeting(1);
-		System.out.println(pm);
-		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
-		*/
-		/**
-		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11, 5);
-		Iterator<Contact> iterator = contactsTestSet.iterator();
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-			System.out.println(contact.getName() + " " + contact.getId());
-		}
-		
-		/**
-		Calendar cal2 = new GregorianCalendar(2013, 6, 5);
-		Calendar cal3 = new GregorianCalendar(2013, 6, 5);		
-		Calendar cal4 = new GregorianCalendar(2013, 1, 12);
-		
-		//Meeting testMeet = new FutureMeetingImpl(attendeeList, cal);
-		//this.addFutureMeeting(attendeeList, cal);
-		//this.addFutureMeeting(attendeeList, cal2);
-		//this.addFutureMeeting(attendeeList, cal3);
-		//attendeeList.remove(tseng);
-		//this.addFutureMeeting(attendeeList, cal4);
-		
-		
-		Calendar calPrint = new GregorianCalendar();
-		/**
-		List<Meeting> testList = getFutureMeetingList(tseng);
-		for (int i = 0; i < testList.size(); i++) {
-			System.out.println("Meeting ID: " + testList.get(i).getId());
-			calPrint = testList.get(i).getDate();
-			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
-		}
-		
-		testList = getFutureMeetingList(cal2);
-		for (int i = 0; i < testList.size(); i++) {
-			System.out.println("Meeting ID: " + testList.get(i).getId() + " taking place on: ");
-			calPrint = testList.get(i).getDate();
-			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
-		}
-		
-		
-		addNewPastMeeting(attendeeList, cal, "Test");
-		List<PastMeeting> testList = getPastMeetingList(r2d2);
-		for (int i = 0; i < testList.size(); i++) {
-			System.out.println("Meeting ID: " + testList.get(i).getId());
-			calPrint = testList.get(i).getDate();
-			System.out.println(calPrint.get(Calendar.DAY_OF_MONTH) + "." + calPrint.get(Calendar.MONTH) + "." + calPrint.get(Calendar.YEAR));
-		}
-		*/
+	
 		
 		
 		
@@ -765,11 +667,12 @@ public class ContactManagerImpl implements ContactManager {
 
 }
 
-// Meeting meeting = new FutureMeeting(params);
+
 //ask user for dates in specific format, which can then be converted to create a new Calendar
 //make sure that if wrong format is entered, you throw an exception.
 
-//Don't forget to ensure class implements ContactManager when finished
+//update dates to include time?
+
 
 
 /** 

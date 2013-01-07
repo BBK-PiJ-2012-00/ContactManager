@@ -7,13 +7,13 @@ import java.io.IllegalArgumentException;
 public class ContactManagerUtilities {
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 
-	public void displayWelcome() {
+	public static void displayWelcome() {
 		System.out.println("*************************************************************");
 		System.out.println("*                    CONTACT MANAGER                        *");
 		System.out.println("*************************************************************" + "\n");
 	}
 	
-	public int chooseMainMenuOption() {
+	public static int chooseMainMenuOption() {
 		System.out.println("                  ***** Main Menu *****");
 		System.out.println("1. Add a future meeting            " + "\t" + " 2. Look up meeting");
 		System.out.println("3. Create record of a past meeting " + "\t" + " 4. Add notes to a meeting that has taken place");
@@ -24,7 +24,7 @@ public class ContactManagerUtilities {
 		return selection;	
 	}
 	
-	public int validateOption(int min, int max) {//to validate user choices from numerical menus
+	public static int validateOption(int min, int max) {//to validate user choices from numerical menus
 		try {
 			int selection = Integer.parseInt(System.console().readLine());
 			if (selection < min || selection > max) {
@@ -41,7 +41,7 @@ public class ContactManagerUtilities {
 		 }
 	}
 	
-	public void subMenuOne(Set<Contact> contacts) {//takes contactList from ContactManager class for display
+	public static void subMenuOne(Set<Contact> contacts) {//takes contactList from ContactManager class for display
 	//set of contacts and date
 		Set<Contact> attendeeList = new HashSet<Contact>();
 		System.out.println("*** Add a future meeting");

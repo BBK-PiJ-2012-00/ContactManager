@@ -541,6 +541,38 @@ public class ContactManagerImpl {
 	* closed and when/if the user requests it. 
 	*/
 	void flush() {
+		IdStore ids = new IdStoreImpl();
+		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
+		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());
+		
+		
+		try {
+ 			FileOutputStream fos = new FileOutputStream("contacts.txt");
+      		ObjectOutputStream oos = new ObjectOutputStream(fos);      	
+      		oos.writeObject(ids);//saves IdStore object containing idAssigners
+      		Iterator<Contact> contactIterator = contactList.iterator();
+      		while (contactIterator.hasNext()) {//write contents of contactList to file
+      			Contact c = contactIterator.next();
+      			oos.writeObject(c);
+      		}
+      		//would allMeetings make more sense here? Shorter code.
+      		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
+      		while (iteratorPM.hasNext()) {//writes contents of pastMeetings to file
+      			Meeting m = iteratorPM.next();
+      			oos.writeOjbect(m);
+      		}
+      		Iterator<Meeting iteratorFM = futureMeetings.iterator();
+      		while (iteratorFM.hasNext()) {//writes contents of futureMeetings to file
+      			Meeting m = iteratorFM.next();
+      			oos.writeObject(m);
+      		}
+      		oos.close();
+      	}
+      	catch (IOException ex) {
+      		ex.printStackTrace();//need to be more explicit
+      	}  
+		
+		
 	
 	
 	
@@ -722,6 +754,8 @@ public class ContactManagerImpl {
 //upon de-serialization which integer should go with which ID assigner (Meeting or Contact).
 
 //Note that subtypes of a serializable class are also serializable
+
+//when saved, contents of file will be overwritten - alert user of this
 
 
 

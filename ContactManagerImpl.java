@@ -570,6 +570,44 @@ public class ContactManagerImpl implements ContactManager {
       		ex.printStackTrace();//need to be more explicit
       	} 	
 	}
+	
+	//Loads data from file upon opening program
+	public void loadData() {
+		try {
+			FileInputStream fis = new FileInputStream("contacts.txt");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			while (ois.readObject() != null) { //read to end of file
+				if (ois.readObject() instanceof IdStore) {
+					IdStore ids = (IdStoreImpl) ois.readObject();
+					ContactImpl.restoreIdAssigner(ids.getContactIdAssigner());
+					MeetingImpl.restoreIdAssigner(ids.getMeetingIdAssigner());
+				}
+				if (ois.readObject() instanceof Contact) {
+					Contact contact = (ContactImpl) ois.readObject();
+					contactList.add(contact);
+				}
+				if (ois.readObject() instanceof FutureMeeting) {
+					Meeting meeting = (FutureMeetingImpl) ois.readObject();
+					futureMeetings.add(meeting);
+				}
+				if (ois.readObject() instanceof PastMeeting) {
+					Meeting meeting = (PastMeetingImpl) ois.readObject();
+					pastMeetings.add(meeting);
+				}
+			}
+			ois.close();
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		}
+	}
+				
+	
+
+
 
 
 					

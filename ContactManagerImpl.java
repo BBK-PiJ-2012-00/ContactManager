@@ -137,9 +137,8 @@ public class ContactManagerImpl {
 		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
 		Meeting meeting = null;
 		while(iteratorPM.hasNext()) {
-			meeting = iterator.next();
+			meeting = iteratorPM.next();
 			if (meeting.getId() == id) {
-				found = true;
 				return meeting;
 			}
 		}
@@ -535,6 +534,19 @@ public class ContactManagerImpl {
 	//if nothing is found, say so -> do this in launch
 	
 	
+	/** 
+	* Save all data to disk. 
+	* 
+	* This method must be executed when the program is 
+	* closed and when/if the user requests it. 
+	*/
+	void flush() {
+	
+	
+	
+	}
+
+
 					
 		
 				
@@ -572,7 +584,14 @@ public class ContactManagerImpl {
 		attendeeList.add(elena);
 		attendeeList.add(r2d2);
 		
-		Calendar cal = new GregorianCalendar(2013, 0, 2);
+		Calendar cal = new GregorianCalendar(2013, 1, 2);
+		
+		/**
+		Meeting testMeeting = new FutureMeetingImpl(attendeeList, cal);
+		if (testMeeting instanceof FutureMeeting) {
+			System.out.println("Yes, this is a Future Meeting.");
+		}
+		
 		/**
 		addNewPastMeeting(attendeeList, cal, "First Test Notes");
 		addMeetingNotes(1, "Test notes");

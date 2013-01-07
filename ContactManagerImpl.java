@@ -10,7 +10,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class ContactManagerImpl { 
+public class ContactManagerImpl implements ContactManager { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private NullPointerException nullPointerEx = new NullPointerException();
 	private IllegalStateException illegalStateEx = new IllegalStateException();
@@ -195,7 +195,7 @@ public class ContactManagerImpl {
 	/**
 	* Sorts a list into chronological order
 	*/
-	private List<Meeting> sort(List<Meeting> list) {
+	public List<Meeting> sort(List<Meeting> list) {
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
 		boolean sorted = true;
@@ -230,7 +230,7 @@ public class ContactManagerImpl {
 	* @param date the date 
 	* @return the list of meetings 
 	*/
-	List<Meeting> getFutureMeetingList(Calendar date) {
+	public List<Meeting> getFutureMeetingList(Calendar date) {
 		List<Meeting> meetingList = new ArrayList<Meeting>();
 		//go through future meetings and past meetings, unless all meetings are also added to allMeetings?
 		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
@@ -265,7 +265,7 @@ public class ContactManagerImpl {
 	* @return the list of future meeting(s) scheduled with this contact (maybe empty). 
 	* @throws IllegalArgumentException if the contact does not exist
 	*/ 
-	List<PastMeeting> getPastMeetingList(Contact contact) {
+	public List<PastMeeting> getPastMeetingList(Contact contact) {
 		List<Meeting> meetingList = new ArrayList<Meeting>();
 		List<PastMeeting> pastMeetingList = new ArrayList<PastMeeting>();
 		try {
@@ -305,7 +305,7 @@ public class ContactManagerImpl {
 	* @throws NullPointerException if any of the arguments is null 
 	*/
 	//what about an exception for a date that's in the future?
-	void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		boolean emptyContacts = false;//to allow simultaneous error correction for user
 		boolean nullContacts = false;
 		boolean nullDate = false;
@@ -379,7 +379,7 @@ public class ContactManagerImpl {
 	* @throws IllegalStateException if the meeting is set for a date in the future 
 	* @throws NullPointerException if the notes are null 
 	*/
-	void addMeetingNotes(int id, String text) {//as this is also used to add notes to an existing past meeting, must check if
+	public void addMeetingNotes(int id, String text) {//as this is also used to add notes to an existing past meeting, must check if
 	//meeting is in pastMeetings set first - if it is, then take the route of adding notes to existing meeting, otherwise check
 	//future meetings: if ID not found at this point, it doesn't exist. No exceptions should be thrown if meeting is not found
 	//in pastMeetings - only if it's not found in futureMeetings.
@@ -448,7 +448,7 @@ public class ContactManagerImpl {
 	* @param notes notes to be added about the contact.
 	* @throws NullPointerException if the name or the notes are null
 	*/ 
-	void addNewContact(String name, String notes) {
+	public void addNewContact(String name, String notes) {
 		try {
 			if (name == null || notes == null) {
 				throw nullPointerEx;
@@ -469,7 +469,7 @@ public class ContactManagerImpl {
 	* @return a list containing the contacts that correspond to the IDs. 
 	* @throws IllegalArgumentException if any of the IDs does not correspond to a real contact 
 	*/
-	Set<Contact> getContacts(int... ids) {
+	public Set<Contact> getContacts(int... ids) {
 		Set<Contact> idMatches = new HashSet<Contact>();
 		int id = 0;
 		String idString = "";//to facilitate an error message that lists all invalid IDs
@@ -511,7 +511,7 @@ public class ContactManagerImpl {
 	* @return a list with the contacts whose name contains that string. 
 	* @throws NullPointerException if the parameter is null 
 	*/
-	Set<Contact> getContacts(String name) {
+	public Set<Contact> getContacts(String name) {
 		Set<Contact> contactSet =  new HashSet<Contact>();
 		Contact contact = null;
 		try {
@@ -540,12 +540,10 @@ public class ContactManagerImpl {
 	* This method must be executed when the program is 
 	* closed and when/if the user requests it. 
 	*/
-	void flush() {
+	public void flush() {
 		IdStore ids = new IdStoreImpl();
 		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
-		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());
-		
-		
+		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());		
 		try {
  			FileOutputStream fos = new FileOutputStream("contacts.txt");
       		ObjectOutputStream oos = new ObjectOutputStream(fos);      	
@@ -559,9 +557,9 @@ public class ContactManagerImpl {
       		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
       		while (iteratorPM.hasNext()) {//writes contents of pastMeetings to file
       			Meeting m = iteratorPM.next();
-      			oos.writeOjbect(m);
+      			oos.writeObject(m);
       		}
-      		Iterator<Meeting iteratorFM = futureMeetings.iterator();
+      		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
       		while (iteratorFM.hasNext()) {//writes contents of futureMeetings to file
       			Meeting m = iteratorFM.next();
       			oos.writeObject(m);
@@ -570,12 +568,7 @@ public class ContactManagerImpl {
       	}
       	catch (IOException ex) {
       		ex.printStackTrace();//need to be more explicit
-      	}  
-		
-		
-	
-	
-	
+      	} 	
 	}
 
 

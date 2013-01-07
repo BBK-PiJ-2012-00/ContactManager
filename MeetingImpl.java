@@ -3,26 +3,30 @@ import java.util.GregorianCalendar;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /** 
 * A class to represent meetings 
 * 
 * Meetings have unique IDs, scheduled date and a list of participating contacts 
 */ 
-public class MeetingImpl implements Meeting {
+public class MeetingImpl implements Meeting, Serializable {
 	private int meetingId;
 	private Calendar meetingDate;
 	private Set<Contact> attendees = new HashSet<Contact>();
 	private static int idAssigner = 0;
 	
-	public MeetingImpl(Set<Contact> contacts, Calendar date) {//id parameter? Two constructors, one with, one without
-		//add contents of contacts to attendees - more robust than using pointer to manager class
+	public MeetingImpl(Set<Contact> contacts, Calendar date) {
 		meetingDate = date;
 		attendees.addAll(contacts);
 		meetingId = idAssigner + 1;
 		incrementIdAssigner();
 	}
 	
+	/**
+	* For use when a FutureMeeting is converted to a
+	* PastMeeting, in order to retain the same ID.
+	*/
 	public MeetingImpl(Set<Contact> contacts, Calendar date, int id) {
 		meetingDate = date;
 		attendees.addAll(contacts);

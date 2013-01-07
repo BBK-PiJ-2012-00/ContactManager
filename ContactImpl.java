@@ -22,6 +22,11 @@ public class ContactImpl implements Contact, Serializable {
 		idAssigner++;
 	}
 	
+	//to be used when data is loaded from file to restore value of idAssigner
+	public static void restoreIdAssigner(int idValue) {
+		this.idAssigner = idValue;
+	}
+	
 	public int getId() {
 		return id;
 	}

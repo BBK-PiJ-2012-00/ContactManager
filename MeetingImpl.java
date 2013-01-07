@@ -41,6 +41,10 @@ public class MeetingImpl implements Meeting, Serializable {
 	public static void restoreIdAssigner(int idValue) {
 		this.idAssigner = idValue;
 	}
+	
+	public static int getIdAssigner() {
+		return idAssigner;
+	}
 
 	public int getId() {
 		return meetingId;

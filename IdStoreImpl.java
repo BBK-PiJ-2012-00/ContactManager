@@ -1,8 +1,8 @@
 import java.io.Serializable;
 
 public class IdStoreImpl implements IdStore, Serializable {
-	private int contactIdAssigner = null;
-	private int meetingIdAssigner = null;
+	private int contactIdAssigner;
+	private int meetingIdAssigner;
 
 	public void saveContactIdAssigner(int idAssignerValue) {
 		this.contactIdAssigner = idAssignerValue;
@@ -17,7 +17,7 @@ public class IdStoreImpl implements IdStore, Serializable {
 	}
 	
 	public int getMeetingIdAssigner() {
-		return meetingIdAssigner();
+		return meetingIdAssigner;
 	}
 
 }

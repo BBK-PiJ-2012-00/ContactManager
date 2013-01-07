@@ -575,6 +575,11 @@ public class ContactManagerImpl implements ContactManager {
 	public void loadData() {
 		System.out.println("Loading data from file...");
 		try {
+			File contactsFile = new File("./contacts.txt");
+			if (contactsFile.length() == 0) {
+				System.out.println("No saved data found.");
+				return;
+			}
 			FileInputStream fis = new FileInputStream("contacts.txt");
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			while (ois.readObject() != null) { //read to end of file
@@ -599,7 +604,7 @@ public class ContactManagerImpl implements ContactManager {
 			ois.close();
 		}
 		catch (EOFException ex) {
-			System.out.println("No saved data found.");
+			System.out.println("Loaded data from previous session.");
 		}
 		catch (IOException ex) {
 			ex.printStackTrace();
@@ -608,7 +613,7 @@ public class ContactManagerImpl implements ContactManager {
 			ex.printStackTrace();
 		}		
 	}
-				
+			
 	
 
 

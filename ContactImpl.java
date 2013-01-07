@@ -27,6 +27,10 @@ public class ContactImpl implements Contact, Serializable {
 		this.idAssigner = idValue;
 	}
 	
+	public static int getIdAssigner() {
+		return idAssigner;
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -543,6 +543,7 @@ public class ContactManagerImpl implements ContactManager {
 	public void flush() {
 		IdStore ids = new IdStoreImpl();
 		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
+		System.out.println("IVAL: " + ContactImpl.getIdAssigner());
 		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());		
 		try {
  			FileOutputStream fos = new FileOutputStream("contacts.txt");
@@ -582,29 +583,31 @@ public class ContactManagerImpl implements ContactManager {
 			}
 			FileInputStream fis = new FileInputStream("contacts.txt");
 			ObjectInputStream ois = new ObjectInputStream(fis);
-			while (ois.readObject() != null) { //read to end of file
-				if (ois.readObject() instanceof IdStore) {
-					IdStore ids = (IdStoreImpl) ois.readObject();
+			Object obj = null;
+			while ((obj = ois.readObject()) != null) { //read to end of file
+				if (obj instanceof IdStore) {
+					IdStore ids = (IdStoreImpl) obj;
+					System.out.println("ids id val: " + ids.getContactIdAssigner());
 					ContactImpl.restoreIdAssigner(ids.getContactIdAssigner());
 					MeetingImpl.restoreIdAssigner(ids.getMeetingIdAssigner());
 				}
-				if (ois.readObject() instanceof Contact) {
-					Contact contact = (ContactImpl) ois.readObject();
+				if (obj instanceof Contact) {
+					Contact contact = (ContactImpl) obj;
 					contactList.add(contact);
 				}
-				if (ois.readObject() instanceof FutureMeeting) {
-					Meeting meeting = (FutureMeetingImpl) ois.readObject();
+				if (obj instanceof FutureMeeting) {
+					Meeting meeting = (FutureMeetingImpl) obj;
 					futureMeetings.add(meeting);
 				}
-				if (ois.readObject() instanceof PastMeeting) {
-					Meeting meeting = (PastMeetingImpl) ois.readObject();
+				if (obj instanceof PastMeeting) {
+					Meeting meeting = (PastMeetingImpl) obj;
 					pastMeetings.add(meeting);
 				}
 			}
 			ois.close();
 		}
 		catch (EOFException ex) {
-			System.out.println("Loaded data from previous session.");
+			System.out.println("Data from previous session loaded.");
 		}
 		catch (IOException ex) {
 			ex.printStackTrace();
@@ -642,18 +645,32 @@ public class ContactManagerImpl implements ContactManager {
 	
 		loadData();
 		
+		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11, 5);
+		Iterator<Contact> iterator = contactsTestSet.iterator();
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+			System.out.println(contact.getName() + " " + contact.getId());
+		}
+		
+		System.out.println("Contact idAssigner value: " + ContactImpl.getIdAssigner());
+		
 		Contact tseng = new ContactImpl("Tseng");
 		Contact reno = new ContactImpl("Reno");
 		Contact rude = new ContactImpl("Rude");
 		Contact elena = new ContactImpl("Elena");
 		Contact r2d2 = new ContactImpl("R2D2");
 		
+		System.out.println("id p2: " + ContactImpl.getIdAssigner());
+		
 		contactList.add(tseng);
 		contactList.add(reno);
 		contactList.add(rude);
 		contactList.add(elena);
 		contactList.add(r2d2);
+		
+		flush();
 				
+		/**
 		attendeeList.add(tseng);
 		attendeeList.add(rude);
 		attendeeList.add(elena);
@@ -681,7 +698,7 @@ public class ContactManagerImpl implements ContactManager {
 		System.out.println(pm);
 		System.out.println("ID: " + pm.getId() + " " + pm.getNotes());
 		*/
-		
+		/**
 		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11, 5);
 		Iterator<Contact> iterator = contactsTestSet.iterator();
 		while (iterator.hasNext()) {

@@ -538,6 +538,7 @@ public class ContactManagerImpl implements ContactManager {
 	* closed and when/if the user requests it. 
 	*/
 	public void flush() {
+		System.out.println("Saving data...");
 		IdStore ids = new IdStoreImpl();
 		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
 		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());		
@@ -561,6 +562,7 @@ public class ContactManagerImpl implements ContactManager {
       			oos.writeObject(m);
       		}
       		oos.close();
+      		System.out.println("Saved.");
       	}
       	catch (FileNotFoundException ex) {
       		System.out.println("File not found! Please ensure contacts.txt is in the same directory.");
@@ -646,12 +648,31 @@ public class ContactManagerImpl implements ContactManager {
 		ContactManagerUtilities.displayWelcome();
 		loadData();
 		
-		int userSelection = ContactManagerUtilities.chooseMainMenuOption();
-		switch (userSelection) {
-			//create relevant method in Util class. Takes contactList for display
-			case 1: Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
-					Calendar date = ContactManagerUtilities.createDate();
-					this.addFutureMeeting(attendees, date);
+		boolean finished = false;
+		
+		while (!finished) {		
+			int userSelection = ContactManagerUtilities.chooseMainMenuOption();
+			switch (userSelection) {
+				//create relevant method in Util class. Takes contactList for display
+				case 1: Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
+						Calendar date = ContactManagerUtilities.createDate();
+						this.addFutureMeeting(attendees, date);
+						break;
+				
+				case 7: flush();
+						
+				case 8: //save, finished = true;
+					
+
+
+//after an option is selected, the option should be followed through, and then the main
+//menu should be displayed again. The only times this doesn't happen is when the user
+//opts to save and quit: after data has been saved, the program exits. 
+//for each option that is selected, give the user a chance to return to main menu by 
+//typing 0 -- an if clause that says if entry is 0, display main menu. For this reason,
+//perhaps put main menu method into this class (whist keeping checking in util)...
+//put the whole thing inside a while loop? Then, when save and quit is called, carry out
+//the action and break from the loop.
 		
 		
 	

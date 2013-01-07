@@ -573,6 +573,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	//Loads data from file upon opening program
 	public void loadData() {
+		System.out.println("Loading data from file...");
 		try {
 			FileInputStream fis = new FileInputStream("contacts.txt");
 			ObjectInputStream ois = new ObjectInputStream(fis);
@@ -597,12 +598,15 @@ public class ContactManagerImpl implements ContactManager {
 			}
 			ois.close();
 		}
+		catch (EOFException ex) {
+			System.out.println("No saved data found.");
+		}
 		catch (IOException ex) {
 			ex.printStackTrace();
 		}
 		catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
-		}
+		}		
 	}
 				
 	
@@ -630,6 +634,9 @@ public class ContactManagerImpl implements ContactManager {
 	}
 	
 	private void launch() {
+	
+		loadData();
+		
 		Contact tseng = new ContactImpl("Tseng");
 		Contact reno = new ContactImpl("Reno");
 		Contact rude = new ContactImpl("Rude");

@@ -647,6 +647,11 @@ public class ContactManagerImpl implements ContactManager {
 		loadData();
 		
 		int userSelection = ContactManagerUtilities.chooseMainMenuOption();
+		switch (userSelection) {
+			//create relevant method in Util class. Takes contactList for display
+			case 1: Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
+					Calendar date = ContactManagerUtilities.createDate();
+					this.addFutureMeeting(attendees, date);
 		
 		
 	

@@ -39,7 +39,7 @@ public class MeetingImpl implements Meeting, Serializable {
 	
 	//to be used when data is loaded from file to restore value of idAssigner
 	public static void restoreIdAssigner(int idValue) {
-		this.idAssigner = idValue;
+		idAssigner = idValue;
 	}
 	
 	public static int getIdAssigner() {

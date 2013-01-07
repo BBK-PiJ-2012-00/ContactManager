@@ -134,10 +134,19 @@ public class ContactManagerImpl {
 	
 	
 	public Meeting getMeeting(int id) {
-		Iterator<Meeting> iterator = allMeetings.iterator();//rather than allMeetings, check through past/future sets
+		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
 		Meeting meeting = null;
-		while (iterator.hasNext()) {
+		while(iteratorPM.hasNext()) {
 			meeting = iterator.next();
+			if (meeting.getId() == id) {
+				found = true;
+				return meeting;
+			}
+		}
+		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
+		meeting = null;		
+		while (iteratorFM.hasNext()) {
+			meeting = iteratorFM.next();
 			if (meeting.getId() == id) {
 				return meeting;
 			}
@@ -692,6 +701,10 @@ public class ContactManagerImpl {
 //in a 'store' object, to be accessed when objects are de-serialized from contacts.txt.
 //This is better than saving them as individual integers, since it would be difficult to tell
 //upon de-serialization which integer should go with which ID assigner (Meeting or Contact).
+
+//Note that subtypes of a serializable class are also serializable
+
+
 
 
 

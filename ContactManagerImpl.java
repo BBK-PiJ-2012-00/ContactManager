@@ -543,7 +543,6 @@ public class ContactManagerImpl implements ContactManager {
 	public void flush() {
 		IdStore ids = new IdStoreImpl();
 		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
-		System.out.println("IVAL: " + ContactImpl.getIdAssigner());
 		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());		
 		try {
  			FileOutputStream fos = new FileOutputStream("contacts.txt");
@@ -567,8 +566,11 @@ public class ContactManagerImpl implements ContactManager {
       		}
       		oos.close();
       	}
+      	catch (FileNotFoundException ex) {
+      		System.out.println("File not found! Please ensure contacts.txt is in the same directory.");
+      	}
       	catch (IOException ex) {
-      		ex.printStackTrace();//need to be more explicit
+      		ex.printStackTrace();//need to be more explicit?
       	} 	
 	}
 	
@@ -587,7 +589,6 @@ public class ContactManagerImpl implements ContactManager {
 			while ((obj = ois.readObject()) != null) { //read to end of file
 				if (obj instanceof IdStore) {
 					IdStore ids = (IdStoreImpl) obj;
-					System.out.println("ids id val: " + ids.getContactIdAssigner());
 					ContactImpl.restoreIdAssigner(ids.getContactIdAssigner());
 					MeetingImpl.restoreIdAssigner(ids.getMeetingIdAssigner());
 				}
@@ -609,6 +610,9 @@ public class ContactManagerImpl implements ContactManager {
 		catch (EOFException ex) {
 			System.out.println("Data from previous session loaded.");
 		}
+		catch (FileNotFoundException ex) {
+      		System.out.println("File not found! Please ensure contacts.txt is in the same directory.");
+      	}
 		catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -645,14 +649,14 @@ public class ContactManagerImpl implements ContactManager {
 	
 		loadData();
 		
-		Set<Contact> contactsTestSet = getContacts(1, 6, 2, 7, 10, 4, 11, 5);
+		Set<Contact> contactsTestSet = getContacts(1, 2, 3, 4, 5);
 		Iterator<Contact> iterator = contactsTestSet.iterator();
 		while (iterator.hasNext()) {
 			Contact contact = iterator.next();
 			System.out.println(contact.getName() + " " + contact.getId());
 		}
 		
-		System.out.println("Contact idAssigner value: " + ContactImpl.getIdAssigner());
+		
 		
 		Contact tseng = new ContactImpl("Tseng");
 		Contact reno = new ContactImpl("Reno");
@@ -660,7 +664,7 @@ public class ContactManagerImpl implements ContactManager {
 		Contact elena = new ContactImpl("Elena");
 		Contact r2d2 = new ContactImpl("R2D2");
 		
-		System.out.println("id p2: " + ContactImpl.getIdAssigner());
+		
 		
 		contactList.add(tseng);
 		contactList.add(reno);

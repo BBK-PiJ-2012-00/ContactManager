@@ -678,6 +678,21 @@ public class ContactManagerImpl {
 
 //for-each loops for clarity
 
+//Saving: possible to save objects to a file? As opposed to converting Sets to Strings,
+//parsing to file, saving, reading Strings from file, parsing back to HashSet etc. 
+//YES: consider using ObjectOutputStream. So long as the objects are serializable. 
+//HashSet is serializable... but how does this affect a HashSet of objects (i.e. Meetings)?
+//Take care that stuff stored in HashSet is also serializable...
+//what about saving FutureMeetings and PastMeetings to the file, rather than sets?
+//when reading back from file, do a casting check - if an object is of type FutureMeeting,
+//add it to futureMeetings, if it's Contact, add to contactList etc. This would alleviate
+//casting warnings at compile time.
+//Static variables: IDs. Need to avoid idAssigner being reset to 0 when program is
+//re-opened. Possible solution: store the value of ID assigners when the program is closed,
+//in a 'store' object, to be accessed when objects are de-serialized from contacts.txt.
+//This is better than saving them as individual integers, since it would be difficult to tell
+//upon de-serialization which integer should go with which ID assigner (Meeting or Contact).
+
 
 
 

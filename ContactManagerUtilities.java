@@ -13,6 +13,7 @@ public class ContactManagerUtilities {
 		System.out.println("*************************************************************" + "\n");
 	}
 	
+	//an option to go back to main in case of wrong selection?
 	public static int chooseMainMenuOption() {
 		System.out.println("                  ***** Main Menu *****");
 		System.out.println("1. Add a future meeting            " + "\t" + " 2. Look up meeting");
@@ -56,9 +57,12 @@ public class ContactManagerUtilities {
 		String entry = System.console().readLine();
 		
 	}
+	//Instead, perhaps have method to facilitate and check selection of users, and entry of date,
+	//so that the checking is done here
 	
 	public void subMenuTwo() {
 	
 	
 	}
+}
 	

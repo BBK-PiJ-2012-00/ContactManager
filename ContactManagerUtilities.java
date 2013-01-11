@@ -21,14 +21,16 @@ public class ContactManagerUtilities {
 		System.out.println("*************************************************************" + "\n");
 	}
 	
-	//an option to go back to main in case of wrong selection?
+	
 	public static int chooseMainMenuOption() {
+		System.out.println();
+		System.out.println();
 		System.out.println("                  ***** Main Menu *****");
 		System.out.println("1. Add a future meeting            " + "\t" + " 2. Look up meeting");
 		System.out.println("3. Create record of a past meeting " + "\t" + " 4. Add notes to a meeting that has taken place");
 		System.out.println("5. Add a new contact               " + "\t" + " 6. Look up contact");
 		System.out.println("7. Save data to disk               " + "\t" + " 8. Save and exit.");
-		System.out.println("(Exit back to this menu at any point by entering \"back\"");
+		System.out.println("(Exit back to this menu at any point by entering \"back\")");
 		System.out.print("Select option: ");
 		int selection = validateOption(1, 8);		
 		return selection;	
@@ -71,7 +73,7 @@ public class ContactManagerUtilities {
 			return null;//This sends the user back to the main menu via a break statement in ContactManager
 		}
 		for (Contact c : contactList) {//Prints contactList for ease of reference
-			System.out.println("c.getName() " + "c.getId()");
+			System.out.println(c.getName() + " " + c.getId());
 		}
 		System.out.println("Please enter the IDs of the contacts who are attending, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
@@ -101,7 +103,7 @@ public class ContactManagerUtilities {
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error! Please enter the contact ID numbers separated by a comma " +
 			"i.e. 1, 2, 3 or 1,2,3 and finish by pressing RETURN.");
-			attendees = selectAttendees(contactList);
+			return selectAttendees(contactList);
 		}
 		return attendees;	
 	}
@@ -182,15 +184,15 @@ public class ContactManagerUtilities {
 			if (badFormat) {
 				System.out.println("Error! Please enter the date in dd.mm.yyyy format " +
 				"i.e. 01.11.2013 and finish by pressing RETURN.");
-				date = createDate();
+				return createDate();
 			}
 			if (febOverflow) {
 				System.out.println("Error! February has 28 days outside of a leap year.");
-				date = createDate();
+				return createDate();
 			}
 			if (monthOverflow) {
 				System.out.println("Error! The month you specified has 30 days.");
-				date = createDate();
+				return createDate();
 			} 
 		}
 		return date;	
@@ -207,6 +209,34 @@ public class ContactManagerUtilities {
 		}
 		return false;
 	}
+	
+	public static int lookUpMeetingOptions() {
+		System.out.println();
+		System.out.println();
+		System.out.println("*** LOOK UP MEETING");
+		System.out.println("1. Search all meetings  " + "\t" + " 2. Search future meetings");
+		System.out.println("3. Search past meetings);
+		System.out.println("(Exit back to main menu at any point by entering \"back\")");
+		System.out.print("Select option: ");
+		int selection = validateOption(1, 3);		
+		return selection;	
+	}
+	
+	PastMeeting getPastMeeting(int id);
+
+
+FutureMeeting getFutureMeeting(int id);
+
+
+Meeting getMeeting(int id);
+
+
+List<Meeting> getFutureMeetingList(Contact contact);
+
+
+List<Meeting> getMeetingList(Calendar date);
+
+List<PastMeeting> getPastMeetingList(Contact contact);
 		
 	
 		

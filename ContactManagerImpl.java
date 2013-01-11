@@ -658,9 +658,12 @@ public class ContactManagerImpl implements ContactManager {
 				//create relevant method in Util class. Takes contactList for display
 				case 1: System.out.println("*** Add a future meeting");
 						Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
+						if (attendees == null) {//occurs if user opts to quit, or if contactList is empty
+							break;
+						}
 						Calendar date = ContactManagerUtilities.createDate();
 						this.addFutureMeeting(attendees, date);
-						break; //only breaks from innermost loop (which is good)
+						break; 
 				
 				case 7: flush();
 						break;
@@ -722,8 +725,7 @@ public class ContactManagerImpl implements ContactManager {
 	* @param date the date 
 	* @return the list of meetings 
 	*/
-	//List<Meeting> getFutureMeetingList(Calendar date);
-	//should this be renamed, as it fetches any meeting, not just future ones?
+
 	
 	//if returned list is empty, write empty? in main: if list.isEmpty(), print <empty> for
 	//user clarity
@@ -739,24 +741,8 @@ public class ContactManagerImpl implements ContactManager {
 //initialise notes variable as null in launch so that if user enters nothing, relevant
 //method is still found
 
-//for-each loops for clarity
 
-//Saving: possible to save objects to a file? As opposed to converting Sets to Strings,
-//parsing to file, saving, reading Strings from file, parsing back to HashSet etc. 
-//YES: consider using ObjectOutputStream. So long as the objects are serializable. 
-//HashSet is serializable... but how does this affect a HashSet of objects (i.e. Meetings)?
-//Take care that stuff stored in HashSet is also serializable...
-//what about saving FutureMeetings and PastMeetings to the file, rather than sets?
-//when reading back from file, do a casting check - if an object is of type FutureMeeting,
-//add it to futureMeetings, if it's Contact, add to contactList etc. This would alleviate
-//casting warnings at compile time.
-//Static variables: IDs. Need to avoid idAssigner being reset to 0 when program is
-//re-opened. Possible solution: store the value of ID assigners when the program is closed,
-//in a 'store' object, to be accessed when objects are de-serialized from contacts.txt.
-//This is better than saving them as individual integers, since it would be difficult to tell
-//upon de-serialization which integer should go with which ID assigner (Meeting or Contact).
 
-//Note that subtypes of a serializable class are also serializable
 
 //when saved, contents of file will be overwritten - alert user of this
 

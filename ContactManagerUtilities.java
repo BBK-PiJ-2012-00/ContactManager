@@ -73,6 +73,7 @@ public class ContactManagerUtilities {
 		System.out.println("Please enter the IDs of the contacts who are attending, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
 		String entry = System.console().readLine();
+		Scanner sc = new Scanner(userEntry);
 		
 		
 		
@@ -81,10 +82,14 @@ public class ContactManagerUtilities {
 	
 	
 	public boolean validateCommaString(String userEntry) {
-		Scanner sc = new Scanner(userEntry);
 		Pattern pattern = Pattern.compile("([0-9][0-9]*[\\s]?[,][\\s]?)*[0-9][0-9]*");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean matched = m.matches();//upshot - matches or doesn't
+		boolean verified = m.matches();//upshot - matches or doesn't
+		if (verified) {
+			return true;
+		}
+		return false;
+	}
 		
 		boolean b = Pattern.matches("a*b", "aaaaab");
 		// if userEntry matches this ok, then proceed to make delimiter String and parse

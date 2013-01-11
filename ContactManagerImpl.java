@@ -496,7 +496,7 @@ public class ContactManagerImpl implements ContactManager {
 			return idMatches;
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("Error: The following IDs were not found: " + "\n" + idString);
+			System.out.println("Note: The following IDs were not found: " + "\n" + idString);
 		}
 		return idMatches;
 	}
@@ -657,10 +657,11 @@ public class ContactManagerImpl implements ContactManager {
 			switch (userSelection) {
 				//create relevant method in Util class. Takes contactList for display
 				case 1: System.out.println("*** Add a future meeting");
-						Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
-						if (attendees == null) {//occurs if user opts to quit, or if contactList is empty
+						Integer[] attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
+						if (attendeesArray == null) {//occurs if user opts to quit, or if contactList is empty
 							break;
 						}
+						Set<Contact> attendees = getContacts(attendeeArray);
 						Calendar date = ContactManagerUtilities.createDate();
 						this.addFutureMeeting(attendees, date);
 						break; 
@@ -671,7 +672,7 @@ public class ContactManagerImpl implements ContactManager {
 				case 8: flush();
 						finished = true;
 						break;
-					
+			}
 
 
 //after an option is selected, the option should be followed through, and then the main

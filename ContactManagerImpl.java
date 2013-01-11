@@ -538,12 +538,12 @@ public class ContactManagerImpl implements ContactManager {
 	* closed and when/if the user requests it. 
 	*/
 	public void flush() {
-		System.out.println("Saving data...");
 		IdStore ids = new IdStoreImpl();
 		ids.saveContactIdAssigner(ContactImpl.getIdAssigner());
 		ids.saveMeetingIdAssigner(MeetingImpl.getIdAssigner());		
 		try {
  			FileOutputStream fos = new FileOutputStream("contacts.txt");
+ 			System.out.println("Saving data...");
       		ObjectOutputStream oos = new ObjectOutputStream(fos);      	
       		oos.writeObject(ids);//saves IdStore object containing idAssigners
       		Iterator<Contact> contactIterator = contactList.iterator();
@@ -565,7 +565,9 @@ public class ContactManagerImpl implements ContactManager {
       		System.out.println("Saved.");
       	}
       	catch (FileNotFoundException ex) {
-      		System.out.println("File not found! Please ensure contacts.txt is in the same directory.");
+      		System.out.println("Creating contacts.txt file for data storage...");
+      		File contactsTxt = new File("./contacts.txt");
+      		flush();
       	}
       	catch (IOException ex) {
       		ex.printStackTrace();//need to be more explicit?
@@ -654,14 +656,18 @@ public class ContactManagerImpl implements ContactManager {
 			int userSelection = ContactManagerUtilities.chooseMainMenuOption();
 			switch (userSelection) {
 				//create relevant method in Util class. Takes contactList for display
-				case 1: Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
+				case 1: System.out.println("*** Add a future meeting");
+						Set<Contact> attendees = ContactManagerUtilities.selectAttendees(contactList);
 						Calendar date = ContactManagerUtilities.createDate();
 						this.addFutureMeeting(attendees, date);
-						break;
+						break; //only breaks from innermost loop (which is good)
 				
 				case 7: flush();
+						break;
 						
-				case 8: //save, finished = true;
+				case 8: flush();
+						finished = true;
+						break;
 					
 
 
@@ -673,6 +679,10 @@ public class ContactManagerImpl implements ContactManager {
 //perhaps put main menu method into this class (whist keeping checking in util)...
 //put the whole thing inside a while loop? Then, when save and quit is called, carry out
 //the action and break from the loop.
+//to go back to main menu -- if something is null? Or enter 0
+
+//when a user has to enter something, it'll most likely be read initially as a String...
+//so if the user enters 'back' or 'quit', return to main menu.
 		
 		
 	

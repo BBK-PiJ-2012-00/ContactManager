@@ -496,7 +496,8 @@ public class ContactManagerImpl implements ContactManager {
 			return idMatches;
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("Note: The following IDs were not found: " + "\n" + idString);
+			System.out.println("Note: The following IDs were not found and were not " + 
+			"added to the attendee list for this meeting: " + "\n" + idString);
 		}
 		return idMatches;
 	}
@@ -619,20 +620,7 @@ public class ContactManagerImpl implements ContactManager {
 		catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}		
-	}
-			
-	
-
-
-
-
-					
-		
-				
-				
-			
-			
-				
+	}			
 			
 		
 		
@@ -655,22 +643,30 @@ public class ContactManagerImpl implements ContactManager {
 		while (!finished) {		
 			int userSelection = ContactManagerUtilities.chooseMainMenuOption();
 			switch (userSelection) {
-				//create relevant method in Util class. Takes contactList for display
-				case 1: System.out.println("*** Add a future meeting");
-						Integer[] attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
-						if (attendeesArray == null) {//occurs if user opts to quit, or if contactList is empty
+				
+				case 1: System.out.println("\n");
+						System.out.println("*** ADD A FUTURE MEETING");
+						int[] attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
+						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
 							break;
 						}
 						Set<Contact> attendees = getContacts(attendeeArray);
 						Calendar date = ContactManagerUtilities.createDate();
+						if (date == null) {
+							break;
+						}
 						this.addFutureMeeting(attendees, date);
 						break; 
+						
+				case 2: System.out.println("\n");
+						System.out.println("*** LOOK UP A MEETING");
 				
 				case 7: flush();
 						break;
 						
 				case 8: flush();
 						finished = true;
+						System.out.println("\n" + "Closing...")'
 						break;
 			}
 
@@ -705,6 +701,7 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
+}
 }
 
 

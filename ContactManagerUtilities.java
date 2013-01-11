@@ -60,8 +60,31 @@ public class ContactManagerUtilities {
 	//Instead, perhaps have method to facilitate and check selection of users, and entry of date,
 	//so that the checking is done here
 	
-	public void subMenuTwo() {
-	
+	public set<Contact> selectAttendees(Set<Contact> contactList) {
+		Set<Contact> attendeeList = new HashSet<Contact>();
+		System.out.println("Your contact list: ");
+		if (contactList.isEmpty()) {
+			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
+			return null;
+		}
+		for (Contact c : contactList) {
+			System.out.println("c.getName() " + "c.getId()");
+		}
+		System.out.println("Please enter the IDs of the contacts who are attending, separated" +
+		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
+		String entry = System.console().readLine();
+		
+		for (String name : names)
+    System.out.println(name.charAt(0));
+    
+    for(Iterator i = list.iterator(); i.hasNext(); ) {
+    ...
+    
+    void cancelAll(Collection<TimerTask> c) {
+    for (TimerTask t : c)
+        t.cancel();
+}
+		
 	
 	}
 }

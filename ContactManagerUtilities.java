@@ -80,8 +80,15 @@ public class ContactManagerUtilities {
 	}
 	
 	
-	public String validateCommaString(String userEntry) {
+	public boolean validateCommaString(String userEntry) {
 		Scanner sc = new Scanner(userEntry);
-		Pattern pattern = Pattern.compile("^([0-9][0-9]*[\s]?[,])*");
+		Pattern pattern = Pattern.compile("([0-9][0-9]*[\\s]?[,][\\s]?)*[0-9][0-9]*");
+		Matcher m = pattern.matcher(userEntry);//match given input against pattern
+		boolean matched = m.matches();//upshot - matches or doesn't
+		
+		boolean b = Pattern.matches("a*b", "aaaaab");
+		// if userEntry matches this ok, then proceed to make delimiter String and parse
+		//in selectAttendees method
+		
 }
 	

@@ -76,7 +76,7 @@ List<Meeting> getFutureMeetingList(Contact contact);
 * @param date the date 
 * @return the list of meetings 
 */
-List<Meeting> getFutureMeetingList(Calendar date);
+List<Meeting> getMeetingList(Calendar date);
 
 /** 
 * Returns the list of past meetings in which this contact has participated. 
@@ -129,7 +129,7 @@ void addMeetingNotes(int id, String text);
 void addNewContact(String name, String notes);
 
 /** 
-* Returns a list containing the contacts that 
+* Returns a list containing the contacts that correspond to the IDs
 * 
 * @param ids an arbitrary number of contact IDs 
 * @return a list containing the contacts that correspond to the IDs. 
@@ -155,6 +155,8 @@ Set<Contact> getContacts(String name);
 void flush();
 
 }
+
+// Meeting meeting = new FutureMeeting(params);
 
 
 

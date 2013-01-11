@@ -61,10 +61,10 @@ public class ContactManagerUtilities {
 	* for validation with the getContacts(int... ids) method. 
 	* Prints contactList Set for ease of reference.
 	*/
-	public static Integer[] selectAttendees(Set<Contact> contactList) {
+	public static int[] selectAttendees(Set<Contact> contactList) {
 		
 		List<Integer> attendeeList = new ArrayList<Integer>();
-		Integer[] attendees;
+		int[] attendees;
 		System.out.println("Your contact list: ");
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
@@ -92,8 +92,11 @@ public class ContactManagerUtilities {
 				int selection = sc.nextInt();
 				attendeeList.add(selection);
 			} while (sc.hasNextInt());
-			attendees = attendeeList.toArray(new Integer[0]);//converts to array for use in ContactManager getContacts() method
-			//so that it can be ascertained whether the user has selected contacts who exist						
+			attendees = new int[attendeeList.size()]; //converts to array for use in ContactManager getContacts() method
+			//so that it can be ascertained whether the user has selected contacts who exist
+			for (int i = 0; i < attendeeList.size(); i++) {
+				attendees[i] = attendeeList.get(i);
+			}
 		}
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error! Please enter the contact ID numbers separated by a comma " +
@@ -120,8 +123,13 @@ public class ContactManagerUtilities {
 	}
 	
 	
+	/**
+	* Creates a Calendar date from user input. Rules out invalid dates such as
+	* 29.02 outside of a leap year, and ensures that months with only 30 days cannot
+	* be assigned a date of 31.
+	*/
 	public static Calendar createDate() {
-		Calendar date;
+		Calendar date = null;
 		int day;
 		int month;
 		int year;
@@ -146,6 +154,7 @@ public class ContactManagerUtilities {
 			for (int i = 0; i < 3; i++) {
 				dateArray[i] = sc.nextInt();
 			}
+			
 			day = dateArray[0];
 			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
 			year = dateArray[2];
@@ -163,12 +172,11 @@ public class ContactManagerUtilities {
 			}
 			if (month % 2 == 1) {//Disallows day having value of 31 when month has only 30 days
 				if (day > 30) {
-					monthOverflow = true
+					monthOverflow = true;
 					throw illegalArgEx;
 				}
-			}
-			date = new GregorianCalendar(day, month, year);		
-								
+			}	
+			date = new GregorianCalendar(day, month, year);					
 		}
 		catch (IllegalArgumentException ex) {
 			if (badFormat) {
@@ -189,7 +197,7 @@ public class ContactManagerUtilities {
 	}
 	
 	
-	public boolean validateDateEntry(String userEntry) {
+	public static boolean validateDateEntry(String userEntry) {
 		//checks date format, allowing d.m.yyyy or dd.mm.yyyy. Rules out invalid days and months i.e. 59.40.2001
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][2][0][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern

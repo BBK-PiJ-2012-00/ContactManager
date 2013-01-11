@@ -65,7 +65,7 @@ public class ContactManagerUtilities {
 		System.out.println("Your contact list: ");
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
-			return null;
+			return null;//if null is returned, ContactManager will need to take corresponding action
 		}
 		for (Contact c : contactList) {
 			System.out.println("c.getName() " + "c.getId()");
@@ -74,18 +74,14 @@ public class ContactManagerUtilities {
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
 		String entry = System.console().readLine();
 		
-		for (String name : names)
-    System.out.println(name.charAt(0));
-    
-    for(Iterator i = list.iterator(); i.hasNext(); ) {
-    ...
-    
-    void cancelAll(Collection<TimerTask> c) {
-    for (TimerTask t : c)
-        t.cancel();
-}
+		
 		
 	
 	}
+	
+	
+	public String validateCommaString(String userEntry) {
+		Scanner sc = new Scanner(userEntry);
+		Pattern pattern = Pattern.compile("^([0-9][0-9]*[\s]?[,])*");
 }
 	

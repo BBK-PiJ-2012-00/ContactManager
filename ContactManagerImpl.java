@@ -230,7 +230,7 @@ public class ContactManagerImpl implements ContactManager {
 	* @param date the date 
 	* @return the list of meetings 
 	*/
-	public List<Meeting> getFutureMeetingList(Calendar date) {
+	public List<Meeting> getMeetingList(Calendar date) {
 		List<Meeting> meetingList = new ArrayList<Meeting>();
 		//go through future meetings and past meetings, unless all meetings are also added to allMeetings?
 		Iterator<Meeting> iteratorPM = pastMeetings.iterator();

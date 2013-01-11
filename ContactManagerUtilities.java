@@ -20,6 +20,7 @@ public class ContactManagerUtilities {
 		System.out.println("3. Create record of a past meeting " + "\t" + " 4. Add notes to a meeting that has taken place");
 		System.out.println("5. Add a new contact               " + "\t" + " 6. Look up contact");
 		System.out.println("7. Save data to disk               " + "\t" + " 8. Save and exit.");
+		System.out.println("(Exit back to this menu at any point by entering \"back\"");
 		System.out.print("Select option: ");
 		int selection = validateOption(1, 8);		
 		return selection;	
@@ -72,12 +73,34 @@ public class ContactManagerUtilities {
 		}
 		System.out.println("Please enter the IDs of the contacts who are attending, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
-		String entry = System.console().readLine();
-		Scanner sc = new Scanner(userEntry);
 		
-		
-		
-	
+		try{
+			String userEntry = System.console().readLine();
+			if (userEntry.equals("back")) {
+				return null;//allows user to cancel and return to main menu - ensure main menu handles null appropriately
+			}
+			boolean verified = validateCommaString(userEntry);//determine whether input is valid
+			if (!verified) {
+				throw illegalArgEx;
+			}
+			Scanner sc = new Scanner(userEntry);
+			Pattern delimiterPattern = Pattern.compile("[\\s]?[,][\\s]?");
+			sc.useDelimiter(delimiterPattern);
+			do {
+				int selection = sc.nextInt();
+				for (Contact c : contactList) {
+					if (c.getId() == selection) {//match the int with contact ID in contactList
+						attendeeList.add(c);
+					}
+				}
+			} while (sc.hasNextInt());					
+		}
+		catch (IllegalArgumentException ex) {
+			System.out.println("Error! Please enter the contact ID numbers separated by a comma " +
+			"i.e. 1, 2, 3 or 1,2,3 and finish by pressing RETURN.");
+			attendeeList = selectAttendees(contactList);
+		}
+		return attendeeList;	
 	}
 	
 	

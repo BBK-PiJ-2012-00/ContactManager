@@ -126,6 +126,9 @@ public class ContactManagerUtilities {
 		int month;
 		int year;
 		int[] dateArray = new int[3];
+		boolean febOverflow = false;//booleans to facilitate error messages below
+		boolean monthOverflow = false;
+		boolean badFormat = false;
 		try {
 			System.out.println("Please enter the date of the meeting in dd.mm.yyyy format: ");
 			String userEntry = System.console().readLine();
@@ -134,6 +137,7 @@ public class ContactManagerUtilities {
 			}
 			boolean verified = validateDateEntry(userEntry);//determines whether input is valid
 			if (!verified) {
+				badFormat = true;
 				throw illegalArgEx;
 			}
 			Scanner sc = new Scanner(userEntry);//if input is valid, creates a date
@@ -145,28 +149,41 @@ public class ContactManagerUtilities {
 			day = dateArray[0];
 			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
 			year = dateArray[2];
-			if (month == 1 && day == 29) {
-				if ((year % 4 0= 0) && (year % 100 != 0)) {
+			if (month == 1 && day < 28) {
+				if ((year % 4 == 0) && (year % 100 != 0)) {
 					//this is ok - it's a leap year
 				}
 				if ((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)) {
 					//this is ok - it's a leap year
 				}
 				else {
-					throw illegalDateException;//Feb only has 29 days in leap year
+					febOverflow = true;
+					throw illegalArgEx;//Feb only has 29 days in leap year
 				}
 			}
-			
-			
-			
-			//A year will be a leap year if it is divisible by 4 but not by 100. 
-		//If a year is divisible by 4 and by 100, it is not a leap year unless it is also divisible by 400
+			if (month % 2 == 1) {//Disallows day having value of 31 when month has only 30 days
+				if (day > 30) {
+					monthOverflow = true
+					throw illegalArgEx;
+				}
+			}
+			date = new GregorianCalendar(day, month, year);		
 								
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("Error! Please enter the date in dd.mm.yyyy format " +
-			"i.e. 01.11.2013 and finish by pressing RETURN.");
-			date = createDate();
+			if (badFormat) {
+				System.out.println("Error! Please enter the date in dd.mm.yyyy format " +
+				"i.e. 01.11.2013 and finish by pressing RETURN.");
+				date = createDate();
+			}
+			if (febOverflow) {
+				System.out.println("Error! February has 28 days outside of a leap year.");
+				date = createDate();
+			}
+			if (monthOverflow) {
+				System.out.println("Error! The month you specified has 30 days.");
+				date = createDate();
+			} 
 		}
 		return date;	
 	}
@@ -182,8 +199,7 @@ public class ContactManagerUtilities {
 		}
 		return false;
 	}
-		//MUST DEAL WITH MONTHS THAT HAVE 30/31 DAYS!!!
-		.
+		
 	
 		
 		

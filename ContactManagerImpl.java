@@ -667,13 +667,18 @@ public class ContactManagerImpl implements ContactManager {
 									Calendar date = ContactManagerUtilities.createDate();
 									if (date == null) {
 										break userSelection;//go back to main menu, TEST THIS
+									}
 									List<Meetings> foundMeetings = getMeetingList(date);
 									ContactManagerUtilities.printList(foundMeetings);
 									break;
 									
 							case 2: System.out.println("*** LOOK UP MEETING -- Search By Meeting ID");
 									System.out.println("Please enter a meeting ID: ");
-									//display a list of meeting IDs?
+									int id = ContactManagerUtilities.validateNumber();
+									if (id == null) {
+										break userSelection;//go back to main menu - user entered 'back'
+									}										
+									Meeting meeting = getMeeting(id);
 									 
 						break;
 

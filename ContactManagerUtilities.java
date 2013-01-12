@@ -215,13 +215,38 @@ public class ContactManagerUtilities {
 		System.out.println();
 		System.out.println();
 		System.out.println("*** LOOK UP MEETING");
-		System.out.println("1. Search by date       " + "\t" + " 2. Search by meeting ID");
-		System.out.println("3. Search by contact    " + "\t" + " 4. Search future meetings");
-		System.out.println("5. Search past meetings " + "\t" + " 6. Return to main menu");
+		System.out.println("1. Search by date                    " + "\t" + "2. Search by meeting ID");
+		System.out.println("3. Search future meetings by contact " + "\t" + "4. Search past meetings by contact");
+		System.out.println("5. Search past meetings              " + "\t" + "6. Search future meetings");
+		System.out.println("7. Display list of all meetings      " + "\t" + "8. Return to main menu");
 		System.out.print("Select option: ");		
-		int selection = validateOption(1, 6);		
+		int selection = validateOption(1, 8);		
 		return selection;	
 	}
+	
+	public static int searchByContactOptions() {
+		System.out.println("1. Search by contact ID");
+		System.out.println("2. Search by contact name");
+		System.out.println("3. Return to main menu");
+		System.out.println("Select option: ");
+		int selection = validateOption(1, 3);
+		return selection;
+	}
+	
+	/**
+	Meeting methods:
+	PastMeeting getPastMeeting(int id);
+
+	FutureMeeting getFutureMeeting(int id);
+
+	Meeting getMeeting(int id);
+
+	List<Meeting> getFutureMeetingList(Contact contact);
+
+	List<Meeting> getMeetingList(Calendar date);
+
+	List<PastMeeting> getPastMeetingList(Contact contact);
+	*/
 	
 	/**
 	* A method that prints the details of the meeting
@@ -251,10 +276,7 @@ public class ContactManagerUtilities {
 	* interpreted as an int.
 	*/
 	public static int validateNumber(String entry) {
-		int num = null;
-		if (entry.equals("back")) { // to allow the user to return to main menu
-			return num;
-		}
+		int num;
 		try {
 			num = Integer.parseInt(entry);
 		}
@@ -291,20 +313,7 @@ public class ContactManagerUtilities {
 		
 		
 	
-	/**
-	Meeting methods:
-	PastMeeting getPastMeeting(int id);
-
-	FutureMeeting getFutureMeeting(int id);
-
-	Meeting getMeeting(int id);
-
-	List<Meeting> getFutureMeetingList(Contact contact);
-
-	List<Meeting> getMeetingList(Calendar date);
-
-	List<PastMeeting> getPastMeetingList(Contact contact);
-	*/
+	
 		
 	
 		

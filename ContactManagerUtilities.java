@@ -108,6 +108,7 @@ public class ContactManagerUtilities {
 		return attendees;	
 	}
 	
+	
 	/*
 	* A method to validate a user-entered String of
 	* digits separated by commas and spaces.
@@ -131,7 +132,7 @@ public class ContactManagerUtilities {
 	* be assigned a date of 31.
 	*/
 	public static Calendar createDate() {
-		Calendar date = null;
+		Calendar date = null;		
 		int day;
 		int month;
 		int year;
@@ -203,7 +204,7 @@ public class ContactManagerUtilities {
 		//checks date format, allowing d.m.yyyy or dd.mm.yyyy. Rules out invalid days and months i.e. 59.40.2001
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][2][0][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean verified = m.matches();//upshot - matches or doesn't
+		boolean verified = m.matches();
 		if (verified) {
 			return true;
 		}
@@ -214,29 +215,37 @@ public class ContactManagerUtilities {
 		System.out.println();
 		System.out.println();
 		System.out.println("*** LOOK UP MEETING");
-		System.out.println("1. Search all meetings  " + "\t" + " 2. Search future meetings");
-		System.out.println("3. Search past meetings);
-		System.out.println("(Exit back to main menu at any point by entering \"back\")");
-		System.out.print("Select option: ");
-		int selection = validateOption(1, 3);		
+		System.out.println("1. Search by date       " + "\t" + " 2. Search by meeting ID");
+		System.out.println("3. Search by contact    " + "\t" + " 4. Search future meetings");
+		System.out.println("5. Search past meetings " + "\t" + " 6. Return to main menu");
+		System.out.print("Select option: ");		
+		int selection = validateOption(1, 6);		
 		return selection;	
 	}
 	
+	
+	public static int searchByDate() {
+		System.out.println();
+		System.out.println();
+		System.out.println("*** LOOK UP MEETING -- Search By Date");
+				
+		
+		
+	
+	/**
+	Meeting methods:
 	PastMeeting getPastMeeting(int id);
 
+	FutureMeeting getFutureMeeting(int id);
 
-FutureMeeting getFutureMeeting(int id);
+	Meeting getMeeting(int id);
 
+	List<Meeting> getFutureMeetingList(Contact contact);
 
-Meeting getMeeting(int id);
+	List<Meeting> getMeetingList(Calendar date);
 
-
-List<Meeting> getFutureMeetingList(Contact contact);
-
-
-List<Meeting> getMeetingList(Calendar date);
-
-List<PastMeeting> getPastMeetingList(Contact contact);
+	List<PastMeeting> getPastMeetingList(Contact contact);
+	*/
 		
 	
 		

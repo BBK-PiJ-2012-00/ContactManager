@@ -236,11 +236,12 @@ public class ContactManagerUtilities {
 			date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
-			System.out.println(c.getId() + "\t" + (c.getName());
+			System.out.println(c.getId() + "\t" + c.getName());
 		}
 		if (meeting instanceof PastMeeting) {
+			PastMeeting pMeeting = (PastMeeting) meeting;
 			System.out.println("Notes: ");
-			System.out.println(meeting.getNotes());
+			System.out.println(pMeeting.getNotes());
 		}
 	}
 	
@@ -250,16 +251,17 @@ public class ContactManagerUtilities {
 	* interpreted as an int.
 	*/
 	public static int validateNumber(String entry) {
-		if (entry.equals("back") { // to allow the user to return to main menu
-			return null;
+		int num = null;
+		if (entry.equals("back")) { // to allow the user to return to main menu
+			return num;
 		}
 		try {
-			int num = Integer.parseInt(entry);
+			num = Integer.parseInt(entry);
 		}
 		catch (NumberFormatException ex) {
-			System.out.printn("Error: Please enter a number!");
+			System.out.println("Error: Please enter a number!");
 			entry = System.console().readLine();
-			return validateNumbervalidateNumber(entry);
+			return validateNumber(entry);
 		}
 		return num;
 	}
@@ -267,10 +269,10 @@ public class ContactManagerUtilities {
 	/*
 	* Method to print lists containing Meetings or subtypes of Meeting.
 	*/
-	public static <? extends Meeting> void printMeetingList(List<? extends Meeting> list) {
+	public static void printMeetingList(List<? extends Meeting> list) {
 		//date and id
 		System.out.println("Meetings: ");
-		for (<? extends Meeting> m : list) {
+		for (Meeting m : list) {
 			Calendar date = m.getDate();
 			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
 				"." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));

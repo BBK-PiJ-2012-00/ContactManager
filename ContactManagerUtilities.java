@@ -244,6 +244,7 @@ public class ContactManagerUtilities {
 		}
 	}
 	
+	
 	/**
 	* A method to validate that user input can be
 	* interpreted as an int.
@@ -262,6 +263,21 @@ public class ContactManagerUtilities {
 		}
 		return num;
 	}
+	
+	/*
+	* Method to print lists containing Meetings or subtypes of Meeting.
+	*/
+	public static <? extends Meeting> void printMeetingList(List<? extends Meeting> list) {
+		//date and id
+		System.out.println("Meetings: ");
+		for (<? extends Meeting> m : list) {
+			Calendar date = m.getDate();
+			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
+				"." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
+		}
+	}
+		
+		
 		
 		
 		
@@ -269,12 +285,7 @@ public class ContactManagerUtilities {
 		
 	
 	
-	public static int searchFutureMeetings() {
-		System.out.println();
-		System.out.println();
-		System.out.println("*** LOOK UP MEETING -- Search Future Meetings");
-		//won't need this - seach future meetings/past meetings is done by ID
-				
+	
 		
 		
 	

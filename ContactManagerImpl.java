@@ -120,7 +120,7 @@ public class ContactManagerImpl implements ContactManager {
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has already taken place!");
 		}
-		Iterator<Meeting> iteratorFM = pastMeetings.iterator();
+		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
 		Meeting meeting = null;
 		while (iteratorFM.hasNext()) {
 			meeting = iteratorFM.next();
@@ -692,13 +692,34 @@ public class ContactManagerImpl implements ContactManager {
 									}
 							
 							case 3: System.out.println("*** LOOK UP MEETING -- Search Future Meetings by Contact");
-									System.out.println("Please enter a contact's name: ");
-									String name = System.console().readLine();
-									Set<Contact> contactMatches = getContacts(name);
-									if (contactMatches.isEmpty()) {
-										System.out.println("No contacts matching that name were found.");
+									boolean done = false;
+									int userSubChoice = ContactManagerUtilities.searchByContactOptions();
 									
-									//int userSubChoice = ContactManagerUtilities.searchByContactOptions();
+									switch (userSubChoice) {
+										case 1: System.out.println("Please enter a contact's ID:");
+												String entry = System.console().readLine();
+												if (entry.equals("back")) {
+													break userSelection;//go back to main menu
+												}
+												int id = ContactManagerUtilities.validateNumber(entry);
+												FutureMeeting fMeeting = getFutureMeeting(id);
+												if (fMeeting == null) {
+													System.out.println("No meeting matching that ID found.");
+													break userSelection;//go back to main menu
+												}
+												
+													 
+									
+									
+									while (!done) {
+										System.out.println("Please enter a contact's name: ");
+										String name = System.console().readLine();
+										Set<Contact> contactMatches = getContacts(name);
+										if (contactMatches.isEmpty()) {
+											System.out.println("No contacts matching that name were found.");
+											System.out.println("1. Try again \n 2. Exit to main menu"
+									
+									
 									
 									
 									 
@@ -709,7 +730,7 @@ public class ContactManagerImpl implements ContactManager {
 PastMeeting getPastMeeting(int id);
 
 
-FutureMeeting getFutureMeeting(int id);
+DONEFutureMeeting getFutureMeeting(int id);
 
 
 DONEMeeting getMeeting(int id);

@@ -665,9 +665,16 @@ public class ContactManagerImpl implements ContactManager {
 							case 1: System.out.println("*** LOOK UP MEETING -- Search By Date");
 									System.out.println("Please enter a date: ");
 									Calendar date = ContactManagerUtilities.createDate();
+									if (date == null) {
+										break userSelection;//go back to main menu, TEST THIS
 									List<Meetings> foundMeetings = getMeetingList(date);
 									ContactManagerUtilities.printList(foundMeetings);
 									break;
+									
+							case 2: System.out.println("*** LOOK UP MEETING -- Search By Meeting ID");
+									System.out.println("Please enter a meeting ID: ");
+									//display a list of meeting IDs?
+									 
 						break;
 
 PastMeeting getPastMeeting(int id);

@@ -223,6 +223,29 @@ public class ContactManagerUtilities {
 		return selection;	
 	}
 	
+	/**
+	* A method that prints the details of the meeting
+	* taken as a parameter. If the meeting is a past
+	* meeting, it also prints the meeting notes.
+	*/
+	public static void printMeetingDetails(Meeting meeting) {
+		System.out.println("Meeting details: ");
+		System.out.println("ID:........ " + meeting.getId());
+		System.out.println("Date:..... ." + meeting.getDate());
+		System.out.println("Attendees: ");
+		for (Contact c : meeting.getContacts()) {
+			System.out.println(c.getId() + "\t" + (c.getName());
+		}
+		if (meeting instanceof PastMeeting) {
+			System.out.println("Notes: ");
+			System.out.println(meeting.getNotes());
+		}
+	}
+		
+		
+		
+		
+	
 	
 	public static int searchFutureMeetings() {
 		System.out.println();

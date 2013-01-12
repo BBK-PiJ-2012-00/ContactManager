@@ -179,7 +179,7 @@ public class ContactManagerUtilities {
 					throw illegalArgEx;
 				}
 			}	
-			date = new GregorianCalendar(day, month, year);					
+			date = new GregorianCalendar(year, month, day);					
 		}
 		catch (IllegalArgumentException ex) {
 			if (badFormat) {
@@ -188,7 +188,7 @@ public class ContactManagerUtilities {
 				return createDate();
 			}
 			if (febOverflow) {
-				System.out.println("Error! February has 28 days outside of a leap year.");
+				System.out.println("Invalid date! February has 28 days outside of a leap year.");
 				return createDate();
 			}
 			if (monthOverflow) {
@@ -224,10 +224,11 @@ public class ContactManagerUtilities {
 	}
 	
 	
-	public static int searchByDate() {
+	public static int searchFutureMeetings() {
 		System.out.println();
 		System.out.println();
-		System.out.println("*** LOOK UP MEETING -- Search By Date");
+		System.out.println("*** LOOK UP MEETING -- Search Future Meetings");
+		//won't need this - seach future meetings/past meetings is done by ID
 				
 		
 		

@@ -526,6 +526,9 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		catch (NullPointerException nex) {
 			System.out.println("Error: Please ensure that you enter a name.");
+			System.out.println("Contact name: ");
+			String name2 = System.console().readLine();
+			return getContacts(name2);
 		}
 		return contactSet;
 	}
@@ -662,17 +665,17 @@ public class ContactManagerImpl implements ContactManager {
 						System.out.println("*** LOOK UP A MEETING");
 						int userChoice = ContactManagerUtilities.lookUpMeeting();
 						switch (userChoice) {
-							case 1: System.out.println("*** LOOK UP MEETING -- Search By Date");
+							case 1: System.out.println("*** LOOK UP MEETING -- Search by Date");
 									System.out.println("Please enter a date: ");
 									Calendar date = ContactManagerUtilities.createDate();
 									if (date == null) {
 										break userSelection;//go back to main menu, TEST THIS
 									}
 									List<Meetings> foundMeetings = getMeetingList(date);
-									ContactManagerUtilities.printList(foundMeetings);
+									ContactManagerUtilities.printMeetingList(foundMeetings);
 									break;
 									
-							case 2: System.out.println("*** LOOK UP MEETING -- Search By Meeting ID");
+							case 2: System.out.println("*** LOOK UP MEETING -- Search by Meeting ID");
 									System.out.println("Please enter a meeting ID: ");
 									String entry = System.console().readLine();
 									if (entry.equals("back")) {
@@ -687,8 +690,21 @@ public class ContactManagerImpl implements ContactManager {
 										System.out.println("No meetings matching that date found!);
 										break userSelection;//go back to main menu
 									}
+							
+							case 3: System.out.println("*** LOOK UP MEETING -- Search Future Meetings by Contact");
+									System.out.println("Please enter a contact's name: ");
+									String name = System.console().readLine();
+									Set<Contact> contactMatches = getContacts(name);
+									if (contactMatches.isEmpty()) {
+										System.out.println("No contacts matching that name were found.");
+									
+									//int userSubChoice = ContactManagerUtilities.searchByContactOptions();
+									
+									
 									 
 						break;
+						
+//search by name default choice -- if more than one contact comes back, then ask for selection by ID
 
 PastMeeting getPastMeeting(int id);
 
@@ -696,13 +712,13 @@ PastMeeting getPastMeeting(int id);
 FutureMeeting getFutureMeeting(int id);
 
 
-Meeting getMeeting(int id);
+DONEMeeting getMeeting(int id);
 
 
 List<Meeting> getFutureMeetingList(Contact contact);
 
 
-List<Meeting> getMeetingList(Calendar date);
+DONEList<Meeting> getMeetingList(Calendar date);
 
 List<PastMeeting> getPastMeetingList(Contact contact);
 				

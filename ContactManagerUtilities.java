@@ -231,7 +231,9 @@ public class ContactManagerUtilities {
 	public static void printMeetingDetails(Meeting meeting) {
 		System.out.println("Meeting details: ");
 		System.out.println("ID:........ " + meeting.getId());
-		System.out.println("Date:..... ." + meeting.getDate());
+		Calendar date = meeting.getDate();
+		System.out.println("Date:..... ." + date.get(Calendar.DAY_OF_MONTH) + "." + 
+			date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
 			System.out.println(c.getId() + "\t" + (c.getName());
@@ -241,6 +243,26 @@ public class ContactManagerUtilities {
 			System.out.println(meeting.getNotes());
 		}
 	}
+	
+	/**
+	* A method to validate that user input can be
+	* interpreted as an int.
+	*/
+	public static int validateNumber(String entry) {
+		if (entry.equals("back") { // to allow the user to return to main menu
+			return null;
+		}
+		try {
+			int num = Integer.parseInt(entry);
+		}
+		catch (NumberFormatException ex) {
+			System.out.printn("Error: Please enter a number!");
+			entry = System.console().readLine();
+			return validateNumbervalidateNumber(entry);
+		}
+		return num;
+	}
+		
 		
 		
 		

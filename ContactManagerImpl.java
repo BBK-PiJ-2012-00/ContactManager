@@ -262,7 +262,7 @@ public class ContactManagerImpl implements ContactManager {
 	* duplicates. 
 	* 
 	* @param contact one of the user’s contacts 
-	* @return the list of future meeting(s) scheduled with this contact (maybe empty). 
+	* @return the list of !!future meeting(s) scheduled with this contact (maybe empty). 
 	* @throws IllegalArgumentException if the contact does not exist
 	*/ 
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
@@ -660,13 +660,39 @@ public class ContactManagerImpl implements ContactManager {
 						
 				case 2: System.out.println("\n");
 						System.out.println("*** LOOK UP A MEETING");
+						int userChoice = ContactManagerUtilities.lookUpMeeting();
+						switch (userChoice) {
+							case 1: System.out.println("*** LOOK UP MEETING -- Search By Date");
+									System.out.println("Please enter a date: ");
+									Calendar date = ContactManagerUtilities.createDate();
+									List<Meetings> foundMeetings = getMeetingList(date);
+						break;
+
+PastMeeting getPastMeeting(int id);
+
+
+FutureMeeting getFutureMeeting(int id);
+
+
+Meeting getMeeting(int id);
+
+
+List<Meeting> getFutureMeetingList(Contact contact);
+
+
+List<Meeting> getMeetingList(Calendar date);
+
+List<PastMeeting> getPastMeetingList(Contact contact);
+				
+				case 5: System.out.println("\n");
+						System.out.println("*** ADD NEW CONTACT");
 				
 				case 7: flush();
 						break;
 						
 				case 8: flush();
 						finished = true;
-						System.out.println("\n" + "Closing...")'
+						System.out.println("\n" + "Closing...");
 						break;
 			}
 

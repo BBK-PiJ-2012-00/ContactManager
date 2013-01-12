@@ -666,6 +666,8 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("Please enter a date: ");
 									Calendar date = ContactManagerUtilities.createDate();
 									List<Meetings> foundMeetings = getMeetingList(date);
+									ContactManagerUtilities.printList(foundMeetings);
+									break;
 						break;
 
 PastMeeting getPastMeeting(int id);

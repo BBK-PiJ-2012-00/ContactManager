@@ -677,11 +677,11 @@ public class ContactManagerImpl implements ContactManager {
 				
 				case 1: System.out.println("\n");
 						System.out.println("*** ADD A FUTURE MEETING");
-						int[] attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
+						attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
 						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
 							break;
 						}
-						Set<Contact> attendees = getContacts(attendeeArray);
+						attendees = getContacts(attendeeArray);
 						date = ContactManagerUtilities.createDate();
 						if (date == null) {
 							break;
@@ -881,10 +881,22 @@ public class ContactManagerImpl implements ContactManager {
 						
 				
 				case 4: //add notes to a meeting that has taken place	
-								
+						System.out.println("*** ADD MEETING NOTES");
+						System.out.println("Enter the ID of the meeting: ");
+						entry = System.console().readLine();
+						if (entry.equals("back")) { //option to quit
+							break;
+						}
+						id = ContactManagerUtilities.validateNumber(entry);
+						System.out.println("Enter meeting notes:");
+						entry = System.console().readLine();
+						this.addMeetingNotes(id, entry);
+						break;
+						
 
 				
-				case 5: System.out.println("\n");
+				case 5: //add a new contact
+						System.out.println("\n");
 						System.out.println("*** ADD NEW CONTACT");
 						
 				case 6: //look up contact
@@ -899,7 +911,13 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 
-
+* @param id the ID of the meeting 
+	* @param text messages to be added about the meeting. 
+	* @throws IllegalArgumentException if the meeting does not exist 
+	* @throws IllegalStateException if the meeting is set for a date in the future 
+	* @throws NullPointerException if the notes are null 
+	*/
+	public void addMeetingNotes(int id, String text) {
 
 //after an option is selected, the option should be followed through, and then the main
 //menu should be displayed again. The only times this doesn't happen is when the user

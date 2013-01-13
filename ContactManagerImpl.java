@@ -539,7 +539,7 @@ public class ContactManagerImpl implements ContactManager {
 			Iterator<Contact> iterator = contactList.iterator();
 			while (iterator.hasNext()) {
 				contact = iterator.next();
-				if (contact.getName() == name) {
+				if (contact.getName().equals(name)) {
 					contactSet.add(contact);
 				}
 			}	
@@ -916,7 +916,7 @@ public class ContactManagerImpl implements ContactManager {
 						break;
 						
 						
-				case 6: //look up contact
+				case 6: //look up contact //look up multiple?
 						System.out.println("*** LOOK UP CONTACT");
 						int userSubChoice = ContactManagerUtilities.lookUpContactOptions();
 						switch (userSubChoice) {
@@ -947,8 +947,8 @@ public class ContactManagerImpl implements ContactManager {
 									if (contact == null) {
 										break;//go back to main menu
 									}
-									System.out.println(contact.getName() + "/t" + "ID: " + contact.getId());
-									System.out.println("Notes: " + contact.getNotes());
+									System.out.println(contact.getName() + "\t" + "ID: " + contact.getId());
+									System.out.println("Notes: " + contact.getNotes() + "\n");
 									break;					
 							
 							
@@ -985,6 +985,8 @@ public class ContactManagerImpl implements ContactManager {
 //so if the user enters 'back' or 'quit', return to main menu.
 		
 //ADD COMMENTS TO EACH CASE FOR CLARITY	
+
+//DISPLAY CONTACT LIST?
 	
 		
 		

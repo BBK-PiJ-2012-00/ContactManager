@@ -706,7 +706,7 @@ public class ContactManagerImpl implements ContactManager {
 									int id = ContactManagerUtilities.validateNumber(entry);								
 									Meeting meeting = getMeeting(id);
 									if (meeting != null) {
-										ContactManagerUtilities.printMeetingDetails();
+										ContactManagerUtilities.printMeetingDetails(meeting);
 										break;//go back to main menu
 									}
 									else {

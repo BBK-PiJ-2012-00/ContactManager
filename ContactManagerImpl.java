@@ -508,7 +508,7 @@ public class ContactManagerImpl implements ContactManager {
 	* Returns a single contact matching an ID.
 	*/
 	public Contact getContact(int id) {
-		for (Contact c : contactList) {
+		for (Contact c : contactList) {//matches against list of contacts
 			if (c.getId() == id) {
 				return c;
 			}
@@ -721,40 +721,71 @@ public class ContactManagerImpl implements ContactManager {
 													break userSelection;//go back to main menu
 												}
 												int id = ContactManagerUtilities.validateNumber(entry);
-												Set<Contact> contacts = getContacts(id);//will only contain 1 contact: only 1 ID given
-												//getContact(int id) method would make things simpler...
-												//or should the user just manage by using contact name?
-												//which returns a set of contacts matching, for display on screen with ids
-												//that they can then select?
-													
-												//should only be one contact in the set
-												//what about a getContact method?
-												List<Meeting> fMeetings = getFutureMeetingList(
-												
-												List<Meeting> getFutureMeetingList(Contact contact);
-												 
-												
+												Contact contact = getContact(id);
+												if (contact == null) {
+													break userSelection;//go back to main menu
+												}											
+												List<Meeting> fMeetings = getFutureMeetingList(contact);
 												if (fMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
 													break userSelection;//go back to main menu
 												}
+												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
+												break userSelection; 
+												
+										case 2: System.out.println("Please enter a contact's name:");
+												String entry = System.console().readLine();
+												Set<Contact> contacts = getContacts(entry);
+												if (contacts.isEmpty() {
+													System.out.println("No contacts found.");
+													break userSelection;
+												}
+												System.out.println("Contacts matching this name: ");
+												for (Contact c : contacts) {
+													System.out.println(c.getName() + "\t" + "ID: " + c.getId());
+												}
+												System.out.println("Enter the ID of the contact you wish to select: ");
+												entry = System.console().readLine();
+												int id = ContactManagerUtilities.validateNumber(entry);
+												Contact contact = getContact(id);																		
+												List<Meeting> fMeetings = getFutureMeetingList(contact);
+												if (fMeetings.isEmpty()) {
+													System.out.println("No meetings found.");
+													break userSelection;//go back to main menu
+												}
+												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
+												break userSelection; 								
+												
+										
+										case 3: break userSelection;
+									}
+							
+							case 4: //look up meeting: search past meetings by contact
+							
+							case 5:// search past meetings
+							
+							case 6://search future meetings
+								
+								case 7:// display list of all meetings?
+							
+								case 8: break userselection;
+						
+						}
+						
+				case 3: //create record of past meeting
+				
+				case 4: //add notes to a meeting that has taken place
+							
+						
+												
+												
+												 
+												
+												
 												
 													 
 									
 									
-									while (!done) {
-										System.out.println("Please enter a contact's name: ");
-										String name = System.console().readLine();
-										Set<Contact> contactMatches = getContacts(name);
-										if (contactMatches.isEmpty()) {
-											System.out.println("No contacts matching that name were found.");
-											System.out.println("1. Try again \n 2. Exit to main menu"
-									
-									
-									
-									
-									 
-						break;
 						
 //search by name default choice -- if more than one contact comes back, then ask for selection by ID
 
@@ -775,6 +806,8 @@ List<PastMeeting> getPastMeetingList(Contact contact);
 				
 				case 5: System.out.println("\n");
 						System.out.println("*** ADD NEW CONTACT");
+						
+				case 6: //look up contact
 				
 				case 7: flush();
 						break;

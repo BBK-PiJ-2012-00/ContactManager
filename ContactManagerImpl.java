@@ -460,6 +460,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		catch (NullPointerException nex) {
 			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");
+			//option to reenter a good idea
 		}
 	}
 	
@@ -898,6 +899,19 @@ public class ContactManagerImpl implements ContactManager {
 				case 5: //add a new contact
 						System.out.println("\n");
 						System.out.println("*** ADD NEW CONTACT");
+						System.out.println("Please enter the contact's name:");
+						entry = System.console().readLine();
+						if (entry.equals("back")) {
+							break; //option to quit
+						}
+						System.out.println("Please enter notes about the contact:");
+						String notes = System.console().readLine();
+						if (notes.equals("back")) {
+							break; //option to quit
+						}
+						this.addNewContact(entry, notes);
+						break;
+						
 						
 				case 6: //look up contact
 				
@@ -911,13 +925,8 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 
-* @param id the ID of the meeting 
-	* @param text messages to be added about the meeting. 
-	* @throws IllegalArgumentException if the meeting does not exist 
-	* @throws IllegalStateException if the meeting is set for a date in the future 
-	* @throws NullPointerException if the notes are null 
-	*/
-	public void addMeetingNotes(int id, String text) {
+
+
 
 //after an option is selected, the option should be followed through, and then the main
 //menu should be displayed again. The only times this doesn't happen is when the user

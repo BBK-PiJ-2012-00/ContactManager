@@ -516,7 +516,7 @@ public class ContactManagerImpl implements ContactManager {
 				return c;
 			}
 		}
-		System.out.println("ID not found!);
+		System.out.println("ID not found!");
 		return null;
 	}
 		
@@ -691,7 +691,7 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("Please enter a date: ");
 									Calendar date = ContactManagerUtilities.createDate();
 									if (date == null) {
-										break userSelection;//go back to main menu, TEST THIS
+										break;//go back to main menu, TEST THIS
 									}
 									List<Meetings> foundMeetings = getMeetingList(date);
 									ContactManagerUtilities.printMeetingList(foundMeetings);
@@ -701,17 +701,19 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("Please enter a meeting ID: ");
 									String entry = System.console().readLine();
 									if (entry.equals("back")) {
-										break userSelection;//go back to main menu
+										break;//go back to main menu
+									}
 									int id = ContactManagerUtilities.validateNumber(entry);								
 									Meeting meeting = getMeeting(id);
 									if (meeting != null) {
 										ContactManagerUtilities.printMeetingDetails();
-										break userSelection;//go back to main menu
+										break;//go back to main menu
 									}
 									else {
-										System.out.println("No meetings matching that date found!);
-										break userSelection;//go back to main menu
+										System.out.println("No meetings matching that date found!");
+										break;//go back to main menu
 									}
+									break;
 							
 							case 3: System.out.println("*** LOOK UP MEETING -- Search Future Meetings by Contact");
 									int userSubChoice = ContactManagerUtilities.searchByContactOptions();
@@ -720,27 +722,27 @@ public class ContactManagerImpl implements ContactManager {
 										case 1: System.out.println("Please enter a contact's ID:");
 												String entry = System.console().readLine();
 												if (entry.equals("back")) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												int id = ContactManagerUtilities.validateNumber(entry);
 												Contact contact = getContact(id);
 												if (contact == null) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}											
 												List<Meeting> fMeetings = getFutureMeetingList(contact);
 												if (fMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
-												break userSelection; 
+												break; 
 												
 										case 2: System.out.println("Please enter a contact's name:");
 												String entry = System.console().readLine();
 												Set<Contact> contacts = getContacts(entry);
-												if (contacts.isEmpty() {
+												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
-													break userSelection;
+													break;
 												}
 												System.out.println("Contacts matching this name: ");
 												for (Contact c : contacts) {
@@ -751,19 +753,22 @@ public class ContactManagerImpl implements ContactManager {
 												int id = ContactManagerUtilities.validateNumber(entry);
 												Contact contact = getContact(id);
 												if (contact == null) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}																			
 												List<Meeting> fMeetings = getFutureMeetingList(contact);
 												if (fMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
-												break userSelection; 								
+												break; 								
 												
 										
-										case 3: break userSelection;
+										case 3: break userSelection;									
 									}
+									break;
+									
+									
 							
 							case 4: System.out.println("*** LOOK UP MEETING -- Search Past Meetings by Contact");
 									int userSubChoice = ContactManagerUtilities.searchByContactOptions();
@@ -772,27 +777,27 @@ public class ContactManagerImpl implements ContactManager {
 										case 1: System.out.println("Please enter a contact's ID:");
 												String entry = System.console().readLine();
 												if (entry.equals("back")) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												int id = ContactManagerUtilities.validateNumber(entry);
 												Contact contact = getContact(id);
 												if (contact == null) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}											
 												List<Meeting> pMeetings = getPastMeetingList(contact);
 												if (pMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
-												break userSelection; 
+												break; 
 												
 										case 2: System.out.println("Please enter a contact's name:");
 												String entry = System.console().readLine();
 												Set<Contact> contacts = getContacts(entry);
-												if (contacts.isEmpty() {
+												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
-													break userSelection;
+													break;
 												}
 												System.out.println("Contacts matching this name: ");
 												for (Contact c : contacts) {
@@ -803,66 +808,50 @@ public class ContactManagerImpl implements ContactManager {
 												int id = ContactManagerUtilities.validateNumber(entry);
 												Contact contact = getContact(id);	
 												if (contact == null) {
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}																		
 												List<Meeting> pMeetings = getPastMeetingList(contact);
 												if (pMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
-													break userSelection;//go back to main menu
+													break;//go back to main menu
 												}
 												ContactManagerUtilities.printMeetingDetails(fMeetings);//print details of meetings
-												break userSelection; 													
+												break; 													
 										
-										case 3: break userSelection;
+										case 3: break;
 									}
+									break;
 									
 							//LOOK UP MEETING MENU
 							case 5: System.out.println("*** LOOK UP MEETING -- Search Past Meetings by ID");
 								    int id = ContactManagerUtilities.validateNumber(entry);
-								    PastMeeting pastMeeting = getPastMeeting(int id);
+								    PastMeeting pastMeeting = this.getPastMeeting(id);
 								    if (pastMeeting == null) {
-								    	break userSelection;//return to main
+								    	break;//return to main
 								    }
 								    ContactManagerUtilities.printMeetingDetails(pastMeeting);
-								    break userSelection;
-							
+								    break;
 												
 							//LOOK UP MEETING MENU
 							case 6: System.out.println("*** LOOK UP MEETING -- Search Future Meetings by ID");
 								    int id = ContactManagerUtilities.validateNumber(entry);
-									FutureMeeting futureMeeting = getFutureMeeting(int id);
+									FutureMeeting futureMeeting = getFutureMeeting(id);
 								    if (futureMeeting == null) {
-								    	break userSelection;//return to main
+								    	break;//return to main
 								    }
 								    ContactManagerUtilities.printMeetingDetails(futureMeeting);
-								    break userSelection;
+								    break;
 							
 							
 							//LOOK UP MEETING MENU
-							case 7: break userselection;
+							case 7: break;
 						
 						}
+						break;
 						
 				case 3: //create record of past meeting
 				
-				case 4: //add notes to a meeting that has taken place
-							
-						
-												
-												
-												 
-												
-												
-												
-													 
-									
-									
-						
-
-
-PastMeeting getPastMeeting(int id);
-
-FutureMeeting getFutureMeeting(int id);
+				case 4: //add notes to a meeting that has taken place			
 
 				
 				case 5: System.out.println("\n");
@@ -878,6 +867,7 @@ FutureMeeting getFutureMeeting(int id);
 						System.out.println("\n" + "Closing...");
 						break;
 			}
+		}
 
 
 //after an option is selected, the option should be followed through, and then the main
@@ -905,14 +895,16 @@ FutureMeeting getFutureMeeting(int id);
 	
 	
 	
-	}
+	
 	
 
 
 
-}
+
+
 }
 
+}
 
 //ask user for dates in specific format, which can then be converted to create a new Calendar
 //make sure that if wrong format is entered, you throw an exception.

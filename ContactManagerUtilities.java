@@ -299,7 +299,22 @@ public class ContactManagerUtilities {
 				"." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
 		}
 	}
-	//notes for old meetings?
+	
+	
+	/*
+	* Look up contact submenu
+	*/
+	public static int lookUpContactOptions() {
+		System.out.println();
+		System.out.println();
+		System.out.println("1. Search by name      " + "\t" + "2. Search by ID");
+		System.out.println("3. Return to main menu ");
+		System.out.print("Select option: ");		
+		int selection = validateOption(1, 3);		
+		return selection;	
+	}
+	
+	
 		
 		
 		

@@ -214,13 +214,12 @@ public class ContactManagerUtilities {
 	public static int lookUpMeetingOptions() {
 		System.out.println();
 		System.out.println();
-		System.out.println("*** LOOK UP MEETING");
 		System.out.println("1. Search by date                    " + "\t" + "2. Search by meeting ID");
 		System.out.println("3. Search future meetings by contact " + "\t" + "4. Search past meetings by contact");
-		System.out.println("5. Search past meetings              " + "\t" + "6. Search future meetings");
-		System.out.println("7. Display list of all meetings      " + "\t" + "8. Return to main menu");
+		System.out.println("5. Search past meetings by ID        " + "\t" + "6. Search future meetings by ID");
+		System.out.println("7. Return to main menu");
 		System.out.print("Select option: ");		
-		int selection = validateOption(1, 8);		
+		int selection = validateOption(1, 7);		
 		return selection;	
 	}
 	
@@ -300,6 +299,7 @@ public class ContactManagerUtilities {
 				"." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
 		}
 	}
+	//notes for old meetings?
 		
 		
 		

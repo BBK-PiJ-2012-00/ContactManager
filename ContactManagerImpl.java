@@ -755,7 +755,7 @@ public class ContactManagerImpl implements ContactManager {
 												
 										case 2: System.out.println("Please enter a contact's name:");
 												entry = System.console().readLine();
-												Set<Contact> contacts = getContacts(entry);
+												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
 													break;
@@ -811,7 +811,7 @@ public class ContactManagerImpl implements ContactManager {
 												
 										case 2: System.out.println("Please enter a contact's name:");
 												entry = System.console().readLine();
-												Set<Contact> contacts = getContacts(entry);
+												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
 													break;
@@ -918,7 +918,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 				case 6: //look up contact
 						System.out.println("*** LOOK UP CONTACT");
-						userSubChoice = ContactManagerUtilities.lookUpContactOptions();
+						int userSubChoice = ContactManagerUtilities.lookUpContactOptions();
 						switch (userSubChoice) {
 						
 							case 1: //look up by name
@@ -947,11 +947,15 @@ public class ContactManagerImpl implements ContactManager {
 									if (contact == null) {
 										break;//go back to main menu
 									}
+									System.out.println(contact.getName() + "/t" + "ID: " + contact.getId());
+									System.out.println("Notes: " + contact.getNotes());
 									break;					
 							
 							
 							case 3: //return to main menu
 									break;
+						}
+						break;
 				
 				
 				
@@ -965,11 +969,6 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 
-* @param name the string to search for 
-	* @return a list with the contacts whose name contains that string. 
-	* @throws NullPointerException if the parameter is null 
-	*/
-	public Set<Contact> getContacts(String name) {
 
 
 //after an option is selected, the option should be followed through, and then the main

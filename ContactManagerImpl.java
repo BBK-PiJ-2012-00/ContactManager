@@ -119,6 +119,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has already taken place!");
+			//what action to take? - safest is to go back to main menu
 		}
 		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
 		Meeting meeting = null;
@@ -496,11 +497,26 @@ public class ContactManagerImpl implements ContactManager {
 			return idMatches;
 		}
 		catch (IllegalArgumentException ex) {
-			System.out.println("Note: The following IDs were not found and were not " + 
-			"added to the attendee list for this meeting: " + "\n" + idString);
+			System.out.println("Note: The following IDs were not found and haven't " +
+				"been added to the attendee list:" + "\n" + idString);
+			//user's next option? Return to main?
 		}
 		return idMatches;
 	}
+	
+	/*
+	* Returns a single contact matching an ID.
+	*/
+	public Contact getContact(int id) {
+		for (Contact c : contactList) {
+			if (c.getId() == id) {
+				return c;
+			}
+		}
+		System.out.println("ID not found!);
+		return null;
+	}
+		
 	
 	/** 
 	* Returns a list with the contacts whose name contains that string. 
@@ -528,6 +544,9 @@ public class ContactManagerImpl implements ContactManager {
 			System.out.println("Error: Please ensure that you enter a name.");
 			System.out.println("Contact name: ");
 			String name2 = System.console().readLine();
+			if (name2.equals("back")) {
+				return null;//allow user to exit rather than get stuck
+			}
 			return getContacts(name2);
 		}
 		return contactSet;
@@ -702,9 +721,21 @@ public class ContactManagerImpl implements ContactManager {
 													break userSelection;//go back to main menu
 												}
 												int id = ContactManagerUtilities.validateNumber(entry);
-												FutureMeeting fMeeting = getFutureMeeting(id);
-												if (fMeeting == null) {
-													System.out.println("No meeting matching that ID found.");
+												Set<Contact> contacts = getContacts(id);//will only contain 1 contact: only 1 ID given
+												//getContact(int id) method would make things simpler...
+												//or should the user just manage by using contact name?
+												//which returns a set of contacts matching, for display on screen with ids
+												//that they can then select?
+													
+												//should only be one contact in the set
+												//what about a getContact method?
+												List<Meeting> fMeetings = getFutureMeetingList(
+												
+												List<Meeting> getFutureMeetingList(Contact contact);
+												 
+												
+												if (fMeetings.isEmpty()) {
+													System.out.println("No meetings found.");
 													break userSelection;//go back to main menu
 												}
 												
@@ -729,8 +760,7 @@ public class ContactManagerImpl implements ContactManager {
 
 PastMeeting getPastMeeting(int id);
 
-
-DONEFutureMeeting getFutureMeeting(int id);
+FutureMeeting getFutureMeeting(int id);
 
 
 DONEMeeting getMeeting(int id);

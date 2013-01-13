@@ -662,15 +662,18 @@ public class ContactManagerImpl implements ContactManager {
 	private void launch() {
 	
 		ContactManagerUtilities.displayWelcome();
-		loadData();
+		loadData();		
 		
-		boolean finished = false;
-		int id;//temporary variables used throughout switch statements
+		//temporary variables used throughout switch statements
+		int id;
 		Contact contact;
 		String entry = "";
 		Calendar date;
 		Set<Contact> attendees;
+		Set<Contact> contacts;
 		int[] attendeeArray;
+		
+		boolean finished = false;
 		
 		while (!finished) {		
 			int userSelection = ContactManagerUtilities.chooseMainMenuOption();
@@ -914,6 +917,43 @@ public class ContactManagerImpl implements ContactManager {
 						
 						
 				case 6: //look up contact
+						System.out.println("*** LOOK UP CONTACT");
+						userSubChoice = ContactManagerUtilities.lookUpContactOptions();
+						switch (userSubChoice) {
+						
+							case 1: //look up by name
+									System.out.println("Please enter a contact's name:");
+									entry = System.console().readLine();
+									contacts = getContacts(entry);
+									if (contacts.isEmpty()) {
+										System.out.println("No contacts found.");
+										break;
+									}
+									System.out.println("Contacts matching this name: ");
+									for (Contact c : contacts) {
+										System.out.println(c.getName() + "\t" + "ID: " + c.getId());
+									
+									}
+									break;
+							
+							case 2: //look up by ID
+									System.out.println("Please enter a contact's ID:");
+									entry = System.console().readLine();
+									if (entry.equals("back")) {
+										break;//go back to main menu
+									}
+									id = ContactManagerUtilities.validateNumber(entry);
+									contact = getContact(id);
+									if (contact == null) {
+										break;//go back to main menu
+									}
+									break;					
+							
+							
+							case 3: //return to main menu
+									break;
+				
+				
 				
 				case 7: flush();
 						break;
@@ -925,7 +965,11 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 
-
+* @param name the string to search for 
+	* @return a list with the contacts whose name contains that string. 
+	* @throws NullPointerException if the parameter is null 
+	*/
+	public Set<Contact> getContacts(String name) {
 
 
 //after an option is selected, the option should be followed through, and then the main
@@ -941,7 +985,7 @@ public class ContactManagerImpl implements ContactManager {
 //when a user has to enter something, it'll most likely be read initially as a String...
 //so if the user enters 'back' or 'quit', return to main menu.
 		
-		
+//ADD COMMENTS TO EACH CASE FOR CLARITY	
 	
 		
 		

@@ -22,6 +22,7 @@ public class ContactManagerUtilities {
 	}
 	
 	
+
 	public static int chooseMainMenuOption() {
 		System.out.println();
 		System.out.println();
@@ -32,29 +33,38 @@ public class ContactManagerUtilities {
 		System.out.println("7. Save data to disk               " + "\t" + " 8. Save and exit.");
 		System.out.println("(Exit back to this menu at any point by entering \"back\")");
 		System.out.print("Select option: ");
+		
 		int selection = validateOption(1, 8);		
 		return selection;	
 	}
 	
+	
+	
+	
 	public static int validateOption(int min, int max) {//to validate user choices from numerical menus
 		int selection;
+		
 		try {
 			selection = Integer.parseInt(System.console().readLine());
 			if (selection < min || selection > max) {
 		 		throw illegalArgEx;
-		 	}
-		 	
+		 	}		 	
 		 }	
+		 
 		 catch (NumberFormatException ex) {
 		 	System.out.println("Please enter a number that corresponds to an option on the menu.");
 		 	return validateOption(min, max);
 		 }	
+		 
 		 catch (IllegalArgumentException ex) {
 		 	System.out.println("Invalid option. Please make a selection from the menu.");
 		 	return validateOption(min, max);		 	
 		 }
+		 
 		 return selection;
-	}	
+	}
+	
+		
 	
 	
 	/**
@@ -68,13 +78,16 @@ public class ContactManagerUtilities {
 		List<Integer> attendeeList = new ArrayList<Integer>();
 		int[] attendees;
 		System.out.println("Your contact list: ");
+		
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
 			return null;//This sends the user back to the main menu via a break statement in ContactManager
 		}
+		
 		for (Contact c : contactList) {//Prints contactList for ease of reference
 			System.out.println(c.getName() + " " + c.getId());
 		}
+		
 		System.out.println("Please enter the IDs of the attendees, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
 		
@@ -83,30 +96,38 @@ public class ContactManagerUtilities {
 			if (userEntry.equals("back")) {
 				return null;//allows user to cancel and return to main menu - ensure main menu handles null appropriately
 			}
+			
 			boolean verified = validateCommaString(userEntry);//determines whether input is valid
+			
 			if (!verified) {
 				throw illegalArgEx;
 			}
+			
 			Scanner sc = new Scanner(userEntry);//if input is valid, creates an arrayList with the user input numbers
 			Pattern delimiterPattern = Pattern.compile("[\\s]?[,][\\s]?");
 			sc.useDelimiter(delimiterPattern);
+			
 			do {
 				int selection = sc.nextInt();
 				attendeeList.add(selection);
 			} while (sc.hasNextInt());
+			
 			attendees = new int[attendeeList.size()]; //converts to array for use in ContactManager getContacts() method
 			//so that it can be ascertained whether the user has selected contacts who exist
 			for (int i = 0; i < attendeeList.size(); i++) {
 				attendees[i] = attendeeList.get(i);
 			}
 		}
+		
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error! Please enter the contact ID numbers separated by a comma " +
 			"i.e. 1, 2, 3 or 1,2,3 and finish by pressing RETURN.");
 			return selectAttendees(contactList);
 		}
+		
 		return attendees;	
 	}
+	
 	
 	
 	/*
@@ -118,12 +139,15 @@ public class ContactManagerUtilities {
 	public static boolean validateCommaString(String userEntry) {
 		Pattern pattern = Pattern.compile("([0-9][0-9]*[\\s]?[,][\\s]?)*[0-9][0-9]*");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean verified = m.matches();//upshot - matches or doesn't
+		boolean verified = m.matches();//returns true if input matches, false otherwise
+		
 		if (verified) {
 			return true;
 		}
+		
 		return false;
 	}
+	
 	
 	
 	/**
@@ -246,6 +270,9 @@ public class ContactManagerUtilities {
 		return date;	
 	}
 	
+	
+	
+	
 	/*
 	* Create date without time.
 	*/
@@ -333,14 +360,21 @@ public class ContactManagerUtilities {
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][1-2][0-9][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
 		boolean verified = m.matches(); //true if matched, false otherwise
+		
 		if (verified) {
 			return true;
 		}
+		
 		return false;
 	}
 	
-	public static boolean validateTimeEntry(String userEntry) {
-		//checks time format, allowing hh:mm / h:mm / hh.mm / h.mm. Rules out invalid times i.e. 25:79		
+	
+	
+	/*
+	* Checks time format, allowing hh:mm / h:mm / hh.mm / h.mm. Rules out invalid 
+	* times i.e. 25:79	
+	*/
+	public static boolean validateTimeEntry(String userEntry) {			
 		Pattern pattern = Pattern.compile("(([0]?[0-9])|([1][0-9])|([2][0-3]))([\\:]|[\\.])(([0-5][0-9]))");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
 		boolean matched = m.matches(); //true if matched, false otherwise
@@ -355,9 +389,12 @@ public class ContactManagerUtilities {
 		System.out.println("5. Search past meetings by ID        " + "\t" + "6. Search future meetings by ID");
 		System.out.println("7. Return to main menu");
 		System.out.print("Select option: ");		
+		
 		int selection = validateOption(1, 7);		
 		return selection;	
 	}
+	
+	
 	
 	public static int searchByContactOptions() {
 		System.out.println();
@@ -365,6 +402,7 @@ public class ContactManagerUtilities {
 		System.out.println("2. Search by contact name");
 		System.out.println("3. Return to main menu");
 		System.out.println("Select option: ");
+		
 		int selection = validateOption(1, 3);
 		return selection;
 	}
@@ -379,6 +417,7 @@ public class ContactManagerUtilities {
 	public static void printMeetingDetails(Meeting meeting) {
 		Calendar date = meeting.getDate();
 		String minutes = "";		
+		
 		if (date.get(Calendar.MINUTE) < 10) {
 			if (date.get(Calendar.MINUTE) == 0) { //so that times such as 12:00 display as such, not as 12:0;
 				minutes += date.get(Calendar.MINUTE) + "0";
@@ -412,28 +451,35 @@ public class ContactManagerUtilities {
 	}
 	
 	
+	
 	/**
 	* A method to validate that user input can be
 	* interpreted as an int.
 	*/
 	public static int validateNumber(String entry) {
 		int num;
+		
 		try {
 			num = Integer.parseInt(entry);
 		}
+		
 		catch (NumberFormatException ex) {
 			System.out.println("Error: Please enter a number!");
 			entry = System.console().readLine();
 			return validateNumber(entry);
 		}
+		
 		return num;
 	}
+	
+	
 	
 	/*
 	* Method to print lists containing Meetings or subtypes of Meeting.
 	*/
 	public static void printMeetingList(List<? extends Meeting> list) {
 		System.out.println("Meeting list: ");
+		
 		for (Meeting m : list) {
 			Calendar date = m.getDate();
 			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
@@ -442,27 +488,32 @@ public class ContactManagerUtilities {
 	}
 	
 	
+	
 	/*
 	* Look up contact submenu
 	*/
 	public static int lookUpContactOptions() {
 		System.out.println();
 		System.out.println();
-		System.out.println("1. Search by name      " + "\t" + "2. Search by ID");
-		System.out.println("3. Return to main menu ");
+		System.out.println("1. Search by name       " + "\t" + "2. Search by ID");
+		System.out.println("3. Display contact list " + "\t" + "4. Return to main menu ");
 		System.out.print("Select option: ");		
-		int selection = validateOption(1, 3);		
+		
+		int selection = validateOption(1, 4);		
 		return selection;	
 	}
+	
 	
 	/*
 	* Display contact list
 	*/
 	public static void displayContactList(Set<Contact> contactList) {
 		System.out.println("Contact List: ");
+		
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty>");
 		}
+		
 		for (Contact c : contactList) {
 			System.out.println("ID: " + c.getId() + "\t" + c.getName());
 		}

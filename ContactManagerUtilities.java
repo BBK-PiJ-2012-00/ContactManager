@@ -131,7 +131,7 @@ public class ContactManagerUtilities {
 	* 29.02 outside of a leap year, and ensures that months with only 30 days cannot
 	* be assigned a date of 31. Rules out invalid times.
 	*/
-	public static Calendar createDate() {
+	public static Calendar createDateAndTime() {
 		Calendar date = null;		
 		int day;
 		int month;
@@ -197,9 +197,13 @@ public class ContactManagerUtilities {
 			System.out.println("Please enter the time of the meeting in 24-hour format (hh:mm) : ");
 			userEntry = System.console().readLine();
 			
+			System.out.println("POINT 1");
+			
 			if (userEntry.equals("back")) {
 				return null;//allows user to cancel and return to main menu 
 			}
+			
+			System.out.println("POINT 2");
 			
 			boolean timeVerified = validateTimeEntry(userEntry);//determines whether input is valid
 			if (!timeVerified) {
@@ -207,16 +211,24 @@ public class ContactManagerUtilities {
 				throw illegalArgEx;
 			}
 			
+			System.out.println("POINT 3");
+			
 			Scanner scTime = new Scanner(userEntry);//if input is valid, creates a time
-			delimiterPattern = Pattern.compile("([\\:]|[\\.]");
+			delimiterPattern = Pattern.compile("([\\:]|[\\.])");
 			scTime.useDelimiter(delimiterPattern);
+			
+			System.out.println("POINT 4");
 			
 			for (int i = 0; i < 2; i++) {
 				timeArray[i] = scTime.nextInt();
 			}
 			
-			hour = dateArray[0];
-			minutes = dateArray[1];	
+			System.out.println("POINT 5");
+			hour = timeArray[0];
+			minutes = timeArray[1];	
+			System.out.println(timeArray[0] + ":" + timeArray[1]);
+			
+			System.out.println("POINT 5");
 				
 			date = new GregorianCalendar(year, month, day, hour, minutes); //creates Calendar object				
 		}
@@ -231,7 +243,89 @@ public class ContactManagerUtilities {
 			if (badTimeFormat) {
 				System.out.println("Error! Please enter the date in 24-hour format " +
 				"i.e. 13:01 and finished by pressing RETURN.");
+				return createDate();
 			}
+			
+			if (febOverflow) {
+				System.out.println("Invalid date! February has 28 days outside of a leap year.");
+				return createDate();
+			}
+			if (monthOverflow) {
+				System.out.println("Error! The month you specified has 30 days.");
+				return createDate();
+			} 
+		}
+		return date;	
+	}
+	
+	/*
+	* Create date without time.
+	*/
+	public static Calendar createDate() {
+		Calendar date = null;		
+		int day;
+		int month;
+		int year;		
+		
+		int[] dateArray = new int[3]; //to store values representing date
+		boolean febOverflow = false;//booleans to facilitate error messages below
+		boolean monthOverflow = false;
+		boolean badDateFormat = false;		
+		
+		try {
+			System.out.println("Please enter the date of the meeting in dd.mm.yyyy format: ");
+			String userEntry = System.console().readLine();
+			
+			if (userEntry.equals("back")) {
+				return null;//allows user to cancel and return to main menu 
+			}
+			
+			boolean dateVerified = validateDateEntry(userEntry);//determines whether input is valid
+			if (!dateVerified) {
+				badDateFormat = true;
+				throw illegalArgEx;
+			}
+			
+			Scanner sc = new Scanner(userEntry);//if input is valid, creates a date
+			Pattern delimiterPattern = Pattern.compile("[\\.]");
+			sc.useDelimiter(delimiterPattern);
+			
+			for (int i = 0; i < 3; i++) {
+				dateArray[i] = sc.nextInt();
+			}
+			
+			day = dateArray[0];
+			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
+			year = dateArray[2];			
+			
+			if (month == 1 && day > 28) {
+				if ((year % 4 == 0) && (year % 100 != 0)) {
+					//this is ok - it's a leap year
+				}
+				if ((year % 4 == 0) && (year % 100 == 0) && (year % 400 == 0)) {
+					//this is ok - it's a leap year
+				}
+				else {
+					febOverflow = true;
+					throw illegalArgEx;//Feb only has 29 days in leap year
+				}
+			}
+			if (month % 2 == 1) {//Disallows day having value of 31 when month has only 30 days
+				if (day > 30) {
+					monthOverflow = true;
+					throw illegalArgEx;
+				}
+			}			
+				
+			date = new GregorianCalendar(year, month, day); //creates Calendar object				
+		}
+		
+		catch (IllegalArgumentException ex) {
+			if (badDateFormat) {
+				System.out.println("Error! Please enter the date in dd.mm.yyyy format " +
+				"i.e. 01.11.2013 and finish by pressing RETURN.");
+				return createDate();
+			}		
 			
 			if (febOverflow) {
 				System.out.println("Invalid date! February has 28 days outside of a leap year.");

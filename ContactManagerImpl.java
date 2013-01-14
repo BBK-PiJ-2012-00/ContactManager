@@ -26,7 +26,7 @@ public class ContactManagerImpl implements ContactManager {
 				isEmpty = true;
 			}
 			//check that contacts are known/existent against contactList set
-			for (Contact c : contactList) {
+			for (Contact c : contacts) {
 				if (!contactList.contains(c)) {
 					falseContact = true;
 					unknownContacts = unknownContacts + "\n" + c.getName();
@@ -210,8 +210,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	
 	public List<Meeting> getMeetingList(Calendar date) {
-		List<Meeting> meetingList = new ArrayList<Meeting>();
-		//go through future meetings and past meetings, unless all meetings are also added to allMeetings?
+		List<Meeting> meetingList = new ArrayList<Meeting>();		
 		
 		for (Meeting m : pastMeetings) { //go through pastMeetings
 			if (m.getDate().equals(date)) {
@@ -231,110 +230,118 @@ public class ContactManagerImpl implements ContactManager {
 	}
 	
 	
-	/** 
-	* Returns the list of past meetings in which this contact has participated. 
-	* 
-	* If there are none, the returned list will be empty. Otherwise, 
-	* the list will be chronologically sorted and will not contain any 
-	* duplicates. 
-	* 
-	* @param contact one of the user’s contacts 
-	* @return the list of past meeting(s) scheduled with this contact (maybe empty). 
-	* @throws IllegalArgumentException if the contact does not exist
-	*/ 
+	
+	
 	public List<PastMeeting> getPastMeetingList(Contact contact) {
-		List<Meeting> meetingList = new ArrayList<Meeting>();
+		List<Meeting> meetingList = new ArrayList<Meeting>();//2 lists to deal with casting (return type List<PastMeeting>)
 		List<PastMeeting> pastMeetingList = new ArrayList<PastMeeting>();
+		
 		try {
 			if (!contactList.contains(contact)) {
 				throw illegalArgEx;
 			}
-			Iterator<Meeting> iterator = pastMeetings.iterator();
-			Meeting meeting = null;
-			while (iterator.hasNext()) {
-				meeting = iterator.next();
-				if (meeting.getContacts().contains(contact)) { 
-					meetingList.add(meeting);
+			
+			for (Meeting m : pastMeetings) {
+				if (m.getContacts().contains(contact)) {
+					meetingList.add(m);
 				}
 			}
-			meetingList = sort(meetingList);
-			for (int i = 0; i < meetingList.size(); i++) {//convert List<Meeting> to List<PastMeeting>
+						
+			meetingList = sort(meetingList);	
+			
+			for (int i = 0; i < meetingList.size(); i++) { //convert List<Meeting> to List<PastMeeting>
 				Meeting m = meetingList.get(i);
 				PastMeeting pm = (PastMeeting) m;
 				pastMeetingList.add(pm);
-			}	
+			}
+				
 			return pastMeetingList;				
 		}
+		
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error: The specified contact doesn't exist.");
 		}
-		return null;//or return an empty list?
+		
+		return pastMeetingList;//may be empty if no matches found
 	}
 	
-	/** 
-	* Create a new record for a meeting that took place in the past. 
-	* 
-	* @param contacts a list of participants 
-	* @param date the date on which the meeting took place 
-	* @param text messages to be added about the meeting. 
-	* @throws IllegalArgumentException if the list of contacts is 
-	* empty, or any of the contacts does not exist 
-	* @throws NullPointerException if any of the arguments is null 
-	*/
-	//what about an exception for a date that's in the future?
+	
+	
+	
+	//TIME!!!	
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		boolean emptyContacts = false;//to allow simultaneous error correction for user
 		boolean nullContacts = false;
 		boolean nullDate = false;
 		boolean nullText = false;
 		boolean falseContact = false;	
+		boolean falseDate = false;
 		String unknownContacts = "The following contacts are not on your contact list: ";	
+		
 		try {
 			if (contacts.isEmpty()) {
 				emptyContacts = true;
 			}
-			Iterator<Contact> iterator = contacts.iterator();
-			Contact contact = null;
-			while (iterator.hasNext()) {
-				contact = iterator.next();				
-				if (!contactList.contains(contact)) {				
-					falseContact = true;
-					unknownContacts = unknownContacts + "\n" + contact.getName();
-				}
+			
+			Calendar now = Calendar.getInstance(); //Test this works with time			
+			if (date.after(now)) { //If user-specified date is in the past, throw exception
+				falseDate = true;
 			}
+			
+			for (Contact c : contacts) { //throws exception if contact doesn't exist
+				if (!contactList.contains(c)) {
+					falseContact = true;
+					unknownContacts += "\n" + c.getName();
+				}
+			}			
+			
 			if (contacts == null) {
 				nullContacts = true;
 			}
+			
 			if (date == null) {
 				nullDate = true;
 			}
+			
 			if (text == null) {
 				nullText = true;
 			} 
-			if (emptyContacts || falseContact) {
+			
+			if (emptyContacts || falseContact || falseDate) {
 				throw illegalArgEx;
 			}
+			
 			if (nullContacts || nullDate || nullText) {
 				throw nullPointerEx;
 			}
+			
 			Meeting pastMeeting = new PastMeetingImpl(contacts, date, text);
 			pastMeetings.add(pastMeeting);
 		}
+		
 		catch (IllegalArgumentException ex) {
+			if (falseDate) {
+				System.out.println("Error: Ensure the date is not in the future!");
+			}
+			
 			if (emptyContacts) {
 				System.out.println("Error: No contacts specified!");
 			}
+			
 			if (falseContact) {
 				System.out.println("Error: " + unknownContacts);
 			}
 		}
+		
 		catch (NullPointerException nex) {
 			if (nullText) {
 				System.out.println("Error: No meeting notes specified!");
 			}
+			
 			if (nullContacts) {
 				System.out.println("Error: No contacts specified!");
 			}
+			
 			if (nullDate) {
 				System.out.println("Error: No date specified!");
 			}

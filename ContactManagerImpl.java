@@ -214,7 +214,16 @@ public class ContactManagerImpl implements ContactManager {
 		List<Meeting> meetingList = new ArrayList<Meeting>();		
 		
 		for (Meeting m : pastMeetings) { //go through pastMeetings
-			if (m.getDate().equals(date)) {
+			Calendar meetingDate = m.getDate();
+			if (meetingDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)) {
+				if (meetingDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)) {
+					if (meetingDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)) {
+						meetingList.add(m);// if there's a match, add meeting to the list
+					}
+				}
+			}
+				
+			if (m.getDate().equals(date)) { //equals matches to the millisecond
 				meetingList.add(m); //if there's a match, add it to the list
 			}
 		}	
@@ -679,7 +688,7 @@ public class ContactManagerImpl implements ContactManager {
 							break;//return to main menu
 						}
 						attendees = getContacts(attendeeArray);
-						date = ContactManagerUtilities.createDate();
+						date = ContactManagerUtilities.createDateAndTime();
 						if (date == null) {
 							break;//return to main menu
 						}
@@ -1044,9 +1053,9 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-//CORRECT DATES: allow any year to be entered
 
-//MEETING TIMES
+
+//MEETING TIMES - check which method in switch statements : time for creation only
 
 //DISPLAY CONTACT LIST? - in submenu of look up contact
 
@@ -1059,78 +1068,4 @@ public class ContactManagerImpl implements ContactManager {
 //UTILITY INTERFACE - UTILITIES
 
 //JAVA DOCS
-	
-		
-		
-		
-		
-		
-	
-		
-	
-	
-	
-	
-	
-
-
-
-
-
-
-
-
-//ask user for dates in specific format, which can then be converted to create a new Calendar
-//make sure that if wrong format is entered, you throw an exception.
-
-//update dates to include time?
-
-
-
-/** 
-	* Returns the list of meetings that are scheduled for, or that took 
-	* place on, the specified date 
-	* 
-	* If there are none, the returned list will be empty. Otherwise, 
-	* the list will be chronologically sorted and will not contain any 
-	* duplicates. 
-	* 	
-	* @param date the date 
-	* @return the list of meetings 
-	*/
-
-	
-	//if returned list is empty, write empty? in main: if list.isEmpty(), print <empty> for
-	//user clarity
-	
-	//when users specify a date, should they also include a time?
-			
-//how does before/after affect dates which are the same?
-//contains -- may have to do this in more detail with an iterator, as the naming of 
-//Contact variables may not allow for contactList.contains(contact); new contacts will probably
-//be just called contact each time they are created, with their name and id the only things to 
-//identify them by.
-
-//initialise notes variable as null in launch so that if user enters nothing, relevant
-//method is still found
-
-
-
-
-//when saved, contents of file will be overwritten - alert user of this
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

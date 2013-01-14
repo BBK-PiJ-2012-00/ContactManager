@@ -61,119 +61,89 @@ public class ContactManagerImpl implements ContactManager {
 		return meetingID;
 	}
 	
-	/**
-	* Returns the PAST meeting with the requested ID, or null if it there is none. 
-	* 
-	* @param id the ID for the meeting 
-	* @return the meeting with the requested ID, or null if it there is none.
-	* @throws IllegalArgumentException if there is a meeting with that ID happening in the future
-	*/
+	
+	
+	
 	public PastMeeting getPastMeeting(int id) {
 		try {
 			for (Meeting m : futureMeetings) {
 				if (m.getId() == id) {
-					throw illegalArgEx;
+					throw illegalArgEx;//if specified id matches id of future meeting
 				}
-			}
-			//Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-			//Meeting meeting = null;
-			//while (iteratorFM.hasNext()) {
-			//	meeting = iteratorFM.next();
-			//	if (meeting.getId() == id) {
-			//		throw illegalArgEx;
-			//	}
-			//}
+			}			
 		}
+		
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");
 			return null;
 			//confirm returning null is best course of action - currently booted back to main
 		}
-		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
-			Meeting meeting = null;
-			while (iteratorPM.hasNext()) {
-				meeting = iteratorPM.next();
-				if (meeting.getId() == id) {
-					PastMeeting pastMeeting = (PastMeeting) meeting;
-					return pastMeeting;
-				}
-			}			
-		return null;
+		
+		for (Meeting m : pastMeetings) {
+			if (m.getId() == id) {
+				PastMeeting pastMeeting = (PastMeeting) m;
+				return pastMeeting;
+			}
+		}		
+		return null; //returns null if no meeting is found
 	}
 	
-	/** 
-	* Returns the FUTURE meeting with the requested ID, or null if there is none. 
-	* 
-	* @param id the ID for the meeting 
-	* @return the meeting with the requested ID, or null if it there is none. 
-	* @throws IllegalArgumentException if there is a meeting with that ID happening in the past 
-	*/
+	
+	
+	
 	public FutureMeeting getFutureMeeting(int id) {
 		try {
-			Iterator<Meeting> iteratorPM = pastMeetings.iterator();
-			Meeting meeting = null;
-			while (iteratorPM.hasNext()) {
-				meeting = iteratorPM.next();
-				if (meeting.getId() == id) {
-					throw illegalArgEx;
+			for (Meeting m : pastMeetings) { //checks id against past meetings
+				if (m.getId() == id) {
+					throw illegalArgEx; //throws exception if specified id matches past meeting
 				}
-			}
+			}			
 		}
+		
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has already taken place!");
 			return null;
 			//what action to take? - safest is to go back to main menu
 		}
-		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-		Meeting meeting = null;
-		while (iteratorFM.hasNext()) {
-			meeting = iteratorFM.next();
-			if (meeting.getId() == id) {
-				FutureMeeting futureMeeting = (FutureMeeting) meeting;
+		
+		for (Meeting m : futureMeetings) {
+			if (m.getId() == id) {
+				FutureMeeting futureMeeting = (FutureMeeting) m;
 				return futureMeeting;
 			}
-		}
-		return null;
+		}		
+		return null;//if no matching meeting is found
 	}
+	
+	
 	
 	
 	public Meeting getMeeting(int id) {
-		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
-		Meeting meeting = null;
-		while(iteratorPM.hasNext()) {
-			meeting = iteratorPM.next();
-			if (meeting.getId() == id) {
-				return meeting;
+		for (Meeting m : pastMeetings) {// searches pastMeetings for match
+			if (m.getId() == id) {
+				return m;
 			}
 		}
-		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-		meeting = null;		
-		while (iteratorFM.hasNext()) {
-			meeting = iteratorFM.next();
-			if (meeting.getId() == id) {
-				return meeting;
+		
+		for (Meeting m : futureMeetings) { //searches futureMeetings for match
+			if (m.getId() == id) {
+				return m;
 			}
 		}
-		return null;
+		return null; //if no matches are found		
 	}
 	
-	/** 
-	* Returns the list of future meetings scheduled with this contact. 
-	* 
-	* If there are none, the returned list will be empty. Otherwise, 
-	* the list will be chronologically sorted and will not contain any 
-	* duplicates. 
-	* 
-	* @param contact one of the user’s contacts 
-	* @return the list of future meeting(s) scheduled with this contact (may be empty)
-	* @throws IllegalArgumentException if the contact does not exist
-	*/
+	
+	
+	
 	public List<Meeting> getFutureMeetingList(Contact contact) {
 		List<Meeting> list = new ArrayList<Meeting>();//list to contain meetings attended by specified contact
+		
 		try {
-			if (!contactList.contains(contact)) {//may need to use id to identify -> iterator required
+			if (!contactList.contains(contact)) {
 				throw illegalArgEx;
-			}
+			}			
+			
 			Iterator<Meeting> iterator = futureMeetings.iterator();
 			Meeting meeting = null;
 			while (iterator.hasNext()) { //goes through all future meetings
@@ -187,76 +157,79 @@ public class ContactManagerImpl implements ContactManager {
 					}
 				}
 			}
-			list = sort(list);//elimination of duplicates? With sets, there shouldn't be any...
+			
+			list = sort(list);
 			return list;
 		}
+		
 		catch (IllegalArgumentException ex) {
 			System.out.println("Error: The specified contact doesn't exist!");
 		}
-	return list; //may be empty
+		
+	return list; //may be empty if no meetings found
+	//won't be any duplicates because a meeting cannot belong to pastMeetings AND futureMeetings
 	}
 	
+	
+	
+	//ADAPT FOR INCLUSION OF TIME!!!!!
 	/**
 	* Sorts a list into chronological order
 	*/
 	public List<Meeting> sort(List<Meeting> list) {
+		//temporary variables used for re-ordering
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
 		boolean sorted = true;
+		
 		for (int j = 0; j < list.size() - 1; j++) {
 			tempMeeting1 = list.get(j);
 			tempMeeting2 = list.get(j + 1);
+			
 			if (tempMeeting1.getDate().after(tempMeeting2.getDate())) {
 				//swaps elements over if first element has later date than second
-				list.set(j, tempMeeting2); //replaced add with set to avoid list growing when rearranging elements
+				list.set(j, tempMeeting2); //set() prevents list growing when rearranging elements
 				list.set(j + 1, tempMeeting1);
 			}
 		}
+		
 		for (int i = 0; i < list.size() - 1; i++) { //loop that checks whether list is sorted
 			if (list.get(i).getDate().after(list.get(i + 1).getDate())) {
 				sorted = false;
 			}			
 		}
-		if (!sorted) {
-			list = sort(list);//recursively calls this method until the list is sorted
+		
+		if (!sorted) { //recursively calls this method until the list is sorted
+			list = sort(list);
 		}
+		
 		return list;
 	}
 		
-	/** 
-	* Returns the list of meetings that are scheduled for, or that took 
-	* place on, the specified date 
-	* 
-	* If there are none, the returned list will be empty. Otherwise, 
-	* the list will be chronologically sorted and will not contain any 
-	* duplicates. 
-	* 	
-	* @param date the date 
-	* @return the list of meetings 
-	*/
+	
+	
+	
 	public List<Meeting> getMeetingList(Calendar date) {
 		List<Meeting> meetingList = new ArrayList<Meeting>();
 		//go through future meetings and past meetings, unless all meetings are also added to allMeetings?
-		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
-		Meeting pastMeeting = null;
-		while (iteratorPM.hasNext()) {
-			pastMeeting = iteratorPM.next();
-			if (pastMeeting.getDate().equals(date)) {
-			//or futureMeeting.getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) etc
-				meetingList.add(pastMeeting);
+		
+		for (Meeting m : pastMeetings) { //go through pastMeetings
+			if (m.getDate().equals(date)) {
+				meetingList.add(m); //if there's a match, add it to the list
+			}
+		}	
+		
+		for (Meeting m : futureMeetings) { //go through futureMeetings
+			if (m.getDate().equals(date)) {
+				meetingList.add(m);
 			}
 		}
-		Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-		Meeting futureMeeting = null;
-		while (iteratorFM.hasNext()) {
-			futureMeeting = iteratorFM.next();
-			if (futureMeeting.getDate().equals(date)) {
-				meetingList.add(futureMeeting);
-			}
-		}
+		
 		meetingList = sort(meetingList);
-		return meetingList;	
+		return meetingList;	//may be empty if no matches found
+		//won't be any duplicates because a meeting cannot belong to pastMeetings AND futureMeetings
 	}
+	
 	
 	/** 
 	* Returns the list of past meetings in which this contact has participated. 
@@ -701,6 +674,7 @@ public class ContactManagerImpl implements ContactManager {
 						switch (userChoice) {									
 									
 							case 1: // Look up Meeting: Search meetings by date
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search by Date");
 									date = ContactManagerUtilities.createDate();
 									if (date == null) {
@@ -718,6 +692,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 									
 							case 2: // Look up Meeting: Search meetings by meeting ID
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search by Meeting ID");
 									System.out.println("Please enter a meeting ID: ");
 									entry = System.console().readLine();
@@ -737,11 +712,14 @@ public class ContactManagerImpl implements ContactManager {
 									
 							
 							case 3: // Look up Meeting: Search future meetings by contact
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search Future Meetings by Contact");
 									int userSubChoice = ContactManagerUtilities.searchByContactOptions();
 									
-									switch (userSubChoice) {// Look up Meeting sub-menu: search by contact ID									
-										case 1: System.out.println("Please enter a contact's ID:");
+									switch (userSubChoice) {								
+																					
+										case 1: // Look up Meeting sub-menu: search by contact ID
+												System.out.print("Please enter a contact's ID: ");
 												entry = System.console().readLine();
 												if (entry.equals("back")) {
 													break;
@@ -761,7 +739,7 @@ public class ContactManagerImpl implements ContactManager {
 												
 												
 										case 2: // Look up Meeting sub-menu: Search by contact name
-												System.out.println("Please enter a contact's name:");
+												System.out.print("Please enter a contact's name: ");
 												entry = System.console().readLine();
 												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
@@ -772,7 +750,7 @@ public class ContactManagerImpl implements ContactManager {
 												for (Contact c : contacts) {
 													System.out.println(c.getName() + "\t" + "ID: " + c.getId());
 												}
-												System.out.println("Enter the ID of the contact you wish to select: ");
+												System.out.print("Enter the ID of the contact you wish to select: ");
 												entry = System.console().readLine();
 												id = ContactManagerUtilities.validateNumber(entry);
 												contact = getContact(id);
@@ -797,12 +775,13 @@ public class ContactManagerImpl implements ContactManager {
 									
 							
 							case 4: // Look up Meeting: Search past meetings by contact
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search Past Meetings by Contact");
 									userSubChoice = ContactManagerUtilities.searchByContactOptions();
 									
 									switch (userSubChoice) {											
 										case 1: // Look up Meeting sub-menu: Search by contact ID
-												System.out.println("Please enter a contact's ID:");
+												System.out.print("Please enter a contact's ID: ");
 												entry = System.console().readLine();
 												if (entry.equals("back")) {
 													break;//go back to main menu
@@ -822,7 +801,7 @@ public class ContactManagerImpl implements ContactManager {
 												
 												
 										case 2: // Look up Meeting sub-menu: Search by contact name
-												System.out.println("Please enter a contact's name:");
+												System.out.print("Please enter a contact's name: ");
 												entry = System.console().readLine();
 												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
@@ -833,7 +812,7 @@ public class ContactManagerImpl implements ContactManager {
 												for (Contact c : contacts) {
 													System.out.println(c.getName() + "\t" + "ID: " + c.getId());
 												}
-												System.out.println("Enter the ID of the contact you wish to select: ");
+												System.out.print("Enter the ID of the contact you wish to select: ");
 												entry = System.console().readLine();
 												id = ContactManagerUtilities.validateNumber(entry);
 												contact = getContact(id);	
@@ -856,7 +835,9 @@ public class ContactManagerImpl implements ContactManager {
 									
 									
 							case 5: // Look up Meeting: Search future meetings by ID
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search Past Meetings by ID");
+									System.out.print("Enter meeting ID: ");
 									entry = System.console().readLine();
 								    id = ContactManagerUtilities.validateNumber(entry);
 								    PastMeeting pastMeeting = this.getPastMeeting(id);
@@ -868,7 +849,10 @@ public class ContactManagerImpl implements ContactManager {
 												
 									
 							case 6: // Look up Meeting: Search past meetings by ID
+									System.out.println("\n");
 									System.out.println("*** LOOK UP MEETING -- Search Future Meetings by ID");
+									System.out.print("Enter meeting ID: ");
+									entry = System.console().readLine();
 								    id = ContactManagerUtilities.validateNumber(entry);
 									FutureMeeting futureMeeting = getFutureMeeting(id);
 								    if (futureMeeting == null) {
@@ -887,6 +871,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 						
 				case 3: // Main menu: Create record of past meeting
+						System.out.println("\n");
 						System.out.println("*** ADD NEW PAST MEETING");
 						attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
 						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
@@ -903,7 +888,8 @@ public class ContactManagerImpl implements ContactManager {
 						break;						
 						
 				
-				case 4: //Main menu: Add notes to a meeting that has taken place	
+				case 4: //Main menu: Add notes to a meeting that has taken place
+						System.out.println("\n");	
 						System.out.println("*** ADD MEETING NOTES");
 						System.out.println("Enter the ID of the meeting: ");
 						entry = System.console().readLine();
@@ -941,6 +927,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 						
 				case 6: //Main menu: Look up contact
+						System.out.println("\n");
 						System.out.println("*** LOOK UP CONTACT");
 						int userSubChoice = ContactManagerUtilities.lookUpContactOptions();
 						switch (userSubChoice) {

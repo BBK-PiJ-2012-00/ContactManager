@@ -1,10 +1,4 @@
-/**
-*The purpose of this assignment it writing a program to keep track of contacts and 
-*meetings. The application will keep track of contacts, past and future meetings, etc. 
-*When the application is closed, all data must be stored in a text file called 
-*”contacts.txt”. This file must be read at startup to recover all data introduced in a 
-*former session.
-*/
+
 
 import java.util.*;
 import java.io.*;
@@ -14,10 +8,9 @@ public class ContactManagerImpl implements ContactManager {
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private NullPointerException nullPointerEx = new NullPointerException();
 	private IllegalStateException illegalStateEx = new IllegalStateException();
-	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()
-	private Set<Contact> attendeeList = new HashSet<Contact>(); //contacts attending a specific meeting; may be removed to be replaced with more temporary set in main method
+	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()	
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
-	private Set<Meeting> futureMeetings = new HashSet<Meeting>();
+	private Set<Meeting> futureMeetings = new HashSet<Meeting>();//list of future meetings
 	
 
 	
@@ -25,19 +18,18 @@ public class ContactManagerImpl implements ContactManager {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
 		boolean falseDate = false;
-		Contact element = null;//to keep track of contacts being iterated
+		//Contact element = null;//to keep track of contacts being iterated
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		Meeting futureMeeting = null;
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
 			}
-			Iterator<Contact> iterator = contacts.iterator();//check that contacts are known/existent against central contact list
-			while (iterator.hasNext()) {
-				element = iterator.next();
-				if (!contactList.contains(element)) {
+			//check that contacts are known/existent against contactList set
+			for (Contact c : contactList) {
+				if (!contactList.contains(c)) {
 					falseContact = true;
-					unknownContacts = unknownContacts + "\n" + element.getName();				
+					unknownContacts = unknownContacts + "\n" + c.getName();
 				}
 			}
 			Calendar now = Calendar.getInstance(); //what about scheduling a meeting for today?			
@@ -693,6 +685,7 @@ public class ContactManagerImpl implements ContactManager {
 						this.addFutureMeeting(attendees, date);
 						break;//return to main menu 
 						
+						
 				case 2: // Main menu: Look up meeting
 						System.out.println("\n");
 						System.out.println("*** LOOK UP A MEETING");
@@ -753,7 +746,7 @@ public class ContactManagerImpl implements ContactManager {
 												List<Meeting> fMeetings = getFutureMeetingList(contact);
 												if (fMeetings.isEmpty()) {
 													System.out.println("No meetings found.");
-													break;/
+													break;
 												}
 												ContactManagerUtilities.printMeetingList(fMeetings);//print details of meetings
 												break; 
@@ -874,8 +867,7 @@ public class ContactManagerImpl implements ContactManager {
 								    	break;
 								    }
 								    ContactManagerUtilities.printMeetingDetails(futureMeeting);
-								    break;
-							
+								    break;							
 							
 							
 							case 7: // Return to main menu
@@ -883,6 +875,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 						}
 						break;
+						
 						
 						
 				case 3: // Main menu: Create record of past meeting
@@ -901,7 +894,6 @@ public class ContactManagerImpl implements ContactManager {
 						this.addNewPastMeeting(attendees, date, entry);
 						break;						
 						
-						
 				
 				case 4: //Main menu: Add notes to a meeting that has taken place	
 						System.out.println("*** ADD MEETING NOTES");
@@ -914,8 +906,7 @@ public class ContactManagerImpl implements ContactManager {
 						System.out.println("Enter meeting notes:");
 						entry = System.console().readLine();
 						this.addMeetingNotes(id, entry);
-						break;
-						
+						break;						
 
 				
 				case 5: //Main menu: Add a new contact
@@ -960,6 +951,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 									}
 									break;
+									
 							
 							case 2: //Look up Contact sub-menu: Look up by ID
 									System.out.println("Please enter a contact's ID:");
@@ -987,6 +979,7 @@ public class ContactManagerImpl implements ContactManager {
 				case 7: // Main menu: Save
 						flush();
 						break;
+						
 						
 				case 8: //Main menu: Save and quit				
 						flush();

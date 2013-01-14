@@ -364,58 +364,59 @@ public class ContactManagerImpl implements ContactManager {
 	* @throws NullPointerException if the notes are null 
 	*/
 	public void addMeetingNotes(int id, String text) {
-		Iterator<Meeting> pmIterator = pastMeetings.iterator();
-		Meeting pMeeting = null;
-		boolean pastMeetingFound = false;//to determine whether program should proceed to look through futureMeetings if no matching meeting
+		boolean pastMeetingFound = false;//to decide if program should look through futureMeetings if no matching meeting
 		//is found in pastMeetings.
-		while (pmIterator.hasNext()) {
-			pMeeting = pmIterator.next();
-			if (pMeeting.getId() == id) {
-				PastMeetingImpl pmi = (PastMeetingImpl) pMeeting;
-				pmi.addNotes(text);
+		
+		for (Meeting m : pastMeetings) {
+			if (m.getId() == id) {
+				PastMeeting pm = (PastMeeting) m; //cast so that addNotes() can be called
+				pm.addNotes(text);
 				pastMeetingFound = true;
 				System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
 			}
-			break;
-		}
+			break; // return?
+		}		
+		
 		if (!pastMeetingFound) {			
 			boolean containsMeeting = false;
 			boolean futureDate = false;
 			Calendar now = Calendar.getInstance();
 			Meeting meeting = null;//to allow the meeting matching the id to be used throughout the method
-			try {
-				Iterator<Meeting> iterator = futureMeetings.iterator();
+			
+			try {				
+				Iterator<Meeting> iterator = futureMeetings.iterator(); 
 				while (iterator.hasNext()) {
 					meeting = iterator.next();
 					if (meeting.getId() == id) {
 						containsMeeting = true;
 					}
 					break;
-				}
-				System.out.println("Meeting ID: " + meeting.getId());
-				//is being updated.
+				}				
+				System.out.println("Meeting ID: " + meeting.getId() + " is being updated...");
+				
 				if (meeting.getDate().after(now)) {
-					futureDate = true;
+					throw illegalStateEx;
 				}			
 				if (text == null) {
 					throw nullPointerEx;
 				}
 				if (!containsMeeting) {
 					throw illegalArgEx;
-				}
-				if (futureDate) {
-					throw illegalStateEx;
-				}
+				}				
+				
 				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text, meeting.getId());
 				pastMeetings.add(pastMeeting);
 				futureMeetings.remove(meeting);			
 			}
+			
 			catch (IllegalArgumentException aEx) {
-				System.out.println("Error: No meeting with that ID exists!");
+				System.out.println("Error: No meeting with that ID exists!");				
 			}
+			
 			catch (IllegalStateException sEx) {
 				System.out.println("Error: The meeting with this ID has not taken place yet!");
 			}
+			
 			catch (NullPointerException pEx) {
 				System.out.println("Error: No notes have been specified!");
 			}
@@ -625,8 +626,7 @@ public class ContactManagerImpl implements ContactManager {
 		catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}		
-	}			
-			
+	}				
 		
 		
 	

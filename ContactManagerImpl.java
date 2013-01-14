@@ -698,7 +698,6 @@ public class ContactManagerImpl implements ContactManager {
 						int userChoice = ContactManagerUtilities.lookUpMeetingOptions();
 						switch (userChoice) {
 							case 1: System.out.println("*** LOOK UP MEETING -- Search by Date");
-									System.out.println("Please enter a date: ");
 									date = ContactManagerUtilities.createDate();
 									if (date == null) {
 										break;//go back to main menu, TEST THIS
@@ -907,10 +906,16 @@ public class ContactManagerImpl implements ContactManager {
 						if (entry.equals("back")) {
 							break; //option to quit
 						}
+						if (entry.length() == 0) {
+							entry = null;//so that an error is thrown if field is empty
+						}
 						System.out.println("Please enter notes about the contact:");
 						String notes = System.console().readLine();
 						if (notes.equals("back")) {
 							break; //option to quit
+						}
+						if (notes.length() == 0) {
+							notes = null; //so that an error is thrown if field is empty
 						}
 						this.addNewContact(entry, notes);
 						break;
@@ -971,22 +976,23 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-//after an option is selected, the option should be followed through, and then the main
-//menu should be displayed again. The only times this doesn't happen is when the user
-//opts to save and quit: after data has been saved, the program exits. 
-//for each option that is selected, give the user a chance to return to main menu by 
-//typing 0 -- an if clause that says if entry is 0, display main menu. For this reason,
-//perhaps put main menu method into this class (whist keeping checking in util)...
-//put the whole thing inside a while loop? Then, when save and quit is called, carry out
-//the action and break from the loop.
-//to go back to main menu -- if something is null? Or enter 0
 
-//when a user has to enter something, it'll most likely be read initially as a String...
-//so if the user enters 'back' or 'quit', return to main menu.
 		
 //ADD COMMENTS TO EACH CASE FOR CLARITY	
 
-//DISPLAY CONTACT LIST?
+//DISPLAY CONTACT LIST? - in submenu of look up contact
+
+//TIDY UP LINE SPACING
+
+//DEAL WITH FLOW AFTER EXCEPTIONS IN METHODS OF THIS CLASS
+
+//MAKE CODE MORE LEGIBLE - SPACE
+
+//REORGANIZE UTILITY CLASS
+
+//UTILITY INTERFACE - UTILITIES
+
+//JAVA DOCS
 	
 		
 		

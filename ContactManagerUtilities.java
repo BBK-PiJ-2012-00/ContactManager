@@ -216,8 +216,7 @@ public class ContactManagerUtilities {
 			}			
 		
 			hour = timeArray[0];
-			minutes = timeArray[1];	
-			System.out.println(timeArray[0] + ":" + timeArray[1]);			
+			minutes = timeArray[1];							
 				
 			date = new GregorianCalendar(year, month, day, hour, minutes); //creates Calendar object				
 		}
@@ -378,14 +377,25 @@ public class ContactManagerUtilities {
 	* meeting, it also prints the meeting notes.
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
+		Calendar date = meeting.getDate();
+		String minutes = "";
+		if (date.get(Calendar.MINUTE) == 0) {
+			minutes += date.get(Calendar.MINUTE) + "0"; //so that times such as 12:00 display as such, not as 12:0;
+		}	
+		if (date.get(Calendar.MINUTE) > 0 && date.get(Calendar.MINUTE) < 10) {
+			minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7;
+		}	
+		else {
+			minutes += date.get(Calendar.MINUTE);
+		}
+		
 		System.out.println("Meeting details: ");
 		System.out.println("ID:   " + meeting.getId());
 		
-		Calendar date = meeting.getDate();
 		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
 			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
 		System.out.println("Time: " + date.get(Calendar.HOUR_OF_DAY) + ":" + 
-			date.get(Calendar.MINUTE));
+			minutes);
 			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
@@ -444,19 +454,18 @@ public class ContactManagerUtilities {
 		return selection;	
 	}
 	
-	
-		
-		
-//(int year, int month, int dayOfMonth, int hourOfDay, int minute)
-		
-		
-		
-		
-	
-	
-	
-		
-		
+	/*
+	* Display contact list
+	*/
+	public static void displayContactList(Set<Contact> contactList) {
+		System.out.println("Contact List: ");
+		if (contactList.isEmpty()) {
+			System.out.println("<Empty>");
+		}
+		for (Contact c : contactList) {
+			System.out.println("ID: " + c.getId() + "\t" + c.getName());
+		}
+	}		
 	
 	
 		

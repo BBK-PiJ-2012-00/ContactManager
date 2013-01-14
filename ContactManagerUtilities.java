@@ -75,7 +75,7 @@ public class ContactManagerUtilities {
 		for (Contact c : contactList) {//Prints contactList for ease of reference
 			System.out.println(c.getName() + " " + c.getId());
 		}
-		System.out.println("Please enter the IDs of the contacts who are attending, separated" +
+		System.out.println("Please enter the IDs of the attendees, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
 		
 		try{
@@ -161,7 +161,7 @@ public class ContactManagerUtilities {
 			day = dateArray[0];
 			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
 			year = dateArray[2];
-			if (month == 1 && day < 28) {
+			if (month == 1 && day > 28) {
 				if ((year % 4 == 0) && (year % 100 != 0)) {
 					//this is ok - it's a leap year
 				}
@@ -292,7 +292,7 @@ public class ContactManagerUtilities {
 	*/
 	public static void printMeetingList(List<? extends Meeting> list) {
 		//date and id
-		System.out.println("Meetings: ");
+		System.out.println("Meeting list: ");
 		for (Meeting m : list) {
 			Calendar date = m.getDate();
 			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +

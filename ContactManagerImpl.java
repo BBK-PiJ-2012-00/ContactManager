@@ -349,35 +349,32 @@ public class ContactManagerImpl implements ContactManager {
 	}
 		
 	
-	/** 
-	* Add notes to a meeting. 
-	* 
-	* This method is used when a future meeting takes place, and is 
-	* then converted to a past meeting (with notes). 
-	* 
-	* It can be also used to add notes to a past meeting at a later date. 
-	* 
-	* @param id the ID of the meeting 
-	* @param text messages to be added about the meeting. 
-	* @throws IllegalArgumentException if the meeting does not exist 
-	* @throws IllegalStateException if the meeting is set for a date in the future 
-	* @throws NullPointerException if the notes are null 
-	*/
+	
+	
 	public void addMeetingNotes(int id, String text) {
 		boolean pastMeetingFound = false;//to decide if program should look through futureMeetings if no matching meeting
 		//is found in pastMeetings.
 		
-		for (Meeting m : pastMeetings) {
-			if (m.getId() == id) {
-				PastMeeting pm = (PastMeeting) m; //cast so that addNotes() can be called
-				pm.addNotes(text);
-				pastMeetingFound = true;
-				System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
-			}
-			break; // return?
-		}		
+		try {	
+			for (Meeting m : pastMeetings) {
+				if (m.getId() == id) {
+					pastMeetingFound = true; //prevents unnecessary conversion of past meeting to past meeting
+					if (text == null) { //throws exception before anything else can be executed
+						throw nullPointerEx;
+					}
+					PastMeeting pm = (PastMeeting) m; //cast so that addNotes() can be called
+					pm.addNotes(text); 				
+					System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
+				}
+				break; 
+			}			
+		}
 		
-		if (!pastMeetingFound) {			
+		catch (NullPointerException ex) {
+			System.out.println("Error: No notes have been specified!");
+		}					
+		
+		if (!pastMeetingFound) { //means future meeting is being converted			
 			boolean containsMeeting = false;
 			boolean futureDate = false;
 			Calendar now = Calendar.getInstance();
@@ -902,10 +899,16 @@ public class ContactManagerImpl implements ContactManager {
 						entry = System.console().readLine();
 						if (entry.equals("back")) { //option to quit
 							break;
-						}
+						}						
 						id = ContactManagerUtilities.validateNumber(entry);
 						System.out.println("Enter meeting notes:");
 						entry = System.console().readLine();
+						if (entry.equals("back")) { //option to quit
+							break;
+						}		
+						if (entry.length() == 0) {
+							entry = null; //so that an error is thrown if field is empty
+						}
 						this.addMeetingNotes(id, entry);
 						break;						
 

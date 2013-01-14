@@ -378,12 +378,14 @@ public class ContactManagerUtilities {
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
 		Calendar date = meeting.getDate();
-		String minutes = "";
-		if (date.get(Calendar.MINUTE) == 0) {
-			minutes += date.get(Calendar.MINUTE) + "0"; //so that times such as 12:00 display as such, not as 12:0;
-		}	
-		if (date.get(Calendar.MINUTE) > 0 && date.get(Calendar.MINUTE) < 10) {
-			minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7;
+		String minutes = "";		
+		if (date.get(Calendar.MINUTE) < 10) {
+			if (date.get(Calendar.MINUTE) == 0) { //so that times such as 12:00 display as such, not as 12:0;
+				minutes += date.get(Calendar.MINUTE) + "0";
+			}
+			else {
+				minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7;
+			}
 		}	
 		else {
 			minutes += date.get(Calendar.MINUTE);
@@ -431,7 +433,6 @@ public class ContactManagerUtilities {
 	* Method to print lists containing Meetings or subtypes of Meeting.
 	*/
 	public static void printMeetingList(List<? extends Meeting> list) {
-		//date and id
 		System.out.println("Meeting list: ");
 		for (Meeting m : list) {
 			Calendar date = m.getDate();

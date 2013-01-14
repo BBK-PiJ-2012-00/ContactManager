@@ -254,10 +254,10 @@ public class ContactManagerUtilities {
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
 		System.out.println("Meeting details: ");
-		System.out.println("ID:........ " + meeting.getId());
+		System.out.println("ID:   " + meeting.getId());
 		Calendar date = meeting.getDate();
-		System.out.println("Date:..... ." + date.get(Calendar.DAY_OF_MONTH) + "." + 
-			date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
+		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
+			date.get(Calendar.MONTH) + 1 + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
 			System.out.println(c.getId() + "\t" + c.getName());

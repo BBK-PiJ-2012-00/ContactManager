@@ -232,20 +232,7 @@ public class ContactManagerUtilities {
 		return selection;
 	}
 	
-	/**
-	Meeting methods:
-	PastMeeting getPastMeeting(int id);
-
-	FutureMeeting getFutureMeeting(int id);
-
-	Meeting getMeeting(int id);
-
-	List<Meeting> getFutureMeetingList(Contact contact);
-
-	List<Meeting> getMeetingList(Calendar date);
-
-	List<PastMeeting> getPastMeetingList(Contact contact);
-	*/
+	
 	
 	/**
 	* A method that prints the details of the meeting
@@ -255,14 +242,17 @@ public class ContactManagerUtilities {
 	public static void printMeetingDetails(Meeting meeting) {
 		System.out.println("Meeting details: ");
 		System.out.println("ID:   " + meeting.getId());
+		
 		Calendar date = meeting.getDate();
 		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
-			date.get(Calendar.MONTH) + 1 + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+			(date.get(Calendar.MONTH ) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
 			System.out.println(c.getId() + "\t" + c.getName());
 		}
-		if (meeting instanceof PastMeeting) {
+		
+		if (meeting instanceof PastMeeting) {//Print meeting notes if it's a past meeting
 			PastMeeting pMeeting = (PastMeeting) meeting;
 			System.out.println("Notes: ");
 			System.out.println(pMeeting.getNotes());

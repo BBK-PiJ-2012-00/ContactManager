@@ -745,6 +745,9 @@ public class ContactManagerImpl implements ContactManager {
 										case 2: // Look up Meeting sub-menu: Search by contact name
 												System.out.print("Please enter a contact's name: ");
 												entry = System.console().readLine();
+												if (entry.equals("back")) {
+													break;
+												}
 												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
@@ -756,6 +759,9 @@ public class ContactManagerImpl implements ContactManager {
 												}
 												System.out.print("Enter the ID of the contact you wish to select: ");
 												entry = System.console().readLine();
+												if (entry.equals("back")) {
+													break;
+												}
 												id = ContactManagerUtilities.validateNumber(entry);
 												contact = getContact(id);
 												if (contact == null) {
@@ -807,6 +813,9 @@ public class ContactManagerImpl implements ContactManager {
 										case 2: // Look up Meeting sub-menu: Search by contact name
 												System.out.print("Please enter a contact's name: ");
 												entry = System.console().readLine();
+												if (entry.equals("back")) {
+													break;
+												}
 												contacts = getContacts(entry);
 												if (contacts.isEmpty()) {
 													System.out.println("No contacts found.");
@@ -818,6 +827,9 @@ public class ContactManagerImpl implements ContactManager {
 												}
 												System.out.print("Enter the ID of the contact you wish to select: ");
 												entry = System.console().readLine();
+												if (entry.equals("back")) {
+													break;
+												}
 												id = ContactManagerUtilities.validateNumber(entry);
 												contact = getContact(id);	
 												if (contact == null) {
@@ -843,6 +855,9 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("*** LOOK UP MEETING -- Search Past Meetings by ID");
 									System.out.print("Enter meeting ID: ");
 									entry = System.console().readLine();
+									if (entry.equals("back")) {
+										break;
+									}
 								    id = ContactManagerUtilities.validateNumber(entry);
 								    PastMeeting pastMeeting = this.getPastMeeting(id);
 								    if (pastMeeting == null) {
@@ -857,6 +872,9 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("*** LOOK UP MEETING -- Search Future Meetings by ID");
 									System.out.print("Enter meeting ID: ");
 									entry = System.console().readLine();
+									if (entry.equals("back")) {
+										break;
+									}
 								    id = ContactManagerUtilities.validateNumber(entry);
 									FutureMeeting futureMeeting = getFutureMeeting(id);
 								    if (futureMeeting == null) {
@@ -888,6 +906,12 @@ public class ContactManagerImpl implements ContactManager {
 						}
 						System.out.println("Enter meeting notes: ");
 						entry = System.console().readLine();
+						if (entry.equals("back")) {
+							break;
+						}
+						if (entry.length() == 0) { //ensures that if user enters nothing, null value is passed
+							entry = null;
+						}
 						this.addNewPastMeeting(attendees, date, entry);
 						break;						
 						
@@ -895,7 +919,7 @@ public class ContactManagerImpl implements ContactManager {
 				case 4: //Main menu: Add notes to a meeting that has taken place
 						System.out.println("\n");	
 						System.out.println("*** ADD MEETING NOTES");
-						System.out.println("Enter the ID of the meeting: ");
+						System.out.print("Enter the ID of the meeting: ");
 						entry = System.console().readLine();
 						if (entry.equals("back")) { //option to quit
 							break;
@@ -907,7 +931,7 @@ public class ContactManagerImpl implements ContactManager {
 							break;
 						}		
 						if (entry.length() == 0) {
-							entry = null; //so that an error is thrown if field is empty
+							entry = null; //so that an error is thrown if user enters nothing
 						}
 						this.addMeetingNotes(id, entry);
 						break;						
@@ -945,6 +969,12 @@ public class ContactManagerImpl implements ContactManager {
 							case 1: // Look up Contact sub-menu: Look up by name
 									System.out.println("Please enter a contact's name:");
 									entry = System.console().readLine();
+									if (entry.equals("back") {
+										break;
+									}
+									if (entry.length() == 0) {
+										entry = null; //if user enters nothing, assign to null
+									}
 									contacts = getContacts(entry);
 									if (contacts.isEmpty()) {
 										System.out.println("No contacts found.");

@@ -18,9 +18,9 @@ public class ContactManagerImpl implements ContactManager {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
 		boolean falseContact = false;
 		boolean falseDate = false;
-		//Contact element = null;//to keep track of contacts being iterated
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		Meeting futureMeeting = null;
+		
 		try {
 			if (contacts.isEmpty()) {
 				isEmpty = true;
@@ -32,14 +32,16 @@ public class ContactManagerImpl implements ContactManager {
 					unknownContacts = unknownContacts + "\n" + c.getName();
 				}
 			}
-			Calendar now = Calendar.getInstance(); //what about scheduling a meeting for today?			
-			if (date.before(now)) {
+			
+			Calendar now = Calendar.getInstance(); //Test this works with time			
+			if (date.before(now)) { //If user-specified date is in the past, throw exception
 				falseDate = true;
 			}
 			if (isEmpty || falseContact || falseDate) {
 				throw illegalArgEx;
 			}				
-		}		
+		}
+				
 		catch (IllegalArgumentException illegalArgEx) {
 			if (isEmpty == true) {
 				System.out.println("Error: No contacts have been specified.");
@@ -51,7 +53,8 @@ public class ContactManagerImpl implements ContactManager {
 			if (falseDate == true) {
 				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
 			}			 
-		}	
+		}
+			
 		futureMeeting = new FutureMeetingImpl(contacts, date);
 		futureMeetings.add(futureMeeting);
 		int meetingID = futureMeeting.getId();
@@ -67,14 +70,19 @@ public class ContactManagerImpl implements ContactManager {
 	*/
 	public PastMeeting getPastMeeting(int id) {
 		try {
-			Iterator<Meeting> iteratorFM = futureMeetings.iterator();
-			Meeting meeting = null;
-			while (iteratorFM.hasNext()) {
-				meeting = iteratorFM.next();
-				if (meeting.getId() == id) {
+			for (Meeting m : futureMeetings) {
+				if (m.getId() == id) {
 					throw illegalArgEx;
 				}
 			}
+			//Iterator<Meeting> iteratorFM = futureMeetings.iterator();
+			//Meeting meeting = null;
+			//while (iteratorFM.hasNext()) {
+			//	meeting = iteratorFM.next();
+			//	if (meeting.getId() == id) {
+			//		throw illegalArgEx;
+			//	}
+			//}
 		}
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");

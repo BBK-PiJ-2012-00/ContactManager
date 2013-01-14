@@ -195,40 +195,29 @@ public class ContactManagerUtilities {
 			
 			//Time verification
 			System.out.println("Please enter the time of the meeting in 24-hour format (hh:mm) : ");
-			userEntry = System.console().readLine();
-			
-			System.out.println("POINT 1");
+			userEntry = System.console().readLine();			
 			
 			if (userEntry.equals("back")) {
 				return null;//allows user to cancel and return to main menu 
-			}
-			
-			System.out.println("POINT 2");
+			}			
 			
 			boolean timeVerified = validateTimeEntry(userEntry);//determines whether input is valid
 			if (!timeVerified) {
 				badTimeFormat = true;
 				throw illegalArgEx;
-			}
-			
-			System.out.println("POINT 3");
+			}			
 			
 			Scanner scTime = new Scanner(userEntry);//if input is valid, creates a time
 			delimiterPattern = Pattern.compile("([\\:]|[\\.])");
-			scTime.useDelimiter(delimiterPattern);
-			
-			System.out.println("POINT 4");
+			scTime.useDelimiter(delimiterPattern);	
 			
 			for (int i = 0; i < 2; i++) {
 				timeArray[i] = scTime.nextInt();
-			}
-			
-			System.out.println("POINT 5");
+			}			
+		
 			hour = timeArray[0];
 			minutes = timeArray[1];	
-			System.out.println(timeArray[0] + ":" + timeArray[1]);
-			
-			System.out.println("POINT 5");
+			System.out.println(timeArray[0] + ":" + timeArray[1]);			
 				
 			date = new GregorianCalendar(year, month, day, hour, minutes); //creates Calendar object				
 		}
@@ -342,7 +331,7 @@ public class ContactManagerUtilities {
 	
 	public static boolean validateDateEntry(String userEntry) {
 		//checks date format, allowing d.m.yyyy or dd.mm.yyyy. Rules out invalid days and months i.e. 59.40.2001
-		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][2][0][0-9][0-9]");
+		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][1-2][0-9][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
 		boolean verified = m.matches(); //true if matched, false otherwise
 		if (verified) {

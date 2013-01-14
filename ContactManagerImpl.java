@@ -221,17 +221,18 @@ public class ContactManagerImpl implements ContactManager {
 						meetingList.add(m);// if there's a match, add meeting to the list
 					}
 				}
-			}
-				
-			if (m.getDate().equals(date)) { //equals matches to the millisecond
-				meetingList.add(m); //if there's a match, add it to the list
-			}
+			}			
 		}	
 		
 		for (Meeting m : futureMeetings) { //go through futureMeetings
-			if (m.getDate().equals(date)) {
-				meetingList.add(m);
-			}
+			Calendar meetingDate = m.getDate();
+			if (meetingDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)) {
+				if (meetingDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)) {
+					if (meetingDate.get(Calendar.DAY_OF_MONTH) == date.get(Calendar.DAY_OF_MONTH)) {
+						meetingList.add(m);// if there's a match, add meeting to the list
+					}
+				}
+			}			
 		}
 		
 		meetingList = sort(meetingList);
@@ -1026,10 +1027,15 @@ public class ContactManagerImpl implements ContactManager {
 									}
 									System.out.println(contact.getName() + "\t" + "ID: " + contact.getId());
 									System.out.println("Notes: " + contact.getNotes() + "\n");
-									break;					
+									break;
+									
+									
+							case 3: //Look up Contact sub-menu: Display contact list
+									ContactManagerUtilities.displayContactList(contactList);
+									break;
+																
 							
-							
-							case 3: // Return to main menu
+							case 4: // Return to main menu
 									break;
 						}
 						break;

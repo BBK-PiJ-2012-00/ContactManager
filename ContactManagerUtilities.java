@@ -127,40 +127,53 @@ public class ContactManagerUtilities {
 	
 	
 	/**
-	* Creates a Calendar date from user input. Rules out invalid dates such as
+	* Creates a Calendar date and time from user input. Rules out invalid dates such as
 	* 29.02 outside of a leap year, and ensures that months with only 30 days cannot
-	* be assigned a date of 31.
+	* be assigned a date of 31. Rules out invalid times.
 	*/
 	public static Calendar createDate() {
 		Calendar date = null;		
 		int day;
 		int month;
 		int year;
-		int[] dateArray = new int[3];
+		int hour;
+		int minutes;
+		
+		int[] dateArray = new int[3]; //to store values representing date
 		boolean febOverflow = false;//booleans to facilitate error messages below
 		boolean monthOverflow = false;
-		boolean badFormat = false;
+		boolean badDateFormat = false;		
+		
+		int[] timeArray = new int[2]; //to store values representing time
+		boolean badTimeFormat = false;
+		
+		
 		try {
 			System.out.println("Please enter the date of the meeting in dd.mm.yyyy format: ");
 			String userEntry = System.console().readLine();
+			
 			if (userEntry.equals("back")) {
 				return null;//allows user to cancel and return to main menu 
 			}
-			boolean verified = validateDateEntry(userEntry);//determines whether input is valid
-			if (!verified) {
-				badFormat = true;
+			
+			boolean dateVerified = validateDateEntry(userEntry);//determines whether input is valid
+			if (!dateVerified) {
+				badDateFormat = true;
 				throw illegalArgEx;
 			}
+			
 			Scanner sc = new Scanner(userEntry);//if input is valid, creates a date
 			Pattern delimiterPattern = Pattern.compile("[\\.]");
 			sc.useDelimiter(delimiterPattern);
+			
 			for (int i = 0; i < 3; i++) {
 				dateArray[i] = sc.nextInt();
 			}
 			
 			day = dateArray[0];
 			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
-			year = dateArray[2];
+			year = dateArray[2];			
+			
 			if (month == 1 && day > 28) {
 				if ((year % 4 == 0) && (year % 100 != 0)) {
 					//this is ok - it's a leap year
@@ -178,15 +191,48 @@ public class ContactManagerUtilities {
 					monthOverflow = true;
 					throw illegalArgEx;
 				}
-			}	
-			date = new GregorianCalendar(year, month, day);					
+			}
+			
+			//Time verification
+			System.out.println("Please enter the time of the meeting in 24-hour format (hh:mm) : ");
+			userEntry = System.console().readLine();
+			
+			if (userEntry.equals("back")) {
+				return null;//allows user to cancel and return to main menu 
+			}
+			
+			boolean timeVerified = validateTimeEntry(userEntry);//determines whether input is valid
+			if (!timeVerified) {
+				badTimeFormat = true;
+				throw illegalArgEx;
+			}
+			
+			Scanner scTime = new Scanner(userEntry);//if input is valid, creates a time
+			delimiterPattern = Pattern.compile("([\\:]|[\\.]");
+			scTime.useDelimiter(delimiterPattern);
+			
+			for (int i = 0; i < 2; i++) {
+				timeArray[i] = scTime.nextInt();
+			}
+			
+			hour = dateArray[0];
+			minutes = dateArray[1];	
+				
+			date = new GregorianCalendar(year, month, day, hour, minutes); //creates Calendar object				
 		}
+		
 		catch (IllegalArgumentException ex) {
-			if (badFormat) {
+			if (badDateFormat) {
 				System.out.println("Error! Please enter the date in dd.mm.yyyy format " +
 				"i.e. 01.11.2013 and finish by pressing RETURN.");
 				return createDate();
 			}
+			
+			if (badTimeFormat) {
+				System.out.println("Error! Please enter the date in 24-hour format " +
+				"i.e. 13:01 and finished by pressing RETURN.");
+			}
+			
 			if (febOverflow) {
 				System.out.println("Invalid date! February has 28 days outside of a leap year.");
 				return createDate();
@@ -204,12 +250,20 @@ public class ContactManagerUtilities {
 		//checks date format, allowing d.m.yyyy or dd.mm.yyyy. Rules out invalid days and months i.e. 59.40.2001
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][2][0][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean verified = m.matches();
+		boolean verified = m.matches(); //true if matched, false otherwise
 		if (verified) {
 			return true;
 		}
 		return false;
 	}
+	
+	public static boolean validateTimeEntry(String userEntry) {
+		//checks time format, allowing hh:mm / h:mm / hh.mm / h.mm. Rules out invalid times i.e. 25:79		
+		Pattern pattern = Pattern.compile("(([0]?[0-9])|([1][0-9])|([2][0-3]))([\\:]|[\\.])(([0-5][0-9]))");
+		Matcher m = pattern.matcher(userEntry);//match given input against pattern
+		boolean matched = m.matches(); //true if matched, false otherwise
+		return matched;
+	}	
 	
 	public static int lookUpMeetingOptions() {
 		System.out.println();
@@ -224,6 +278,7 @@ public class ContactManagerUtilities {
 	}
 	
 	public static int searchByContactOptions() {
+		System.out.println();
 		System.out.println("1. Search by contact ID");
 		System.out.println("2. Search by contact name");
 		System.out.println("3. Return to main menu");
@@ -245,7 +300,9 @@ public class ContactManagerUtilities {
 		
 		Calendar date = meeting.getDate();
 		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
-			(date.get(Calendar.MONTH ) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+		System.out.println("Time: " + date.get(Calendar.HOUR_OF_DAY) + ":" + 
+			date.get(Calendar.MINUTE));
 			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
@@ -286,7 +343,7 @@ public class ContactManagerUtilities {
 		for (Meeting m : list) {
 			Calendar date = m.getDate();
 			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
-				"." + date.get(Calendar.MONTH) + "." + date.get(Calendar.YEAR));
+				"." + (date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR));
 		}
 	}
 	
@@ -307,7 +364,7 @@ public class ContactManagerUtilities {
 	
 		
 		
-		
+//(int year, int month, int dayOfMonth, int hourOfDay, int minute)
 		
 		
 		

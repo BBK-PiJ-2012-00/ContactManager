@@ -87,7 +87,7 @@ public class ContactManagerImpl implements ContactManager {
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");
 			return null;
-			//confirm returning null is best course of action
+			//confirm returning null is best course of action - currently booted back to main
 		}
 		Iterator<Meeting> iteratorPM = pastMeetings.iterator();
 			Meeting meeting = null;
@@ -461,6 +461,8 @@ public class ContactManagerImpl implements ContactManager {
 		catch (NullPointerException nex) {
 			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");
 			//option to reenter a good idea
+			//As it stands, user is thrown back to main menu
+			//works here, as return is void -- need to see what happens in other methods
 		}
 	}
 	
@@ -679,7 +681,8 @@ public class ContactManagerImpl implements ContactManager {
 			int userSelection = ContactManagerUtilities.chooseMainMenuOption();
 			switch (userSelection) {
 				
-				case 1: System.out.println("\n");
+				case 1: // Add future meeting
+						System.out.println("\n");
 						System.out.println("*** ADD A FUTURE MEETING");
 						attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
 						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
@@ -693,10 +696,13 @@ public class ContactManagerImpl implements ContactManager {
 						this.addFutureMeeting(attendees, date);
 						break; 
 						
-				case 2: System.out.println("\n");
+				case 2: // Look up meeting
+						System.out.println("\n");
 						System.out.println("*** LOOK UP A MEETING");
 						int userChoice = ContactManagerUtilities.lookUpMeetingOptions();
 						switch (userChoice) {
+						
+									//Search meetings by date
 							case 1: System.out.println("*** LOOK UP MEETING -- Search by Date");
 									date = ContactManagerUtilities.createDate();
 									if (date == null) {
@@ -712,6 +718,7 @@ public class ContactManagerImpl implements ContactManager {
 									}
 									break;
 									
+									//Search meetings by meeting ID
 							case 2: System.out.println("*** LOOK UP MEETING -- Search by Meeting ID");
 									System.out.println("Please enter a meeting ID: ");
 									entry = System.console().readLine();
@@ -840,6 +847,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 							//LOOK UP MEETING MENU
 							case 5: System.out.println("*** LOOK UP MEETING -- Search Past Meetings by ID");
+									entry = System.console().readLine();
 								    id = ContactManagerUtilities.validateNumber(entry);
 								    PastMeeting pastMeeting = this.getPastMeeting(id);
 								    if (pastMeeting == null) {
@@ -976,7 +984,7 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-
+//ADD "CREATED" NOTE to end of each addNew method, if successful
 		
 //ADD COMMENTS TO EACH CASE FOR CLARITY	
 

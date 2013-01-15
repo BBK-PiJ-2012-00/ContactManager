@@ -20,6 +20,7 @@ public class ContactManagerImpl implements ContactManager {
 		boolean falseDate = false;
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		Meeting futureMeeting = null;
+		int meetingID = 0;
 		
 		try {
 			if (contacts.isEmpty()) {
@@ -33,13 +34,20 @@ public class ContactManagerImpl implements ContactManager {
 				}
 			}
 			
-			Calendar now = Calendar.getInstance(); //Test this works with time			
+			Calendar now = Calendar.getInstance(); 			
 			if (date.before(now)) { //If user-specified date is in the past, throw exception
 				falseDate = true;
 			}
 			if (isEmpty || falseContact || falseDate) {
 				throw illegalArgEx;
-			}				
+			}
+			
+			futureMeeting = new FutureMeetingImpl(contacts, date);
+			futureMeetings.add(futureMeeting);
+			meetingID = futureMeeting.getId();
+			System.out.println("Future meeting added.");
+			
+			return meetingID;				
 		}
 				
 		catch (IllegalArgumentException illegalArgEx) {
@@ -54,12 +62,7 @@ public class ContactManagerImpl implements ContactManager {
 				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
 			}			 
 		}
-			
-		futureMeeting = new FutureMeetingImpl(contacts, date);
-		futureMeetings.add(futureMeeting);
-		int meetingID = futureMeeting.getId();
-		System.out.println("Future meeting added.");
-		return meetingID;
+		return meetingID;	
 	}
 	
 	
@@ -926,7 +929,7 @@ public class ContactManagerImpl implements ContactManager {
 							break;
 						}
 						attendees = getContacts(attendeeArray);
-						date = ContactManagerUtilities.createDate();
+						date = ContactManagerUtilities.createDateAndTime();
 						if (date == null) {
 							break;
 						}
@@ -1061,17 +1064,15 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-//MEETING TIMES - check which method in switch statements : time for creation only
 
-//DISPLAY CONTACT LIST? - in submenu of look up contact
 
-//TIDY UP LINE SPACING
+
+
+//TIDY UP LINE SPACING IN SWITCH AND SUBMENUS
 
 //DEAL WITH FLOW AFTER EXCEPTIONS IN METHODS OF THIS CLASS
 
 //REORGANIZE UTILITY CLASS
-
-//UTILITY INTERFACE - UTILITIES
 
 //JAVA DOCS
 

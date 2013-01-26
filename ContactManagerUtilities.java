@@ -14,6 +14,10 @@ import java.util.GregorianCalendar;
 
 public class ContactManagerUtilities {
 	private static IllegalArgumentException illegalArgEx = new IllegalArgumentException();
+	
+	private ContactManagerUtilities() {
+	
+	}
 
 	public static void displayWelcome() {
 		System.out.println("*************************************************************");

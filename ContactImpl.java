@@ -39,14 +39,7 @@ public class ContactImpl implements Contact, Serializable {
 		return name;
 	}
 
-/** 
-* Returns our notes about the contact, if any. 
-* 
-* If we have not written anything about the contact, the empty 
-* string is returned. 
-* 
-* @return a string with notes about the contact, maybe empty. 
-*/
+
 	public String getNotes() {
 		return notes;
 	}

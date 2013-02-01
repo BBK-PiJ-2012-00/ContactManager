@@ -38,8 +38,8 @@ public interface Utilities {
 	* used to ensure numbers outside of the range are
 	* caught as exceptions.
 	*
-	* @param the minimum value acceptable.
-	* @param the maximum value acceptable.
+	* @param min the minimum value acceptable.
+	* @param max the maximum value acceptable.
 	* @return a user-entered number representing a numerical option.
 	* @throws NumberFormatException if a non-integer is entered.
 	* @throws IllegalArgumentException if a number outside of the specified
@@ -70,7 +70,7 @@ public interface Utilities {
 	* I.e. 1,2,3 , 4, 5,6, 7 is considered valid.
 	* Utilised by selectAttendees() method.
 	*
-	* @param user-entered String passed from selectAttendees().
+	* @param userEntry a user-entered String passed from selectAttendees().
 	* @return true or false (String is valid or invalid respectively).
 	*/	
 	public static boolean validateCommaString(String userEntry);	
@@ -110,7 +110,7 @@ public interface Utilities {
 	* possible i.e. 1.2.2013. Also validates that day values do not exceed 31, and that
 	* month values do not exceed 12.
 	*
-	* @param a user-entered String, passed from other methods for validation.
+	* @param userEntry a user-entered String, passed from other methods or classes for validation.
 	* @return true or false depending on whether the String is considered valid or not.
 	*/
 	public static boolean validateDateEntry(String userEntry);	
@@ -121,7 +121,7 @@ public interface Utilities {
 	* Validates user-entered times.  Checks time format, allowing hh:mm / h:mm / hh.mm / 
 	* h.mm. Rules out invalid times such as 25:99. 
 	* 
-	* @param a user-entered String, passed from other methods for validation.
+	* @param userEntry a user-entered String, passed from other methods for validation.
 	* @return true or false depending on whether the String is considered valid or not.
 	*/
 	public static boolean validateTimeEntry(String userEntry);		
@@ -155,7 +155,7 @@ public interface Utilities {
 	* A method that prints the details (date, time, ID, attendees) of a meeting. If
 	* the meeting is an instance of PastMeeting, it also prints the meeting notes.
 	*
-	* @param the meeting about which details are to be printed.
+	* @param meeting the meeting about which details are to be printed.
 	*/
 	public static void printMeetingDetails(Meeting meeting);
 	
@@ -166,7 +166,7 @@ public interface Utilities {
 	* ContactManager whenever a user is required to enter a number (i.e. to specify
 	* a meeting or contact ID).
 	*
-	* @param a String entered by the user, pending conversion to int.
+	* @param entry a String entered by the user, pending conversion to int.
 	* @return the user-entered String parsed to an int.
 	* @throws NumberFormatException if the parameter String consists of anything other
 	* than a number.
@@ -178,7 +178,7 @@ public interface Utilities {
 	/**
 	* A method to print lists containing Meetings or subtypes of Meeting.
 	*
-	* @param a list of type Meeting (or subtype).
+	* @param list a list of type Meeting (or subtype).
 	*/
 	public static void printMeetingList(List<? extends Meeting> list);
 	
@@ -198,7 +198,7 @@ public interface Utilities {
 	/**
 	* Displays contact list on screen.
 	*
-	* @param contactList from ContactManager.
+	* @param contactList contact set from ContactManager.
 	*/
 	public static void displayContactList(Set<Contact> contactList);
 		

@@ -1,6 +1,4 @@
-/**
-* A class that handles some of the user interface of ContactManager, and takes/validates user entries.
-*/
+
 
 import java.util.regex.*;
 import java.util.Scanner;
@@ -12,13 +10,22 @@ import java.util.Set;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+
+/**
+* An auxiliary class that handles much of the user interface of ContactManager, 
+* taking and validating user entries.
+*/
 public class ContactManagerUtilities {
 	private static IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	
 	private ContactManagerUtilities() {
-	
+		//Disallows instantiation
 	}
+	
 
+	/**
+	* Displays welcome banner on screen.
+	*/
 	public static void displayWelcome() {
 		System.out.println("*************************************************************");
 		System.out.println("*                    CONTACT MANAGER                        *");
@@ -26,7 +33,12 @@ public class ContactManagerUtilities {
 	}
 	
 	
-
+	
+	/**
+	* Displays main menu of numerical choices. 
+	*
+	* @return an integer for use in switch statement of ContactManager class.
+	*/
 	public static int chooseMainMenuOption() {
 		System.out.println();
 		System.out.println();
@@ -45,7 +57,19 @@ public class ContactManagerUtilities {
 	
 	
 	
-	public static int validateOption(int min, int max) {//to validate user choices from numerical menus
+	/**
+	* A method that validates whether an integer is within a range of acceptable values
+	* for use with numerical option menus. I.e. if the range of menu choices is 1-8, this
+	* method ensures values outside of this range are caught as exceptions.
+	*
+	* @param min the minimum value acceptable.
+	* @param max the maximum value acceptable.
+	* @return a user-entered number representing a numerical option.
+	* @throws NumberFormatException if a non-integer is entered.
+	* @throws IllegalArgumentException if a number outside of the specified
+	* range is entered.
+	*/
+	public static int validateOption(int min, int max) {
 		int selection;
 		
 		try {
@@ -72,10 +96,15 @@ public class ContactManagerUtilities {
 	
 	
 	/**
-	* A method that allows the user to select contacts by ID number. These numbers
-	* are then added to an array, which is returned to the ContactManager class
+	* A method that allows the user to select multiple contacts by ID number. These
+	* numbers are then added to an array, which is returned to the ContactManager class
 	* for validation with the getContacts(int... ids) method. 
-	* Prints contactList Set for ease of reference.
+	* Prints contactList Set for user's ease of reference.
+	*
+	* @param contactList set, passed from ContactManager.
+	* @return array of integers representing user-selected contact IDs.
+	* @throws IllegalArgumentException if the IDs aren't entered in a comma-separated
+	* String (although there is some leniency with regard to comma spacing).
 	*/
 	public static int[] selectAttendees(Set<Contact> contactList) {
 		
@@ -88,7 +117,7 @@ public class ContactManagerUtilities {
 			return null;//This sends the user back to the main menu via a break statement in ContactManager
 		}
 		
-		for (Contact c : contactList) {//Prints contactList for ease of reference
+		for (Contact c : contactList) {
 			System.out.println(c.getName() + " " + c.getId());
 		}
 		
@@ -117,7 +146,6 @@ public class ContactManagerUtilities {
 			} while (sc.hasNextInt());
 			
 			attendees = new int[attendeeList.size()]; //converts to array for use in ContactManager getContacts() method
-			//so that it can be ascertained whether the user has selected contacts who exist
 			for (int i = 0; i < attendeeList.size(); i++) {
 				attendees[i] = attendeeList.get(i);
 			}
@@ -134,12 +162,14 @@ public class ContactManagerUtilities {
 	
 	
 	
-	/*
-	* A method to validate a user-entered String of
-	* digits separated by commas and spaces.
-	* Is reasonably lenient to ensure user friendliness:
-	* 1,2,3 , 4, 5, 6 is considered valid.
-	*/
+	/**
+	* A method to validate a user-entered String of digits separated by commas and
+	* spaces. Some degree of leniency with regard to spacing to ensure user-friendliness.
+	* I.e. 1,2,3 , 4, 5,6, 7 is considered valid.
+	*
+	* @param userEntry a user-entered String passed from selectAttendees().
+	* @return true or false (String is valid or invalid respectively).
+	*/	
 	public static boolean validateCommaString(String userEntry) {
 		Pattern pattern = Pattern.compile("([0-9][0-9]*[\\s]?[,][\\s]?)*[0-9][0-9]*");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
@@ -157,7 +187,11 @@ public class ContactManagerUtilities {
 	/**
 	* Creates a Calendar date and time from user input. Rules out invalid dates such as
 	* 29.02 outside of a leap year, and ensures that months with only 30 days cannot
-	* be assigned a date of 31. Rules out invalid times.
+	* be assigned a date of 31. Rules out invalid times such as 25:79.
+	*
+	* @return Calendar object with user-determined date and time.
+	* @throws IllegalArgumentException if the date or time is invalid, in terms of format
+	* and value (i.e. time not in 24-hour hh:mm format, or outside of valid range).	
 	*/
 	public static Calendar createDateAndTime() {
 		Calendar date = null;		
@@ -199,7 +233,7 @@ public class ContactManagerUtilities {
 			}
 			
 			day = dateArray[0];
-			month = dateArray[1] - 1;//Calendar interprets January as 0, February as 1 etc
+			month = dateArray[1] - 1;//Calendar interprets January as 0
 			year = dateArray[2];			
 			
 			if (month == 1 && day > 28) {
@@ -246,7 +280,7 @@ public class ContactManagerUtilities {
 			hour = timeArray[0];
 			minutes = timeArray[1];							
 				
-			date = new GregorianCalendar(year, month, day, hour, minutes); //creates Calendar object				
+			date = new GregorianCalendar(year, month, day, hour, minutes);				
 		}
 		
 		catch (IllegalArgumentException ex) {
@@ -277,8 +311,14 @@ public class ContactManagerUtilities {
 	
 	
 	
-	/*
-	* Create date without time.
+	/**
+	* Creates a Calendar object without a user-specified time. Useful for looking up 
+	* meetings by date only (without regard to time).
+	*
+	* @return a user-determined date.
+	* @throws IllegalArgumentException if the date is invalid (i.e. 29th Feb outside of
+	* a leap year), and also if the format is invalid (not in dd.mm.yyyy format, although
+	* there is some leniency i.e. d.m.yyyy where possible).
 	*/
 	public static Calendar createDate() {
 		Calendar date = null;		
@@ -336,7 +376,7 @@ public class ContactManagerUtilities {
 				}
 			}			
 				
-			date = new GregorianCalendar(year, month, day); //creates Calendar object				
+			date = new GregorianCalendar(year, month, day); 				
 		}
 		
 		catch (IllegalArgumentException ex) {
@@ -359,8 +399,16 @@ public class ContactManagerUtilities {
 	}
 	
 	
+	
+	/**
+	* Validates user-entered dates. Accepts dates in dd.mm.yyyy format, with leniency
+	* for d.m.yyyy where possible i.e. 1.2.2013. Also validates that day values do not 
+	* exceed 31, and that month values do not exceed 12.
+	*
+	* @param userEntry a user-entered String, passed from other methods or classes for validation.
+	* @return true or false depending on whether the String is considered valid or not.
+	*/
 	public static boolean validateDateEntry(String userEntry) {
-		//checks date format, allowing d.m.yyyy or dd.mm.yyyy. Rules out invalid days and months i.e. 59.40.2001
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][1-2][0-9][0-9][0-9]");
 		Matcher m = pattern.matcher(userEntry);//match given input against pattern
 		boolean verified = m.matches(); //true if matched, false otherwise
@@ -374,9 +422,12 @@ public class ContactManagerUtilities {
 	
 	
 	
-	/*
-	* Checks time format, allowing hh:mm / h:mm / hh.mm / h.mm. Rules out invalid 
-	* times i.e. 25:79	
+	/**
+	* Validates user-entered times.  Checks time format, allowing hh:mm / h:mm / hh.mm / 
+	* h.mm. Rules out invalid times such as 25:99. 
+	* 
+	* @param userEntry a user-entered String, passed from other methods for validation.
+	* @return true or false depending on whether the String is considered valid or not.
 	*/
 	public static boolean validateTimeEntry(String userEntry) {			
 		Pattern pattern = Pattern.compile("(([0]?[0-9])|([1][0-9])|([2][0-3]))([\\:]|[\\.])(([0-5][0-9]))");
@@ -385,6 +436,15 @@ public class ContactManagerUtilities {
 		return matched;
 	}	
 	
+	
+	
+	
+	/**
+	* A sub-menu with numerical options for selecting how to search for
+	* a meeting. 
+	*
+	* @return an int for use in switch statement of ContactManager.
+	*/	
 	public static int lookUpMeetingOptions() {
 		System.out.println();
 		System.out.println();
@@ -400,6 +460,13 @@ public class ContactManagerUtilities {
 	
 	
 	
+	
+	/**
+	* A sub-menu with numerical options for selecting how to search 
+	* for a meeting by Contact (ID or name).
+	*
+	* @return an int for use in switch statement of ContactManager.
+	*/
 	public static int searchByContactOptions() {
 		System.out.println();
 		System.out.println("1. Search by contact ID");
@@ -414,20 +481,21 @@ public class ContactManagerUtilities {
 	
 	
 	/**
-	* A method that prints the details of the meeting
-	* taken as a parameter. If the meeting is a past
-	* meeting, it also prints the meeting notes.
+	* Prints the details (date, time, ID, attendees) of a meeting. If
+	* the meeting is an instance of PastMeeting, it also prints the meeting notes.
+	*
+	* @param meeting the meeting about which details are to be printed.
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
 		Calendar date = meeting.getDate();
 		String minutes = "";		
 		
 		if (date.get(Calendar.MINUTE) < 10) {
-			if (date.get(Calendar.MINUTE) == 0) { //so that times such as 12:00 display as such, not as 12:0;
+			if (date.get(Calendar.MINUTE) == 0) { //so that times such as 12:00 display as such, not as 12:0
 				minutes += date.get(Calendar.MINUTE) + "0";
 			}
 			else {
-				minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7;
+				minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7
 			}
 		}	
 		else {
@@ -457,8 +525,12 @@ public class ContactManagerUtilities {
 	
 	
 	/**
-	* A method to validate that user input can be
-	* interpreted as an int.
+	* A method to validate that user input can be interpreted as an int. 
+	*
+	* @param entry a String entered by the user, pending conversion to int.
+	* @return the user-entered String parsed to an int.
+	* @throws NumberFormatException if the parameter String consists of anything other
+	* than numbers.
 	*/
 	public static int validateNumber(String entry) {
 		int num;
@@ -478,8 +550,10 @@ public class ContactManagerUtilities {
 	
 	
 	
-	/*
-	* Method to print lists containing Meetings or subtypes of Meeting.
+	/**
+	* A method to print lists containing Meetings (and subtypes).
+	*
+	* @param list a list of type Meeting (or subtype).
 	*/
 	public static void printMeetingList(List<? extends Meeting> list) {
 		System.out.println("Meeting list: ");
@@ -493,8 +567,11 @@ public class ContactManagerUtilities {
 	
 	
 	
-	/*
-	* Look up contact submenu
+	
+	/**
+	* A sub-menu with numerical options for selecting how to search for a contact.
+	*
+	* @return an int for use in switch statement of ContactManager.
 	*/
 	public static int lookUpContactOptions() {
 		System.out.println();
@@ -508,8 +585,11 @@ public class ContactManagerUtilities {
 	}
 	
 	
-	/*
-	* Display contact list
+	
+	/**
+	* Displays contact list on screen.
+	*
+	* @param contactList contact set from ContactManager.
 	*/
 	public static void displayContactList(Set<Contact> contactList) {
 		System.out.println("Contact List: ");

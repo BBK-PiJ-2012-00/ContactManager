@@ -553,9 +553,9 @@ public class ContactManagerUtilities {
 		
 		for (Meeting m : list) {
 			Calendar date = m.getDate();
-			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
-				"." + (date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR) + " " +
-				date);
+			String dateString = renderDate(date);
+			String timeString = renderTime(date);
+			System.out.println("ID: " + m.getId() + "\t" + dateString + " " + timeString);
 		}
 	}
 	
@@ -602,21 +602,29 @@ public class ContactManagerUtilities {
 	* @param date the Calendar object whose value is to be printed on screen.
 	* @return a String, showing the time in a user-friendly format.
 	*/
-	public String renderTime(Calendar date) {
-		String timeString = date.get(Calendar.HOUR_OF_DAY);
+	public static String renderTime(Calendar date) {
+		String timeString = "";
+		
+		if (date.get(Calendar.HOUR_OF_DAY) < 10) {
+			timeString += "0" + date.get(Calendar.HOUR_OF_DAY);
+		}
+		else {
+			timeString += date.get(Calendar.HOUR_OF_DAY);
+		}
+		
+		timeString += ":";
 		
 		if (date.get(Calendar.MINUTE) < 10) {
 			if (date.get(Calendar.MINUTE) == 0) { //Ensures such as 12:00 display as such, not as 12:0
-				return timeString += date.get(Calendar.MINUTE) + "0";
+				timeString += date.get(Calendar.MINUTE) + "0";
 			}
 			else {
-				return timeString += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
+				timeString += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
 			}
-		}	
-		else {
-			return timeString += date.get(Calendar.MINUTE);
-		}
-		return timeString;	
+		}		
+			
+		return timeString;
+			
 	}	
 	
 	
@@ -627,9 +635,24 @@ public class ContactManagerUtilities {
 	* @param date the Calendar object whose value is to be printed on screen.
 	* @return a String, showing the date in a user-friendly format.
 	*/
-	public String renderDate(Calendar date) {
-		String dateString = date.get(Calendar.DAY_OF_MONTH) + "." + 
-			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+	public static String renderDate(Calendar date) {
+		String dateString = "";
+		
+		if (date.get(Calendar.DAY_OF_MONTH) < 10) {
+			dateString += "0" + date.get(Calendar.DAY_OF_MONTH) + ".";
+		}
+		else {
+			dateString += date.get(Calendar.DAY_OF_MONTH) + ".";
+		}
+		
+		if (date.get(Calendar.MONTH) < 9) {
+			dateString += "0" + (date.get(Calendar.MONTH) + 1) + ".";//+1 to print month in meaningful sense to user
+		}
+		else {
+			dateString += (date.get(Calendar.MONTH) +1) + ".";
+		} 
+		
+		dateString += date.get(Calendar.YEAR);		  
 	
 		return dateString;
 	}

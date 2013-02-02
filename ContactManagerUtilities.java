@@ -477,6 +477,8 @@ public class ContactManagerUtilities {
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
 		Calendar date = meeting.getDate();
+		
+		/*
 		String minutes = "";		
 		
 		if (date.get(Calendar.MINUTE) < 10) {
@@ -490,14 +492,16 @@ public class ContactManagerUtilities {
 		else {
 			minutes += date.get(Calendar.MINUTE);
 		}
+		*/
+		
+		String time = this.renderTime(date);
 		
 		System.out.println("Meeting details: ");
 		System.out.println("ID:   " + meeting.getId());
 		
 		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
 			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
-		System.out.println("Time: " + date.get(Calendar.HOUR_OF_DAY) + ":" + 
-			minutes);
+		System.out.println("Time: " + time);
 			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
@@ -550,7 +554,8 @@ public class ContactManagerUtilities {
 		for (Meeting m : list) {
 			Calendar date = m.getDate();
 			System.out.println("ID: " + m.getId() + "\t" + date.get(Calendar.DAY_OF_MONTH) +
-				"." + (date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR));
+				"." + (date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR) + " " +
+				date);
 		}
 	}
 	
@@ -587,7 +592,32 @@ public class ContactManagerUtilities {
 		for (Contact c : contactList) {
 			System.out.println("ID: " + c.getId() + "\t" + c.getName());
 		}
-	}			
+	}
+	
+	
+	
+	/**
+	* Renders time fit for display on screen.
+	*
+	* @param date the Calendar object whose value is to be printed on screen.
+	* @return a String, showing the time in a user-friendly format.
+	*/
+	public String renderTime(Calendar date) {
+		String timeString = date.get(Calendar.HOUR_OF_DAY);
+		
+		if (date.get(Calendar.MINUTE) < 10) {
+			if (date.get(Calendar.MINUTE) == 0) { //Ensures such as 12:00 display as such, not as 12:0
+				return timeString += date.get(Calendar.MINUTE) + "0";
+			}
+			else {
+				return timeString += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
+			}
+		}	
+		else {
+			return timeString += date.get(Calendar.MINUTE);
+		}
+		return timeString;	
+	}	
 		
 		
 }

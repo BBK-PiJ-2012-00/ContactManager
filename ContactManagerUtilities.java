@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Calendar;
@@ -93,7 +94,7 @@ public class ContactManagerUtilities {
 	}
 	
 		
-	
+	//PRINT CONTACT LIST IN ID ORDER!!!!
 	/**
 	* A method that allows the user to select multiple contacts by ID number. These
 	* numbers are then added to an array, which is returned to the ContactManager class
@@ -109,16 +110,13 @@ public class ContactManagerUtilities {
 		
 		List<Integer> attendeeList = new ArrayList<Integer>();
 		int[] attendees;
-		System.out.println("Your contact list: ");
 		
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
 			return null;//Sends the user back to the main menu via a break statement in ContactManager
-		}
+		}		
 		
-		for (Contact c : contactList) {
-			System.out.println(c.getName() + " " + c.getId());
-		}
+		displayContactList(contactList);
 		
 		System.out.println("Please enter the IDs of the attendees, separated" +
 		" by a comma e.g. 1, 4, 5. Finish by pressing RETURN.");
@@ -289,18 +287,18 @@ public class ContactManagerUtilities {
 			}
 			
 			if (badTimeFormat) {
-				System.out.println("Error! Please enter the date in 24-hour format " +
+				System.out.println("Error! Please enter the time in 24-hour format " +
 				"i.e. 13:01 and finished by pressing RETURN.");
-				return createDate();
+				return createDateAndTime();
 			}
 			
 			if (febOverflow) {
 				System.out.println("Invalid date! February has 28 days outside of a leap year.");
-				return createDate();
+				return createDateAndTime();
 			}
 			if (monthOverflow) {
 				System.out.println("Error! The month you specified has 30 days.");
-				return createDate();
+				return createDateAndTime();
 			} 
 		}
 		return date;	
@@ -505,7 +503,7 @@ public class ContactManagerUtilities {
 			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
-			System.out.println(c.getId() + "\t" + c.getName());
+			System.out.println("ID: " + c.getId() + "\t" + c.getName());
 		}
 		
 		if (meeting instanceof PastMeeting) {//Print meeting notes if it's a past meeting
@@ -583,6 +581,7 @@ public class ContactManagerUtilities {
 	* @param contactList contact set from ContactManager.
 	*/
 	public static void displayContactList(Set<Contact> contactList) {
+		Set<Contact> sortedContactList = new TreeSet<Contact>();
 		System.out.println("Contact List: ");
 		
 		if (contactList.isEmpty()) {
@@ -590,6 +589,9 @@ public class ContactManagerUtilities {
 		}
 		
 		for (Contact c : contactList) {
+			sortedContactList.add(c);
+		}
+		for (Contact c: sortedContactList) {
 			System.out.println("ID: " + c.getId() + "\t" + c.getName());
 		}
 	}
@@ -614,15 +616,13 @@ public class ContactManagerUtilities {
 		
 		timeString += ":";
 		
-		if (date.get(Calendar.MINUTE) < 10) {
-			if (date.get(Calendar.MINUTE) == 0) { //Ensures such as 12:00 display as such, not as 12:0
-				timeString += date.get(Calendar.MINUTE) + "0";
-			}
-			else {
-				timeString += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
-			}
-		}		
-			
+		if (date.get(Calendar.MINUTE) < 10) {//Ensures such as 12:00 display as such, not as 12:0				
+				timeString += "0" + date.get(Calendar.MINUTE);
+		}
+		else {
+			timeString += date.get(Calendar.MINUTE);
+		}
+					
 		return timeString;
 			
 	}	
@@ -633,7 +633,7 @@ public class ContactManagerUtilities {
 	* Renders date fit for display on screen.
 	*
 	* @param date the Calendar object whose value is to be printed on screen.
-	* @return a String, showing the date in a user-friendly format.
+	* @return a String, showing the date in a user-friendly.
 	*/
 	public static String renderDate(Calendar date) {
 		String dateString = "";

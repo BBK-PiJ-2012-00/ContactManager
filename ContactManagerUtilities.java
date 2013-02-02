@@ -494,14 +494,14 @@ public class ContactManagerUtilities {
 		}
 		*/
 		
-		String time = this.renderTime(date);
+		String timeString = renderTime(date);
+		String dateString = renderDate(date);
 		
 		System.out.println("Meeting details: ");
 		System.out.println("ID:   " + meeting.getId());
 		
-		System.out.println("Date: " + date.get(Calendar.DAY_OF_MONTH) + "." + 
-			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
-		System.out.println("Time: " + time);
+		System.out.println("Date: " + dateString);
+		System.out.println("Time: " + timeString);
 			
 		System.out.println("Attendees: ");
 		for (Contact c : meeting.getContacts()) {
@@ -618,6 +618,21 @@ public class ContactManagerUtilities {
 		}
 		return timeString;	
 	}	
+	
+	
+	
+	/**
+	* Renders date fit for display on screen.
+	*
+	* @param date the Calendar object whose value is to be printed on screen.
+	* @return a String, showing the date in a user-friendly format.
+	*/
+	public String renderDate(Calendar date) {
+		String dateString = date.get(Calendar.DAY_OF_MONTH) + "." + 
+			(date.get(Calendar.MONTH) + 1) + "." + date.get(Calendar.YEAR)); //+1 to print month in meaningful sense to user
+	
+		return dateString;
+	}
 		
 		
 }

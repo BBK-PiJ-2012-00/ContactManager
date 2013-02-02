@@ -182,7 +182,7 @@ public class ContactManagerImpl implements ContactManager {
 	* Sorts a list into chronological order
 	*/
 	public List<Meeting> sort(List<Meeting> list) {
-		//temporary variables used for re-ordering
+		//Temporary variables used for re-ordering
 		Meeting tempMeeting1 = null;
 		Meeting tempMeeting2 = null;
 		boolean sorted = true;
@@ -192,19 +192,19 @@ public class ContactManagerImpl implements ContactManager {
 			tempMeeting2 = list.get(j + 1);
 			
 			if (tempMeeting1.getDate().after(tempMeeting2.getDate())) {
-				//swaps elements over if first element has later date than second
-				list.set(j, tempMeeting2); //set() prevents list growing when rearranging elements
+				//Swaps elements over if first element has later date than second
+				list.set(j, tempMeeting2);
 				list.set(j + 1, tempMeeting1);
 			}
 		}
 		
-		for (int i = 0; i < list.size() - 1; i++) { //loop that checks whether list is sorted
+		for (int i = 0; i < list.size() - 1; i++) {//Loop that checks whether list is sorted
 			if (list.get(i).getDate().after(list.get(i + 1).getDate())) {
 				sorted = false;
 			}			
 		}
 		
-		if (!sorted) { //recursively calls this method until the list is sorted
+		if (!sorted) { //Recursively calls this method until the list is sorted
 			list = sort(list);
 		}
 		
@@ -366,12 +366,13 @@ public class ContactManagerImpl implements ContactManager {
 		
 	
 	
-	//THIS NEEDS FIXING!
+	
 	public void addMeetingNotes(int id, String text) {
 		boolean pastMeetingFound = false;//to decide if program should look through futureMeetings if no matching meeting
 		//is found in pastMeetings.
 		
 		try {	
+		
 			for (Meeting m : pastMeetings) {
 				if (m.getId() == id) {
 					pastMeetingFound = true; //prevents unnecessary conversion of past meeting to past meeting
@@ -381,20 +382,20 @@ public class ContactManagerImpl implements ContactManager {
 					PastMeeting pm = (PastMeeting) m; //cast so that addNotes() can be called
 					pm.addNotes(text); 				
 					System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
-				}
-				return; 
-			}			
+					return;
+				} 
+			}		
 		}
 		
 		catch (NullPointerException ex) {
 			System.out.println("Error: No notes have been specified!");
 		}					
 		
-		if (!pastMeetingFound) { //means future meeting is being converted			
+		if (!pastMeetingFound) { //Means future meeting is being converted			
 			boolean containsMeeting = false;
 			boolean futureDate = false;
 			Calendar now = Calendar.getInstance();
-			Meeting meeting = null;//to allow the meeting matching the id to be used throughout the method
+			Meeting meeting = null;//Allows the meeting matching the id to be used throughout the method
 			
 			try {				
 				Iterator<Meeting> iterator = futureMeetings.iterator(); 
@@ -402,8 +403,8 @@ public class ContactManagerImpl implements ContactManager {
 					meeting = iterator.next();
 					if (meeting.getId() == id) {
 						containsMeeting = true;
+						break;
 					}
-					break;
 				}				
 				System.out.println("Meeting ID: " + meeting.getId() + " is being updated...");
 				
@@ -420,7 +421,7 @@ public class ContactManagerImpl implements ContactManager {
 				Meeting pastMeeting = new PastMeetingImpl(meeting.getContacts(), meeting.getDate(), text, meeting.getId());
 				pastMeetings.add(pastMeeting);
 				futureMeetings.remove(meeting);	
-				System.out.println("Meeting updated.");		
+				System.out.println("Meeting lists updated.");		
 			}
 			
 			catch (IllegalArgumentException aEx) {
@@ -954,7 +955,6 @@ public class ContactManagerImpl implements ContactManager {
 							break;
 						}						
 						id = ContactManagerUtilities.validateNumber(entry);
-						System.out.println("Entry validated was: " + id);
 						System.out.println("Enter meeting notes:");
 						entry = System.console().readLine();
 						if (entry.equals("back")) { //option to quit
@@ -1075,5 +1075,4 @@ public class ContactManagerImpl implements ContactManager {
 
 //CHECK THAT sort() is still ok now that time is included
 
-//ADD NOTES to meeting that has taken place misbehaving - added to wrong ID! Option 4 on main
 

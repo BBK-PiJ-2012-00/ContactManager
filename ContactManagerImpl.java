@@ -217,7 +217,7 @@ public class ContactManagerImpl implements ContactManager {
 	public List<Meeting> getMeetingList(Calendar date) {
 		List<Meeting> meetingList = new ArrayList<Meeting>();		
 		
-		for (Meeting m : pastMeetings) { //go through pastMeetings
+		for (Meeting m : pastMeetings) {
 			Calendar meetingDate = m.getDate();
 			if (meetingDate.get(Calendar.YEAR) == date.get(Calendar.YEAR)) {
 				if (meetingDate.get(Calendar.MONTH) == date.get(Calendar.MONTH)) {
@@ -264,7 +264,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 			meetingList = sort(meetingList);	
 			
-			for (int i = 0; i < meetingList.size(); i++) { //convert List<Meeting> to List<PastMeeting>
+			for (int i = 0; i < meetingList.size(); i++) {//convert List<Meeting> to List<PastMeeting>
 				Meeting m = meetingList.get(i);
 				PastMeeting pm = (PastMeeting) m;
 				pastMeetingList.add(pm);
@@ -298,8 +298,8 @@ public class ContactManagerImpl implements ContactManager {
 				emptyContacts = true;
 			}
 			
-			Calendar now = Calendar.getInstance(); //Test this works with time			
-			if (date.after(now)) { //If user-specified date is in the past, throw exception
+			Calendar now = Calendar.getInstance();			
+			if (date.after(now)) { //If user-specified date is in the future, throw exception
 				falseDate = true;
 			}
 			
@@ -375,7 +375,7 @@ public class ContactManagerImpl implements ContactManager {
 		
 			for (Meeting m : pastMeetings) {
 				if (m.getId() == id) {
-					pastMeetingFound = true; //prevents unnecessary conversion of past meeting to past meeting
+					pastMeetingFound = true;
 					if (text == null) { //throws exception before anything else can be executed
 						throw nullPointerEx;
 					}
@@ -454,10 +454,7 @@ public class ContactManagerImpl implements ContactManager {
 		}
 		
 		catch (NullPointerException nex) {
-			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");
-			//option to reenter a good idea
-			//As it stands, user is thrown back to main menu
-			//works here, as return is void -- need to see what happens in other methods
+			System.out.println("Error: Please ensure that BOTH the NAME and NOTES fields are filled in.");			
 		}
 	}
 	
@@ -483,7 +480,7 @@ public class ContactManagerImpl implements ContactManager {
 				}				
 				
 				if (found == false) {
-					idString = idString + id + "\n"; //add unknown ID to idString for display later
+					idString = idString + id + "\n";//add unknown ID to idString for display later
 				}		
 			}
 			
@@ -497,7 +494,6 @@ public class ContactManagerImpl implements ContactManager {
 		catch (IllegalArgumentException ex) {
 			System.out.println("Note: The following IDs were not found and haven't " +
 				"been added to the attendee list:" + "\n" + idString);
-			//user's next option? Return to main?
 		}
 		
 		return idMatches;
@@ -505,11 +501,6 @@ public class ContactManagerImpl implements ContactManager {
 	
 	
 	
-	
-	
-	/*
-	* Returns a single contact matching an ID.
-	*/
 	public Contact getContact(int id) {
 		for (Contact c : contactList) {//matches against list of contacts
 			if (c.getId() == id) {
@@ -522,7 +513,7 @@ public class ContactManagerImpl implements ContactManager {
 	}
 		
 	
-	//MATCH FIRST CHAR UPPER/LOWER
+	
 	public Set<Contact> getContacts(String name) {
 		Set<Contact> contactSet =  new HashSet<Contact>();
 		Contact contact = null;
@@ -553,7 +544,6 @@ public class ContactManagerImpl implements ContactManager {
 		return contactSet;
 	}
 
-	
 	
 	
 	public void flush() {
@@ -590,10 +580,9 @@ public class ContactManagerImpl implements ContactManager {
       	}
       	
       	catch (IOException ex) {
-      		ex.printStackTrace();//need to be more explicit?
+      		ex.printStackTrace();
       	} 	
 	}
-	
 	
 	
 	
@@ -615,23 +604,23 @@ public class ContactManagerImpl implements ContactManager {
 			
 			while ((obj = ois.readObject()) != null) { //read to end of file
 				if (obj instanceof IdStore) {
-					IdStore ids = (IdStoreImpl) obj;
+					IdStore ids = (IdStore) obj;
 					ContactImpl.restoreIdAssigner(ids.getContactIdAssigner());
 					MeetingImpl.restoreIdAssigner(ids.getMeetingIdAssigner());
 				}
 				
 				if (obj instanceof Contact) {
-					Contact contact = (ContactImpl) obj;
+					Contact contact = (Contact) obj;
 					contactList.add(contact);
 				}
 				
 				if (obj instanceof FutureMeeting) {
-					Meeting meeting = (FutureMeetingImpl) obj;
+					Meeting meeting = (FutureMeeting) obj;
 					futureMeetings.add(meeting);
 				}
 				
 				if (obj instanceof PastMeeting) {
-					Meeting meeting = (PastMeetingImpl) obj;
+					Meeting meeting = (PastMeeting) obj;
 					pastMeetings.add(meeting);
 				}
 			}
@@ -664,6 +653,7 @@ public class ContactManagerImpl implements ContactManager {
 		cm.launch();
 		
 	}
+	
 	
 	private void launch() {
 	
@@ -1013,6 +1003,7 @@ public class ContactManagerImpl implements ContactManager {
 									System.out.println("Contacts matching this name: ");
 									for (Contact c : contacts) {
 										System.out.println(c.getName() + "\t" + "ID: " + c.getId());
+										System.out.println("Notes: " + c.getNotes() + "\n");
 									
 									}
 									break;
@@ -1065,7 +1056,7 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-
+//Print contact notes when searched by name
 
 //Print contact list in ID order
 

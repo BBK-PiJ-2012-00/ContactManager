@@ -3,6 +3,9 @@
 import java.util.*;
 import java.io.*;
 
+import java.beans.XMLEncoder;
+import java.beans.XMLDecoder;
+
 
 public class ContactManagerImpl implements ContactManager { 
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
@@ -20,7 +23,7 @@ public class ContactManagerImpl implements ContactManager {
 		boolean falseDate = false;
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
 		Meeting futureMeeting = null;
-		int meetingID = 0;
+		int meetingID = 0; //ID assigner in Meeting begins at 1, so this figure is just a default
 		
 		try {
 			if (contacts.isEmpty()) {
@@ -172,11 +175,9 @@ public class ContactManagerImpl implements ContactManager {
 		
 	return list; //may be empty if no meetings found
 	//won't be any duplicates because a meeting cannot belong to pastMeetings AND futureMeetings
-	}
+	}	
 	
 	
-	
-	//ADAPT FOR INCLUSION OF TIME!!!!!
 	/**
 	* Sorts a list into chronological order
 	*/
@@ -282,7 +283,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	
 	
-	//TIME!!!	
+	
 	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
 		boolean emptyContacts = false;//to allow simultaneous error correction for user
 		boolean nullContacts = false;
@@ -365,7 +366,7 @@ public class ContactManagerImpl implements ContactManager {
 		
 	
 	
-	
+	//THIS NEEDS FIXING!
 	public void addMeetingNotes(int id, String text) {
 		boolean pastMeetingFound = false;//to decide if program should look through futureMeetings if no matching meeting
 		//is found in pastMeetings.
@@ -381,7 +382,7 @@ public class ContactManagerImpl implements ContactManager {
 					pm.addNotes(text); 				
 					System.out.println("Notes for meeting ID No. " + id + " updated successfully.");
 				}
-				break; 
+				return; 
 			}			
 		}
 		
@@ -529,7 +530,7 @@ public class ContactManagerImpl implements ContactManager {
 			if (name == null) {
 				throw nullPointerEx;
 			}
-			
+				
 			for (Contact c : contactList) {
 				if (c.getName().equals(name)) {
 					contactSet.add(c);
@@ -652,8 +653,7 @@ public class ContactManagerImpl implements ContactManager {
 		catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		}		
-	}				
-		
+	}	
 		
 	
 	
@@ -686,7 +686,7 @@ public class ContactManagerImpl implements ContactManager {
 				
 				case 1: //Main menu: Add future meeting
 						System.out.println("\n");
-						System.out.println("*** ADD A FUTURE MEETING");
+						System.out.println("*** Add a Future Meeting ***");
 						attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
 						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
 							break;//return to main menu
@@ -702,13 +702,13 @@ public class ContactManagerImpl implements ContactManager {
 						
 				case 2: // Main menu: Look up meeting
 						System.out.println("\n");
-						System.out.println("*** LOOK UP A MEETING");
+						System.out.println("*** Look up a Meeting ***");
 						int userChoice = ContactManagerUtilities.lookUpMeetingOptions();
 						switch (userChoice) {									
 									
 							case 1: // Look up Meeting: Search meetings by date
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search by Date");
+									System.out.println("*** Look up a Meeting -- Search by Date");
 									date = ContactManagerUtilities.createDate();
 									if (date == null) {
 										break;//return to main menu
@@ -726,7 +726,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 							case 2: // Look up Meeting: Search meetings by meeting ID
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search by Meeting ID");
+									System.out.println("*** Look up a Meeting -- Search by Meeting ID");
 									System.out.println("Please enter a meeting ID: ");
 									entry = System.console().readLine();
 									if (entry.equals("back")) {
@@ -746,7 +746,7 @@ public class ContactManagerImpl implements ContactManager {
 							
 							case 3: // Look up Meeting: Search future meetings by contact
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search Future Meetings by Contact");
+									System.out.println("*** Look up a Meeting -- Search Future Meetings by Contact");
 									int userSubChoice = ContactManagerUtilities.searchByContactOptions();
 									
 									switch (userSubChoice) {								
@@ -815,7 +815,7 @@ public class ContactManagerImpl implements ContactManager {
 							
 							case 4: // Look up Meeting: Search past meetings by contact
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search Past Meetings by Contact");
+									System.out.println("*** Look up a Meeting -- Search Past Meetings by Contact");
 									userSubChoice = ContactManagerUtilities.searchByContactOptions();
 									
 									switch (userSubChoice) {											
@@ -881,7 +881,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 							case 5: // Look up Meeting: Search future meetings by ID
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search Past Meetings by ID");
+									System.out.println("*** Look up a Meeting -- Search Past Meetings by ID");
 									System.out.print("Enter meeting ID: ");
 									entry = System.console().readLine();
 									if (entry.equals("back")) {
@@ -898,7 +898,7 @@ public class ContactManagerImpl implements ContactManager {
 									
 							case 6: // Look up Meeting: Search past meetings by ID
 									System.out.println("\n");
-									System.out.println("*** LOOK UP MEETING -- Search Future Meetings by ID");
+									System.out.println("*** Look up a Meeting -- Search Future Meetings by ID");
 									System.out.print("Enter meeting ID: ");
 									entry = System.console().readLine();
 									if (entry.equals("back")) {
@@ -923,7 +923,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 				case 3: // Main menu: Create record of past meeting
 						System.out.println("\n");
-						System.out.println("*** ADD NEW PAST MEETING");
+						System.out.println("*** Add a New Past Meeting ***");
 						attendeeArray = ContactManagerUtilities.selectAttendees(contactList);						
 						if (attendeeArray == null) {//occurs if user opts to quit, or if contactList is empty
 							break;
@@ -947,13 +947,14 @@ public class ContactManagerImpl implements ContactManager {
 				
 				case 4: //Main menu: Add notes to a meeting that has taken place
 						System.out.println("\n");	
-						System.out.println("*** ADD MEETING NOTES");
+						System.out.println("*** Add Meeting Notes ***");
 						System.out.print("Enter the ID of the meeting: ");
 						entry = System.console().readLine();
 						if (entry.equals("back")) { //option to quit
 							break;
 						}						
 						id = ContactManagerUtilities.validateNumber(entry);
+						System.out.println("Entry validated was: " + id);
 						System.out.println("Enter meeting notes:");
 						entry = System.console().readLine();
 						if (entry.equals("back")) { //option to quit
@@ -968,7 +969,7 @@ public class ContactManagerImpl implements ContactManager {
 				
 				case 5: //Main menu: Add a new contact
 						System.out.println("\n");
-						System.out.println("*** ADD NEW CONTACT");
+						System.out.println("*** Add a New Contact ***");
 						System.out.println("Please enter the contact's name:");
 						entry = System.console().readLine();
 						if (entry.equals("back")) {
@@ -991,7 +992,7 @@ public class ContactManagerImpl implements ContactManager {
 						
 				case 6: //Main menu: Look up contact
 						System.out.println("\n");
-						System.out.println("*** LOOK UP CONTACT");
+						System.out.println("*** Look up a Contact ***");
 						int userSubChoice = ContactManagerUtilities.lookUpContactOptions();
 						switch (userSubChoice) {
 						
@@ -1066,13 +1067,13 @@ public class ContactManagerImpl implements ContactManager {
 
 
 
-
-
-//TIDY UP LINE SPACING IN SWITCH AND SUBMENUS
-
-//DEAL WITH FLOW AFTER EXCEPTIONS IN METHODS OF THIS CLASS
+//Print contact list in ID order
 
 //REORGANIZE UTILITY CLASS
 
 //JAVA DOCS
+
+//CHECK THAT sort() is still ok now that time is included
+
+//ADD NOTES to meeting that has taken place misbehaving - added to wrong ID! Option 4 on main
 

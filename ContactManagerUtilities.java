@@ -27,6 +27,7 @@ public class ContactManagerUtilities {
 	* Displays welcome banner on screen.
 	*/
 	public static void displayWelcome() {
+		System.out.println("\n");
 		System.out.println("*************************************************************");
 		System.out.println("*                    CONTACT MANAGER                        *");
 		System.out.println("*************************************************************" + "\n");
@@ -53,7 +54,6 @@ public class ContactManagerUtilities {
 		int selection = validateOption(1, 8);		
 		return selection;	
 	}
-	
 	
 	
 	
@@ -94,7 +94,6 @@ public class ContactManagerUtilities {
 	
 		
 	
-	
 	/**
 	* A method that allows the user to select multiple contacts by ID number. These
 	* numbers are then added to an array, which is returned to the ContactManager class
@@ -114,7 +113,7 @@ public class ContactManagerUtilities {
 		
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
-			return null;//This sends the user back to the main menu via a break statement in ContactManager
+			return null;//Sends the user back to the main menu via a break statement in ContactManager
 		}
 		
 		for (Contact c : contactList) {
@@ -127,16 +126,16 @@ public class ContactManagerUtilities {
 		try{
 			String userEntry = System.console().readLine();
 			if (userEntry.equals("back")) {
-				return null;//allows user to cancel and return to main menu - ensure main menu handles null appropriately
+				return null;//Allows user to cancel and return to main menu
 			}
 			
-			boolean verified = validateCommaString(userEntry);//determines whether input is valid
+			boolean verified = validateCommaString(userEntry);//Determines whether input is valid
 			
 			if (!verified) {
 				throw illegalArgEx;
 			}
 			
-			Scanner sc = new Scanner(userEntry);//if input is valid, creates an arrayList with the user input numbers
+			Scanner sc = new Scanner(userEntry);//If input is valid, creates an arrayList with the user input numbers
 			Pattern delimiterPattern = Pattern.compile("[\\s]?[,][\\s]?");
 			sc.useDelimiter(delimiterPattern);
 			
@@ -145,7 +144,7 @@ public class ContactManagerUtilities {
 				attendeeList.add(selection);
 			} while (sc.hasNextInt());
 			
-			attendees = new int[attendeeList.size()]; //converts to array for use in ContactManager getContacts() method
+			attendees = new int[attendeeList.size()];//Converts to array for use in ContactManager getContacts()
 			for (int i = 0; i < attendeeList.size(); i++) {
 				attendees[i] = attendeeList.get(i);
 			}
@@ -172,8 +171,8 @@ public class ContactManagerUtilities {
 	*/	
 	public static boolean validateCommaString(String userEntry) {
 		Pattern pattern = Pattern.compile("([0-9][0-9]*[\\s]?[,][\\s]?)*[0-9][0-9]*");
-		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean verified = m.matches();//returns true if input matches, false otherwise
+		Matcher m = pattern.matcher(userEntry);//Match given input against pattern
+		boolean verified = m.matches();//Returns true if input matches, false otherwise
 		
 		if (verified) {
 			return true;
@@ -201,30 +200,29 @@ public class ContactManagerUtilities {
 		int hour;
 		int minutes;
 		
-		int[] dateArray = new int[3]; //to store values representing date
-		boolean febOverflow = false;//booleans to facilitate error messages below
+		int[] dateArray = new int[3];//Stores values representing date
+		boolean febOverflow = false;//Booleans to facilitate error messages below
 		boolean monthOverflow = false;
 		boolean badDateFormat = false;		
 		
-		int[] timeArray = new int[2]; //to store values representing time
-		boolean badTimeFormat = false;
-		
+		int[] timeArray = new int[2];//To store values representing time
+		boolean badTimeFormat = false;		
 		
 		try {
 			System.out.println("Please enter the date of the meeting in dd.mm.yyyy format: ");
 			String userEntry = System.console().readLine();
 			
 			if (userEntry.equals("back")) {
-				return null;//allows user to cancel and return to main menu 
+				return null;//Allows user to cancel and return to main menu 
 			}
 			
-			boolean dateVerified = validateDateEntry(userEntry);//determines whether input is valid
+			boolean dateVerified = validateDateEntry(userEntry);//Determines whether input is valid
 			if (!dateVerified) {
 				badDateFormat = true;
 				throw illegalArgEx;
 			}
 			
-			Scanner sc = new Scanner(userEntry);//if input is valid, creates a date
+			Scanner sc = new Scanner(userEntry);//If input is valid, creates a date
 			Pattern delimiterPattern = Pattern.compile("[\\.]");
 			sc.useDelimiter(delimiterPattern);
 			
@@ -260,16 +258,16 @@ public class ContactManagerUtilities {
 			userEntry = System.console().readLine();			
 			
 			if (userEntry.equals("back")) {
-				return null;//allows user to cancel and return to main menu 
+				return null;//Allows user to cancel and return to main menu 
 			}			
 			
-			boolean timeVerified = validateTimeEntry(userEntry);//determines whether input is valid
+			boolean timeVerified = validateTimeEntry(userEntry);//Determines whether input is valid
 			if (!timeVerified) {
 				badTimeFormat = true;
 				throw illegalArgEx;
 			}			
 			
-			Scanner scTime = new Scanner(userEntry);//if input is valid, creates a time
+			Scanner scTime = new Scanner(userEntry);//If input is valid, creates a time
 			delimiterPattern = Pattern.compile("([\\:]|[\\.])");
 			scTime.useDelimiter(delimiterPattern);	
 			
@@ -310,7 +308,6 @@ public class ContactManagerUtilities {
 	
 	
 	
-	
 	/**
 	* Creates a Calendar object without a user-specified time. Useful for looking up 
 	* meetings by date only (without regard to time).
@@ -326,8 +323,8 @@ public class ContactManagerUtilities {
 		int month;
 		int year;		
 		
-		int[] dateArray = new int[3]; //to store values representing date
-		boolean febOverflow = false;//booleans to facilitate error messages below
+		int[] dateArray = new int[3]; //To store values representing date
+		boolean febOverflow = false;//Booleans to facilitate error messages below
 		boolean monthOverflow = false;
 		boolean badDateFormat = false;		
 		
@@ -336,16 +333,16 @@ public class ContactManagerUtilities {
 			String userEntry = System.console().readLine();
 			
 			if (userEntry.equals("back")) {
-				return null;//allows user to cancel and return to main menu 
+				return null;//Allows user to cancel and return to main menu 
 			}
 			
-			boolean dateVerified = validateDateEntry(userEntry);//determines whether input is valid
+			boolean dateVerified = validateDateEntry(userEntry);//Determines whether input is valid
 			if (!dateVerified) {
 				badDateFormat = true;
 				throw illegalArgEx;
 			}
 			
-			Scanner sc = new Scanner(userEntry);//if input is valid, creates a date
+			Scanner sc = new Scanner(userEntry);//If input is valid, creates a date
 			Pattern delimiterPattern = Pattern.compile("[\\.]");
 			sc.useDelimiter(delimiterPattern);
 			
@@ -410,14 +407,10 @@ public class ContactManagerUtilities {
 	*/
 	public static boolean validateDateEntry(String userEntry) {
 		Pattern pattern = Pattern.compile("(([0]?[1-9])|([1-2][0-9])|([3][0-1]))[\\.](([0]?[1-9])|([1][0-2]))[\\.][1-2][0-9][0-9][0-9]");
-		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean verified = m.matches(); //true if matched, false otherwise
+		Matcher m = pattern.matcher(userEntry);//Match given input against pattern
+		boolean verified = m.matches(); //True if matched, false otherwise
 		
-		if (verified) {
-			return true;
-		}
-		
-		return false;
+		return verified;		
 	}
 	
 	
@@ -431,11 +424,11 @@ public class ContactManagerUtilities {
 	*/
 	public static boolean validateTimeEntry(String userEntry) {			
 		Pattern pattern = Pattern.compile("(([0]?[0-9])|([1][0-9])|([2][0-3]))([\\:]|[\\.])(([0-5][0-9]))");
-		Matcher m = pattern.matcher(userEntry);//match given input against pattern
-		boolean matched = m.matches(); //true if matched, false otherwise
-		return matched;
+		Matcher m = pattern.matcher(userEntry);//Match given input against pattern
+		boolean verified = m.matches(); //True if matched, false otherwise
+		
+		return verified;
 	}	
-	
 	
 	
 	
@@ -446,8 +439,6 @@ public class ContactManagerUtilities {
 	* @return an int for use in switch statement of ContactManager.
 	*/	
 	public static int lookUpMeetingOptions() {
-		System.out.println();
-		System.out.println();
 		System.out.println("1. Search by date                    " + "\t" + "2. Search by meeting ID");
 		System.out.println("3. Search future meetings by contact " + "\t" + "4. Search past meetings by contact");
 		System.out.println("5. Search past meetings by ID        " + "\t" + "6. Search future meetings by ID");
@@ -460,7 +451,6 @@ public class ContactManagerUtilities {
 	
 	
 	
-	
 	/**
 	* A sub-menu with numerical options for selecting how to search 
 	* for a meeting by Contact (ID or name).
@@ -468,7 +458,6 @@ public class ContactManagerUtilities {
 	* @return an int for use in switch statement of ContactManager.
 	*/
 	public static int searchByContactOptions() {
-		System.out.println();
 		System.out.println("1. Search by contact ID");
 		System.out.println("2. Search by contact name");
 		System.out.println("3. Return to main menu");
@@ -491,11 +480,11 @@ public class ContactManagerUtilities {
 		String minutes = "";		
 		
 		if (date.get(Calendar.MINUTE) < 10) {
-			if (date.get(Calendar.MINUTE) == 0) { //so that times such as 12:00 display as such, not as 12:0
+			if (date.get(Calendar.MINUTE) == 0) { //Ensures such as 12:00 display as such, not as 12:0
 				minutes += date.get(Calendar.MINUTE) + "0";
 			}
 			else {
-				minutes += "0" + date.get(Calendar.MINUTE);//so that times such as 10:07 display as such, not as 10:7
+				minutes += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
 			}
 		}	
 		else {
@@ -567,15 +556,12 @@ public class ContactManagerUtilities {
 	
 	
 	
-	
 	/**
 	* A sub-menu with numerical options for selecting how to search for a contact.
 	*
 	* @return an int for use in switch statement of ContactManager.
 	*/
 	public static int lookUpContactOptions() {
-		System.out.println();
-		System.out.println();
 		System.out.println("1. Search by name       " + "\t" + "2. Search by ID");
 		System.out.println("3. Display contact list " + "\t" + "4. Return to main menu ");
 		System.out.print("Select option: ");		
@@ -601,13 +587,7 @@ public class ContactManagerUtilities {
 		for (Contact c : contactList) {
 			System.out.println("ID: " + c.getId() + "\t" + c.getName());
 		}
-	}		
-	
-	
-		
-	
-		
-		
+	}			
 		
 		
 }

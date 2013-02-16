@@ -615,7 +615,7 @@ public class ContactManagerUtilities {
 	* Renders date fit for display on screen.
 	*
 	* @param date the Calendar object whose value is to be printed on screen.
-	* @return a String, showing the date in a user-friendly.
+	* @return a String, showing the date in a user-friendly format.
 	*/
 	public static String renderDate(Calendar date) {
 		String dateString = "";

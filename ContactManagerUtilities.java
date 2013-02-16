@@ -631,14 +631,13 @@ public class ContactManagerUtilities {
 			dateString += "0" + (date.get(Calendar.MONTH) + 1) + ".";//+1 to print month in meaningful sense to user
 		}
 		else {
-			dateString += (date.get(Calendar.MONTH) +1) + ".";
+			dateString += (date.get(Calendar.MONTH) +1 ) + ".";
 		} 
 		
 		dateString += date.get(Calendar.YEAR);		  
 	
 		return dateString;
-	}
-		
+	}		
 		
 }
 

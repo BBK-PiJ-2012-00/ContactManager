@@ -1,3 +1,4 @@
+
 /**
 * Used for storing the static idAssigner variables from the Meeting and Contact classes
 * so that the ID values are not lost when the program is closed. Loss of these values would

@@ -2,7 +2,6 @@ import java.io.Serializable;
 import java.lang.Comparable;
 
 
-
 public class ContactImpl implements Contact, Serializable, Comparable<Contact> { 
 	private int id;
 	private String name;
@@ -59,8 +58,6 @@ public class ContactImpl implements Contact, Serializable, Comparable<Contact> {
 		Integer id = (Integer) this.id;
 		Integer otherId = (Integer) contact.getId();		
 		return id.compareTo(otherId);
-	}
-	
-	
+	}	
 
 }

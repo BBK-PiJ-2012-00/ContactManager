@@ -3,19 +3,19 @@
 import java.util.*;
 import java.io.*;
 
-import java.beans.XMLEncoder;
-import java.beans.XMLDecoder;
 
 
 public class ContactManagerImpl implements ContactManager { 
+
 	private IllegalArgumentException illegalArgEx = new IllegalArgumentException();
 	private NullPointerException nullPointerEx = new NullPointerException();
 	private IllegalStateException illegalStateEx = new IllegalStateException();
+	
 	private Set<Contact> contactList = new HashSet<Contact>(); //contacts added to this via addContact()	
 	private Set<Meeting> pastMeetings = new HashSet<Meeting>();//list of past meetings
 	private Set<Meeting> futureMeetings = new HashSet<Meeting>();//list of future meetings
 	
-
+	
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
 		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
@@ -644,9 +644,15 @@ public class ContactManagerImpl implements ContactManager {
 			ex.printStackTrace();
 		}		
 	}	
+	
+	
+	
+	public Set<Contact> getContactList() {//required by ContactManagerRunner
+		return this.contactList;
+	}
 		
 	
-	
+	/**
 	public static void main(String[] args) {
 	
 		ContactManagerImpl cm = new ContactManagerImpl();
@@ -1050,20 +1056,7 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 	}
+	*/
 }
-
-
-
-
-
-//Print contact notes when searched by name
-
-//Print contact list in ID order
-
-//REORGANIZE UTILITY CLASS
-
-//JAVA DOCS
-
-//CHECK THAT sort() is still ok now that time is included
 
 

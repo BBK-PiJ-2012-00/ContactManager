@@ -5,16 +5,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.io.Serializable;
 
-/** 
-* A class to represent meetings 
-* 
-* Meetings have unique IDs, scheduled date and a list of participating contacts 
-*/ 
+
 public class MeetingImpl implements Meeting, Serializable {
 	private int meetingId;
 	private Calendar meetingDate;
 	private Set<Contact> attendees = new HashSet<Contact>();
 	private static int idAssigner = 0;
+	
 	
 	public MeetingImpl(Set<Contact> contacts, Calendar date) {
 		meetingDate = date;
@@ -22,6 +19,7 @@ public class MeetingImpl implements Meeting, Serializable {
 		meetingId = idAssigner + 1;
 		incrementIdAssigner();
 	}
+	
 	
 	/**
 	* For use when a FutureMeeting is converted to a
@@ -33,47 +31,33 @@ public class MeetingImpl implements Meeting, Serializable {
 		meetingId = id;
 	}
 	
+	
 	private static void incrementIdAssigner() {
 		idAssigner = idAssigner + 1;
 	}
+	
 	
 	//to be used when data is loaded from file to restore value of idAssigner
 	public static void restoreIdAssigner(int idValue) {
 		idAssigner = idValue;
 	}
 	
+	
 	public static int getIdAssigner() {
 		return idAssigner;
 	}
+	
 
 	public int getId() {
 		return meetingId;
 	}
 	
-	public Calendar getDate() {
-		/**
-		PUT IN MANAGER CLASS
-		String dateString = "";
-		int day = meetingDate.get(Calendar.DAY_OF_WEEK);
-		int month = meetingDate.get(Calendar.MONTH);
-		int year = meetingDate.get(Calendar.YEAR);
-		dateString = dateString + day + "." + month + "." + year;
-		return dateString;
-		*/
+	
+	public Calendar getDate() {		
 		return meetingDate;
-	}
-		
-			
+	}			
 
-/** 
-* Return the details of people that attended the meeting. 
-* 
-* The list contains a minimum of one contact (if there were 
-* just two people: the user and the contact) and may contain an 
-* arbitraty number of them. 
-* 
-* @return the details of people that attended the meeting. 
-*/
+
 	public Set<Contact> getContacts() {
 		return attendees;
 	}

@@ -1,5 +1,4 @@
 
-
 import java.util.regex.*;
 import java.util.Scanner;
 import java.io.*;
@@ -39,7 +38,7 @@ public class ContactManagerUtilities {
 	/**
 	* Displays main menu of numerical choices. 
 	*
-	* @return an integer for use in switch statement of ContactManager class.
+	* @return an integer for use in switch statement of ContactManagerRunner class.
 	*/
 	public static int chooseMainMenuOption() {
 		System.out.println();
@@ -94,12 +93,11 @@ public class ContactManagerUtilities {
 	}
 	
 		
-	//PRINT CONTACT LIST IN ID ORDER!!!!
+
 	/**
 	* A method that allows the user to select multiple contacts by ID number. These
-	* numbers are then added to an array, which is returned to the ContactManager class
-	* for validation with the getContacts(int... ids) method. 
-	* Prints contactList Set for user's ease of reference.
+	* numbers are added to an array, which is returned to the ContactManagerRunner class
+	* for use with ContactManager's getContacts(int... ids) method. 
 	*
 	* @param contactList set, passed from ContactManager.
 	* @return array of integers representing user-selected contact IDs.
@@ -113,7 +111,7 @@ public class ContactManagerUtilities {
 		
 		if (contactList.isEmpty()) {
 			System.out.println("<Empty> You will need to add contacts to your contact list before creating meetings.");
-			return null;//Sends the user back to the main menu via a break statement in ContactManager
+			return null;//Sends the user back to the main menu via a break statement in ContactManagerRunner
 		}		
 		
 		displayContactList(contactList);
@@ -142,7 +140,7 @@ public class ContactManagerUtilities {
 				attendeeList.add(selection);
 			} while (sc.hasNextInt());
 			
-			attendees = new int[attendeeList.size()];//Converts to array for use in ContactManager getContacts()
+			attendees = new int[attendeeList.size()];//Converts to array for use in ContactManager's getContacts()
 			for (int i = 0; i < attendeeList.size(); i++) {
 				attendees[i] = attendeeList.get(i);
 			}
@@ -453,7 +451,7 @@ public class ContactManagerUtilities {
 	* A sub-menu with numerical options for selecting how to search 
 	* for a meeting by Contact (ID or name).
 	*
-	* @return an int for use in switch statement of ContactManager.
+	* @return an int for use in switch statement of ContactManagerRunner.
 	*/
 	public static int searchByContactOptions() {
 		System.out.println("1. Search by contact ID");
@@ -474,25 +472,9 @@ public class ContactManagerUtilities {
 	* @param meeting the meeting about which details are to be printed.
 	*/
 	public static void printMeetingDetails(Meeting meeting) {
-		Calendar date = meeting.getDate();
+		Calendar date = meeting.getDate();		
 		
-		/*
-		String minutes = "";		
-		
-		if (date.get(Calendar.MINUTE) < 10) {
-			if (date.get(Calendar.MINUTE) == 0) { //Ensures such as 12:00 display as such, not as 12:0
-				minutes += date.get(Calendar.MINUTE) + "0";
-			}
-			else {
-				minutes += "0" + date.get(Calendar.MINUTE);//Ensures times such as 10:07 display as such, not as 10:7
-			}
-		}	
-		else {
-			minutes += date.get(Calendar.MINUTE);
-		}
-		*/
-		
-		String timeString = renderTime(date);
+		String timeString = renderTime(date);//Renders date/time into user-friendly format
 		String dateString = renderDate(date);
 		
 		System.out.println("Meeting details: ");
@@ -562,7 +544,7 @@ public class ContactManagerUtilities {
 	/**
 	* A sub-menu with numerical options for selecting how to search for a contact.
 	*
-	* @return an int for use in switch statement of ContactManager.
+	* @return an int for use in switch statement of ContactManagerRunner.
 	*/
 	public static int lookUpContactOptions() {
 		System.out.println("1. Search by name       " + "\t" + "2. Search by ID");

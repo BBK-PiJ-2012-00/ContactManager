@@ -16,7 +16,7 @@ public class ContactManagerImpl implements ContactManager {
 	
 	
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		boolean isEmpty = false; //these booleans facilitate display of pertinent error message
+		boolean isEmpty = false; //these booleans facilitate display of pertinent error messages
 		boolean falseContact = false;
 		boolean falseDate = false;
 		String unknownContacts = "The following contacts do not exist in your contact list: ";//for multiple unknowns
@@ -57,7 +57,6 @@ public class ContactManagerImpl implements ContactManager {
 			}
 			if (falseContact == true) {
 				System.out.println("Error: " + unknownContacts);
-				//Need to consider the users options after exception is thrown - retry the creation of meeting/allow reentry of contacts
 			} 
 			if (falseDate == true) {
 				System.out.println("Error: Invalid date. Please ensure the date and time are in the future.");
@@ -81,7 +80,6 @@ public class ContactManagerImpl implements ContactManager {
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has not taken place yet!");
 			return null;
-			//confirm returning null is best course of action - currently booted back to main
 		}
 		
 		for (Meeting m : pastMeetings) {
@@ -108,7 +106,6 @@ public class ContactManagerImpl implements ContactManager {
 		catch (IllegalArgumentException ex) {
 			System.out.print("Error: The meeting with this ID has already taken place!");
 			return null;
-			//what action to take? - safest is to go back to main menu
 		}
 		
 		for (Meeting m : futureMeetings) {
@@ -239,7 +236,6 @@ public class ContactManagerImpl implements ContactManager {
 		
 		meetingList = sort(meetingList);
 		return meetingList;	//may be empty if no matches found
-		//won't be any duplicates because a meeting cannot belong to pastMeetings AND futureMeetings
 	}
 	
 	
